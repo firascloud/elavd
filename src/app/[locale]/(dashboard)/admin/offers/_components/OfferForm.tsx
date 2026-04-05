@@ -147,12 +147,12 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                 </Label>
                                 <Select onValueChange={(val) => setValue("type", val)} defaultValue={initialData?.type || "both"}>
                                     <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm">
-                                        <SelectValue placeholder="Select type" />
+                                        <SelectValue placeholder={t("SelectTypePlaceholder")} />
                                     </SelectTrigger>
                                     <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/70 backdrop-blur z-[999]">
-                                        <SelectItem value="both" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">Both Image & Text</SelectItem>
-                                        <SelectItem value="image" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">Image Only (Banner)</SelectItem>
-                                        <SelectItem value="text" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">Text Only (Announcement)</SelectItem>
+                                        <SelectItem value="both" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{t("OfferTypeBoth")}</SelectItem>
+                                        <SelectItem value="image" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{t("OfferTypeImage")}</SelectItem>
+                                        <SelectItem value="text" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{t("OfferTypeText")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -215,8 +215,8 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <LinkIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">Linking & Connectivity</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Target Product or Category</p>
+                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("LinkingConnectivity")}</h3>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("TargetProductCategory")}</p>
                         </div>
                     </div>
 
@@ -227,10 +227,10 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             </Label>
                             <Select onValueChange={(val) => setValue("product_id", val)} defaultValue={initialData?.product_id}>
                                 <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm">
-                                    <SelectValue placeholder="Link to product" />
+                                    <SelectValue placeholder={t("LinkToProduct")} />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/70 backdrop-blur z-[999]">
-                                    <SelectItem value="none" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">None</SelectItem>
+                                    <SelectItem value="none" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{t("None")}</SelectItem>
                                     {products.map(p => (
                                         <SelectItem key={p.id} value={p.id} className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{p.name_en}</SelectItem>
                                     ))}
@@ -244,10 +244,10 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             </Label>
                             <Select onValueChange={(val) => setValue("category_id", val)} defaultValue={initialData?.category_id}>
                                 <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm">
-                                    <SelectValue placeholder="Link to category" />
+                                    <SelectValue placeholder={t("LinkToCategory")} />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/70 backdrop-blur z-[999]">
-                                    <SelectItem value="none" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">None</SelectItem>
+                                    <SelectItem value="none" className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{t("None")}</SelectItem>
                                     {categories.map(c => (
                                         <SelectItem key={c.id} value={c.id} className="py-3 px-5 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm">{c.name_en}</SelectItem>
                                     ))}
@@ -257,7 +257,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
 
                         <div className="md:col-span-2 space-y-2 group">
                             <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
-                                Custom {t("Link")} (URL)
+                                {t("CustomLink")} ({t("Link")})
                             </Label>
                             <Input {...register("link")} placeholder="https://..." className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm" />
                         </div>
@@ -271,8 +271,8 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <Calendar className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">Timeline</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Start & End Dates</p>
+                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Timeline")}</h3>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("StartEndDates")}</p>
                         </div>
                     </div>
 
@@ -296,7 +296,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                 onCheckedChange={(val) => setValue("is_active", val)}
                                 className="data-[state=checked]:bg-primary scale-90"
                             />
-                            <Label className="text-sm font-medium text-muted-foreground"> {t("Active")} Status</Label>
+                            <Label className="text-sm font-medium text-muted-foreground"> {t("ActiveStatus")}</Label>
                         </div>
                     </div>
                 </section>
@@ -309,8 +309,8 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                 <ImageIcon className="h-5 w-5 stroke-[2]" />
                             </div>
                             <div>
-                                <h3 className="text-base font-semibold tracking-tight text-foreground">Visual Asset</h3>
-                                <p className="text-[11px] font-medium text-muted-foreground">Offer Banner / Image</p>
+                                <h3 className="text-base font-semibold tracking-tight text-foreground">{t("VisualAsset")}</h3>
+                                <p className="text-[11px] font-medium text-muted-foreground">{t("OfferBannerImage")}</p>
                             </div>
                         </div>
 
@@ -322,7 +322,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             />
                             <div className="mt-6 text-center space-y-1">
                                 <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
-                                <p className="text-[11px] font-medium text-muted-foreground/80">High-resolution banner recommended</p>
+                                <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeOffer")}</p>
                             </div>
                         </div>
                     </section>
@@ -335,19 +335,19 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} Settings</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Search Optimization</p>
+                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
                         {[
-                            { label: "SEO Title (EN)", name: "seo_title_en" },
-                            { label: "SEO Title (AR)", name: "seo_title_ar" },
-                            { label: "SEO Description (EN)", name: "seo_description_en", area: true },
-                            { label: "SEO Description (AR)", name: "seo_description_ar", area: true },
-                            { label: "Keywords (EN)", name: "seo_keywords_en", placeholder: "sale, luxury, offer" },
-                            { label: "Keywords (AR)", name: "seo_keywords_ar", placeholder: "تخفيضات, عروض, خصم" }
+                            { label: t("SEOTitleEn"), name: "seo_title_en" },
+                            { label: t("SEOTitleAr"), name: "seo_title_ar" },
+                            { label: t("SEODescEn"), name: "seo_description_en", area: true },
+                            { label: t("SEODescAr"), name: "seo_description_ar", area: true },
+                            { label: t("Keywords") + " (EN)", name: "seo_keywords_en", placeholder: t("KeywordsOfferPlaceholder") },
+                            { label: t("Keywords") + " (AR)", name: "seo_keywords_ar", placeholder: t("KeywordsOfferPlaceholder") }
                         ].map((seo) => (
                             <div key={seo.name} className={`space-y-2 ${seo.area ? 'md:col-span-2' : ''}`}>
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">

@@ -35,11 +35,11 @@ export default function UpdateStatus({ order, onSuccess, onCancel }: UpdateStatu
                 .eq('id', order.id);
 
             if (error) throw error;
-            toast.success("Order status updated!");
+            toast.success(t("OrderStatusUpdated"));
             onSuccess();
         } catch (error: any) {
             console.error("Error updating status:", error);
-            toast.error("Failed to update status");
+            toast.error(t("FailedToUpdateStatus"));
         } finally {
             setLoading(false);
         }
@@ -57,11 +57,11 @@ export default function UpdateStatus({ order, onSuccess, onCancel }: UpdateStatu
         <div className="space-y-8 py-6">
             <div className="space-y-3 group">
                 <Label className="text-[11px] font-medium text-muted-foreground mb-1 block">
-                    Current Workflow Stage
+                    {t("CurrentWorkflowStage")}
                 </Label>
                 <Select onValueChange={(val) => setStatus(val)} defaultValue={status}>
                     <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm">
-                        <SelectValue placeholder="Select status" />
+                        <SelectValue placeholder={t("SelectStatus")} />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/70 backdrop-blur z-[999] p-1">
                         {statuses.map((s) => (

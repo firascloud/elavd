@@ -67,7 +67,7 @@ export default function OfferList() {
 
         if (error) {
             console.error("Error fetching offers:", error);
-            toast.error("Failed to load offers");
+            toast.error(t("FailedLoadOffers"));
         } else {
             // Normalize image URLs to public URLs if needed
             const normalized = (data || []).map((o) => {
@@ -106,7 +106,7 @@ export default function OfferList() {
         setIsEditOpen(false);
         setIsDeleteOpen(false);
         fetchOffers();
-        toast.success("Done!");
+        toast.success(t("Done"));
     };
 
     return (
@@ -114,7 +114,7 @@ export default function OfferList() {
             <div className="flex flex-col gap-3 md:gap-4">
                 <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center justify-between">
                     <DashboardSearch
-                        placeholder={t("SearchOffers") || "Search offers..."}
+                        placeholder={t("SearchOffers")}
                         onChange={(val) => { setSearch(val); setPage(1); }}
                         className="w-full md:w-[28rem]"
                     />
@@ -124,12 +124,12 @@ export default function OfferList() {
                             value={statusFilter}
                             onChange={(val) => { setStatusFilter(val); setPage(1); }}
                             options={[
-                                { label: t("All") || "All", value: "all" },
-                                { label: t("Active") || "Active", value: "active" },
-                                { label: t("Inactive") || "Inactive", value: "inactive" },
-                                { label: "Banner", value: "banner" },
+                                { label: t("All"), value: "all" },
+                                { label: t("Active"), value: "active" },
+                                { label: t("Inactive"), value: "inactive" },
+                                { label: t("Banner"), value: "banner" },
                             ]}
-                            placeholder={t("Filter") || "Filter"}
+                            placeholder={t("Filter")}
                         />
                         <Button variant="outline" size="icon" onClick={fetchOffers} className="h-8 w-8 md:h-9 md:w-9 rounded-full border-border/60 hover:border-foreground/30">
                             <RefreshCw className={loading ? "animate-spin" : ""} />
@@ -142,7 +142,7 @@ export default function OfferList() {
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="text-xs font-medium text-muted-foreground">
-                        {totalCount} {t("Results") || "results"}
+                        {totalCount} {t("Results")}
                     </span>
                 </div>
             </div>
@@ -151,7 +151,7 @@ export default function OfferList() {
                 t("Images"),
                 t("TitleEn"),
                 t("Type"),
-                "Timeline",
+                t("Timeline"),
                 t("Status"),
                 t("Actions")
             ]}>
@@ -171,7 +171,7 @@ export default function OfferList() {
                         <DashboardTableCell>
                             <div className="flex flex-col">
                                 <span className="font-semibold tracking-tight text-sm">{isAr ? offer.title_ar : offer.title_en}</span>
-                                {offer.position > 0 && <span className="text-[10px] text-muted-foreground">Pos: {offer.position}</span>}
+                                {offer.position > 0 && <span className="text-[10px] text-muted-foreground">{t("Pos")}: {offer.position}</span>}
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
@@ -215,7 +215,7 @@ export default function OfferList() {
                 isOpen={isEditOpen}
                 onClose={() => setIsEditOpen(false)}
                 title={selectedOffer ? t("EditOffer") : t("AddOffer")}
-                description={selectedOffer ? (isAr ? selectedOffer.title_ar : selectedOffer.title_en) : "Create a new visual promotion."}
+                description={selectedOffer ? (isAr ? selectedOffer.title_ar : selectedOffer.title_en) : t("AddOfferDescription")}
                 className="max-w-5xl"
                 footer={
                     <div className="flex items-center gap-2">

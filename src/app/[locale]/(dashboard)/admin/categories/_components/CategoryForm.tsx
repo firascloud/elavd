@@ -120,7 +120,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                         </div>
                         <div>
                             <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Descriptions")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Localized Content</p>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
 
@@ -157,7 +157,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                         </div>
                         <div>
                             <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Images")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Visual Brand</p>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
                         </div>
                     </div>
 
@@ -169,7 +169,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                         />
                         <div className="mt-6 text-center space-y-1">
                             <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
-                            <p className="text-[11px] font-medium text-muted-foreground/80">Recommended size: 512x512px</p>
+                            <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeCategory")}</p>
                         </div>
                     </div>
                 </section>
@@ -181,19 +181,19 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} Settings</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Search Optimization</p>
+                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
                         {[
-                            { label: "SEO Title (EN)", name: "seo_title_en" },
-                            { label: "SEO Title (AR)", name: "seo_title_ar" },
-                            { label: "SEO Description (EN)", name: "seo_description_en", area: true },
-                            { label: "SEO Description (AR)", name: "seo_description_ar", area: true },
-                            { label: "Keywords (EN)", name: "seo_keywords_en", placeholder: "toys, kids, games" },
-                            { label: "Keywords (AR)", name: "seo_keywords_ar", placeholder: "ألعاب, أطفال, ترفيه" }
+                            { label: t("SEOTitleEn"), name: "seo_title_en" },
+                            { label: t("SEOTitleAr"), name: "seo_title_ar" },
+                            { label: t("SEODescEn"), name: "seo_description_en", area: true },
+                            { label: t("SEODescAr"), name: "seo_description_ar", area: true },
+                            { label: t("Keywords") + " (EN)", name: "seo_keywords_en", placeholder: t("KeywordsCategoryPlaceholder") },
+                            { label: t("Keywords") + " (AR)", name: "seo_keywords_ar", placeholder: t("KeywordsCategoryPlaceholder") }
                         ].map((seo) => (
                             <div key={seo.name} className={`space-y-2 ${seo.area ? 'md:col-span-2' : ''}`}>
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">

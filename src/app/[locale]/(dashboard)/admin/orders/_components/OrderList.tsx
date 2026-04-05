@@ -122,7 +122,7 @@ export default function OrderList() {
             <div className="flex flex-col gap-3 md:gap-4">
                 <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center justify-between">
                     <DashboardSearch
-                        placeholder={t("SearchOrders") || "Search Order ID..."}
+                        placeholder={t("SearchOrderID")}
                         onChange={(val) => { setSearch(val); setPage(1); }}
                         className="w-full md:w-[28rem]"
                     />
@@ -131,14 +131,14 @@ export default function OrderList() {
                             value={statusFilter}
                             onChange={(val) => { setStatusFilter(val); setPage(1); }}
                             options={[
-                                { label: t("All") || "All", value: "all" },
-                                { label: t("Pending") || "Pending", value: "pending" },
-                                { label: t("Processing") || "Processing", value: "processing" },
-                                { label: t("Shipped") || "Shipped", value: "shipped" },
-                                { label: t("Delivered") || "Delivered", value: "delivered" },
-                                { label: t("Canceled") || "Canceled", value: "canceled" },
+                                { label: t("All"), value: "all" },
+                                { label: t("Pending"), value: "pending" },
+                                { label: t("Processing"), value: "processing" },
+                                { label: t("Shipped"), value: "shipped" },
+                                { label: t("Delivered"), value: "delivered" },
+                                { label: t("Canceled"), value: "canceled" },
                             ]}
-                            placeholder={t("Filter") || "Filter"}
+                            placeholder={t("Filter")}
                         />
                         <Button variant="outline" size="icon" onClick={fetchOrders} className="h-8 w-8 md:h-9 md:w-9 rounded-full border-border/60 hover:border-foreground/30">
                             <RefreshCw className={loading ? "animate-spin" : ""} />
@@ -147,13 +147,13 @@ export default function OrderList() {
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="text-xs font-medium text-muted-foreground">
-                        {totalCount} {t("Results") || "results"}
+                        {totalCount} {t("results")}
                     </span>
                 </div>
             </div>
 
             <DashboardTable headers={[
-                "Order ID",
+                t("OrderID"),
                 t("Customer"),
                 t("Total"),
                 t("Status"),
@@ -172,7 +172,7 @@ export default function OrderList() {
                                 <div className="h-8 w-8 rounded-full bg-primary/5 flex items-center justify-center text-primary">
                                     <UserIcon className="h-4 w-4" />
                                 </div>
-                                <span className="font-bold tracking-tight text-sm">Customer #{order.user_id?.slice(0, 4)}</span>
+                                <span className="font-bold tracking-tight text-sm">{t("CustomerHash")} {order.user_id?.slice(0, 4)}</span>
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
@@ -215,7 +215,7 @@ export default function OrderList() {
                 isOpen={isStatusOpen}
                 onClose={() => setIsStatusOpen(false)}
                 title={t("UpdateStatus")}
-                description={`#{selectedOrder?.id.slice(0, 8)}`}
+                description={`${t("OrderID")}: #${selectedOrder?.id?.slice(0, 8)}`}
                 className="max-w-md"
             >
                 <UpdateStatus
@@ -229,7 +229,7 @@ export default function OrderList() {
                 isOpen={isDetailsOpen}
                 onClose={() => setIsDetailsOpen(false)}
                 title={t("OrderDetails")}
-                description={`Comprehensive audit for #${selectedOrder?.id.slice(0, 8)}`}
+                description={`${t("OrderDetailsDescription")} ${selectedOrder?.id?.slice(0, 8)}`}
                 className="max-w-4xl"
             >
                 <OrderDetails order={selectedOrder} />

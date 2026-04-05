@@ -10,7 +10,7 @@ export default function OrdersPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black text-foreground">{t("Orders")}</h1>
         <p className="text-sm font-medium text-muted-foreground leading-relaxed">
-          Monitor transaction cycles, manage fulfillment status, and oversee logistics from a single unified audit pane.
+          {t("OrdersPageDescription")}
         </p>
       </div>
 

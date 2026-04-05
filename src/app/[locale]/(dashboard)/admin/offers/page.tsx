@@ -10,7 +10,7 @@ export default function OffersPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-black text-foreground">{t("Offers")}</h1>
         <p className="text-sm font-medium text-muted-foreground leading-relaxed">
-          Create high-impact promotions, banners, and limited-time offers with targeted linking.
+          {t("OffersDescription")}
         </p>
       </div>
 

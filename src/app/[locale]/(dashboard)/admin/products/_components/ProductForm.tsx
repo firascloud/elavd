@@ -263,8 +263,8 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} Settings</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Search Optimization</p>
+                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>
 
@@ -272,12 +272,12 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                         {[
                             { label: t("SlugEnLabel"), name: "slug_en", required: true },
                             { label: t("SlugArLabel"), name: "slug_ar", required: true },
-                            { label: "SEO Title (EN)", name: "seo_title_en" },
-                            { label: "SEO Title (AR)", name: "seo_title_ar" },
-                            { label: "SEO Description (EN)", name: "seo_description_en", area: true },
-                            { label: "SEO Description (AR)", name: "seo_description_ar", area: true },
-                            { label: "Keywords (EN)", name: "seo_keywords_en", placeholder: t("KeywordsEnPlaceholder") },
-                            { label: "Keywords (AR)", name: "seo_keywords_ar", placeholder: t("KeywordsArPlaceholder") }
+                            { label: t("SEOTitleEn"), name: "seo_title_en" },
+                            { label: t("SEOTitleAr"), name: "seo_title_ar" },
+                            { label: t("SEODescEn"), name: "seo_description_en", area: true },
+                            { label: t("SEODescAr"), name: "seo_description_ar", area: true },
+                            { label: t("Keywords") + " (EN)", name: "seo_keywords_en", placeholder: t("KeywordsEnPlaceholder") },
+                            { label: t("Keywords") + " (AR)", name: "seo_keywords_ar", placeholder: t("KeywordsArPlaceholder") }
                         ].map((seo) => (
                             <div key={seo.name} className={`space-y-2 ${seo.area ? 'md:col-span-2' : ''}`}>
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">

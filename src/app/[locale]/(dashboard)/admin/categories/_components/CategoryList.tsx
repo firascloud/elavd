@@ -64,7 +64,7 @@ export default function CategoryList() {
 
         if (error) {
             console.error("Error fetching categories:", error);
-            toast.error("Failed to load categories");
+            toast.error(t("FailedLoadCategories"));
         } else {
             setCategories(data || []);
             if (count) {
@@ -95,7 +95,7 @@ export default function CategoryList() {
         setIsEditOpen(false);
         setIsDeleteOpen(false);
         fetchCategories();
-        toast.success("Done!");
+        toast.success(t("Done"));
     };
 
     return (
@@ -103,7 +103,7 @@ export default function CategoryList() {
             <div className="flex flex-col gap-3 md:gap-4">
                 <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center justify-between">
                     <DashboardSearch
-                        placeholder={t("SearchCategories") || "Search categories..."}
+                        placeholder={t("SearchCategories")}
                         onChange={(val) => { setSearch(val); setPage(1); }}
                         className="w-full md:w-[28rem]"
                     />
@@ -113,11 +113,11 @@ export default function CategoryList() {
                             value={imageFilter}
                             onChange={(val) => { setImageFilter(val); setPage(1); }}
                             options={[
-                                { label: t("All") || "All", value: "all" },
-                                { label: t("WithImage") || "With image", value: "with_image" },
-                                { label: t("WithoutImage") || "Without image", value: "without_image" },
+                                { label: t("All"), value: "all" },
+                                { label: t("WithImage"), value: "with_image" },
+                                { label: t("WithoutImage"), value: "without_image" },
                             ]}
-                            placeholder={t("Filter") || "Filter"}
+                            placeholder={t("Filter")}
                         />
                         <Button variant="outline" size="icon" onClick={fetchCategories} className="h-8 w-8 md:h-9 md:w-9 rounded-full border-border/60 hover:border-foreground/30">
                             <RefreshCw className={loading ? "animate-spin" : ""} />
@@ -128,17 +128,12 @@ export default function CategoryList() {
                         </Button>
                     </div>
                 </div>
-                <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-muted-foreground">
-                        {totalCount} {t("Results") || "results"}
-                    </span>
-                </div>
             </div>
 
             <DashboardTable headers={[
                 t("Images"),
                 t("NameEn"),
-                "Slug",
+                t("Slug"),
                 t("CreatedAt"),
                 t("Actions")
             ]}>
@@ -193,7 +188,7 @@ export default function CategoryList() {
                 isOpen={isEditOpen}
                 onClose={() => setIsEditOpen(false)}
                 title={selectedCategory ? t("EditCategory") : t("AddCategory")}
-                description={selectedCategory ? (isAr ? selectedCategory.name_ar : selectedCategory.name_en) : "Define a new product segment."}
+                description={selectedCategory ? (isAr ? selectedCategory.name_ar : selectedCategory.name_en) : t("AddCategoryDescription")}
                 footer={
                     <div className="flex items-center gap-2">
                         <Button

@@ -1,9 +1,9 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
 import EnFlag from "@/assets/en-flag.svg";
 import ArFlag from "@/assets/ar-flag.svg";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import Image from "next/image";
 const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const locale = useLocale();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("common");
   const router = useRouter();
@@ -28,7 +29,7 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
     },
   ];
 
-  const currentLang = pathname.startsWith("/ar") ? "ar" : "en";
+  const currentLang = locale;
   const currentLanguage = languages.find((lang) => lang.code === currentLang);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
         title="Language"
         aria-label="Language"
         type="button"
-        className={`group relative flex items-center gap-2 px-1 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-in-out`}
+        className={`group relative cursor-pointer flex items-center gap-2 px-1 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-in-out`}
         onClick={handleToggle}
       >
         <div className="flex items-center gap-2">
@@ -100,21 +101,15 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
         }}
       >
         {languages.map((lang, index) => (
-          <Link
+          <button
             key={lang.code}
-            href={`/${lang.code}`}
-            className={`group flex items-center gap-3 px-3 py-2 transition-all duration-200 ease-in-out ${currentLang === lang.code
+            className={`group cursor-pointer flex items-center gap-3 px-3 py-2 transition-all duration-200 ease-in-out w-full ${currentLang === lang.code
               ? "bg-gray-100 text-black"
-              : "hover:bg-gray-50 text-[ hover:text-gray-900"
+              : "hover:bg-gray-50 hover:text-gray-900"
               }`}
             onClick={(e) => {
-              e.preventDefault();
               setIsOpen(false);
-
-              const pathWithoutLang = pathname.replace(/^\/(ar|en)/, "");
-              const newPath = `/${lang.code}${pathWithoutLang || "/"}`;
-
-              router.push(newPath);
+              router.replace(pathname, { locale: lang.code as any });
             }}
             style={{ animationDelay: `${index * 50}ms` }}
           >
@@ -127,7 +122,7 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
                 {lang.nativeName}
               </div>
             </div>
-          </Link>
+          </button>
         ))}
       </div>
     </div>

@@ -29,11 +29,11 @@ export default function DeleteCategory({ isOpen, onClose, onSuccess, category }:
                 .eq('id', category.id);
 
             if (error) throw error;
-            toast.success("Category deleted permanently!");
+            toast.success(t("DeleteCategorySuccess"));
             onSuccess();
         } catch (error: any) {
             console.error("Error deleting category:", error);
-            toast.error("Failed to delete category");
+            toast.error(t("DeleteCategoryFailed"));
         } finally {
             setLoading(false);
         }
@@ -52,7 +52,7 @@ export default function DeleteCategory({ isOpen, onClose, onSuccess, category }:
                     </Button>
                     <Button variant="default" onClick={handleDelete} disabled={loading}>
                         {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                        <span className="ml-2">Delete</span>
+                        <span className="ml-2">{t("Delete")}</span>
                     </Button>
                 </div>
             }
