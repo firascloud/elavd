@@ -40,8 +40,8 @@ export function Header() {
     { href: '/', label: t('Home'), icon: <Home className="w-5 h-5" /> },
     { href: '/new', label: t('Products'), icon: <Tag className="w-5 h-5" /> },
     { href: '/offers', label: t('Offers'), icon: <Tag className="w-5 h-5" /> },
-    { href: '/about', label: t('AboutUs'), icon: <Info className="w-5 h-5" /> },
-    { href: '/contact', label: t('ContactUs'), icon: <Mail className="w-5 h-5" /> },
+    { href: '/about-us', label: t('AboutUs'), icon: <Info className="w-5 h-5" /> },
+    { href: '/contact-us', label: t('ContactUs'), icon: <Mail className="w-5 h-5" /> },
   ]
 
   return (

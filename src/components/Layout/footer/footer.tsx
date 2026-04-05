@@ -58,7 +58,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="flex items-center gap-2 hover:text-primary transition group">
+                <Link href="/about-us" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
                     <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
@@ -68,7 +68,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="flex items-center gap-2 hover:text-primary transition group">
+                <Link href="/contact-us" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
                     <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
