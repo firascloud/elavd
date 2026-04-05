@@ -7,8 +7,6 @@ export default function OffersPage() {
 
   return (
     <div className="space-y-6 pb-20">
- 
-
       <OfferList />
     </div>
   );

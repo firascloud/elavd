@@ -47,7 +47,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
         toggleWishlist(product);
         const inList = isInWishlist(product.id);
         toast.success(name, {
-            description: inList ? t('AddedToWishlist') : t('RemovedFromWishlist'),
+            description: inList ? t('RemovedFromWishlist') : t('AddedToWishlist'),
         });
     };
 
@@ -61,35 +61,35 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-12">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-8">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-[#1a1a1a]/80 backdrop-blur-xl"
+                        className="absolute inset-0 bg-[#1a1a1a]/70 backdrop-blur-md"
                     />
 
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                        className="relative w-full max-w-6xl bg-white rounded-md shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col md:flex-row max-h-[95vh]"
+                        initial={{ opacity: 0, scale: 0.98, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.98, y: 10 }}
+                        className="relative w-full max-w-5xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
                     > 
                         <button
                             onClick={onClose}
-                            className="absolute top-8 right-8 z-50 p-3 bg-white/50 hover:bg-white text-gray-900 rounded-lg shadow-md cursor-pointer backdrop-blur-md transition-all active:scale-95"
+                            className="absolute top-5 right-5 z-50 p-2.5 bg-white/80 hover:bg-white text-gray-900 rounded-lg shadow-sm cursor-pointer backdrop-blur-sm transition-all active:scale-95 border border-gray-100"
                         >
-                            <X size={24} />
+                            <X size={20} />
                         </button>
  
-                        <div className="w-full md:w-1/2 bg-[#f8f9fa] flex items-center justify-center p-12 lg:p-20 relative">
-                             <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#f38d38]/5 blur-[80px] rounded-full" />
-                             <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#f38d38]/10 blur-[80px] rounded-full" />
+                        {/* Image Left Canvas */}
+                        <div className="w-full md:w-[45%] bg-[#fcfcfc] flex items-center justify-center p-8 lg:p-12 relative overflow-hidden">
+                             <div className="absolute top-0 right-0 w-full h-full bg-radial-gradient from-orange-50/20 to-transparent opacity-50" />
                              
                              <motion.div 
                                 layoutId={`image-${product.id}`}
-                                className="relative w-full aspect-square drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
+                                className="relative w-full aspect-square max-w-[320px]"
                              >
                                 <Image
                                     src={product.main_image || ''}
@@ -100,73 +100,85 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                 />
                              </motion.div>
  
-                             <div className="absolute bottom-10 left-10 flex gap-2">
+                             <div className="absolute bottom-6 left-6 flex gap-2">
                                 {product.is_featured && (
-                                    <div className="px-5 py-2 bg-white/80 backdrop-blur-md border border-white text-[#1a1a1a] text-[11px] font-black rounded-full shadow-sm tracking-widest flex items-center gap-2 uppercase">
-                                        <div className="size-2 bg-[#f38d38] rounded-full animate-pulse" />
+                                    <div className="px-3 py-1.5 bg-white/90 backdrop-blur-sm border border-orange-100 text-[#f38d38] text-[9px] font-black rounded-lg shadow-sm tracking-widest flex items-center gap-1.5 uppercase">
+                                        <div className="size-1.5 bg-[#f38d38] rounded-full animate-pulse" />
                                         {t('Featured')}
                                     </div>
                                 )}
                              </div>
                         </div>
  
-                        <div className="w-full md:w-1/2 p-8 lg:p-16 overflow-y-auto flex flex-col bg-white">
-                            <div className="mb-10 text-center md:text-start">
+                        {/* Content Right Hub */}
+                        <div className="w-full md:w-[55%] p-6 lg:p-10 overflow-y-auto flex flex-col bg-white">
+                            <div className="mb-8 text-center md:text-start">
                                 <motion.div 
-                                    initial={{ opacity: 0, x: -10 }} 
+                                    initial={{ opacity: 0, x: -5 }} 
                                     animate={{ opacity: 1, x: 0 }}
-                                    className="text-[#f38d38] text-[13px] font-black tracking-[0.2em] mb-4 flex items-center justify-center md:justify-start gap-2 uppercase font-inter"
+                                    className="text-[#f38d38] text-[10px] font-black tracking-[0.2em] mb-3 flex items-center justify-center md:justify-start gap-2 uppercase"
                                 >
-                                    <Layers className="size-4" />
+                                    <Layers className="size-3.5" />
                                     {t('Products')}
                                 </motion.div>
-                                <h2 className="text-3xl lg:text-4xl font-black text-[#1a1a1a] mb-3 ">
+                                <h2 className="text-2xl lg:text-3xl font-black text-[#1a1a1a] mb-2 font-cairo tracking-tight">
                                     {name}
                                 </h2>
                             </div>
 
-                            <div className="space-y-5 flex-1">
+                            <div className="space-y-6 flex-1">
                                 <div className="space-y-4">
-                                    <h4 className="text-[12px] font-black text-gray-900 uppercase tracking-widest border-l-4 border-[#f38d38] pl-3 rtl:border-l-0 rtl:border-r-4 rtl:pr-3">
+                                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-l-3 border-[#f38d38] pl-2 rtl:border-l-0 rtl:border-r-3 rtl:pr-2">
                                         {t('DescriptionTab')}
                                     </h4>
-                                    <div className="text-gray-600 text-base leading-8 font-medium">
+                                    <div className="text-gray-500 text-sm leading-7 font-medium line-clamp-6">
                                         {fullDesc || shortDesc}
                                     </div>
                                     <Link 
                                         href={`/products/${product.id}`}
-                                        className="text-[#f38d38] font-bold text-sm flex items-center gap-1 hover:underline underline-offset-4 group transition-all"
+                                        className="text-[#f38d38] font-bold text-xs flex items-center gap-1 hover:underline underline-offset-4 group transition-all"
                                     >
                                         {t('ViewFullDetails')}
-                                        <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                        <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                     </Link>
                                 </div>
                             </div>
 
-                             <div className=" pt-10 border-t border-gray-100 grid grid-cols-1 gap-6">
-                                <div className="flex flex-col sm:flex-row gap-4">
+                             <div className="mt-8 pt-8 border-t border-gray-50 flex flex-col space-y-5">
+                                <div className="flex flex-col sm:flex-row gap-3">
                                     <button
                                         onClick={handleAddToCart}
-                                        className="flex-[2] h-15 bg-[#1a1a1a] text-white font-black rounded-md cursor-pointer hover:bg-[#000] transition-all flex items-center justify-center gap-4 shadow-2xl shadow-gray-200 active:scale-95 group"
+                                        className="flex-[2] h-12 bg-[#1a1a1a] text-white font-black text-sm rounded-xl cursor-pointer hover:bg-black transition-all flex items-center justify-center gap-3 shadow-lg shadow-gray-200 active:scale-95 group uppercase tracking-widest"
                                     >
-                                        <ShoppingCart size={22} className="group-hover:-translate-y-0.5 transition-transform" />
-                                        <span className="text-lg">{t('addToCart')}</span>
+                                        <ShoppingCart size={18} className="group-hover:-translate-y-0.5 transition-transform" />
+                                        <span>{t('addToCart')}</span>
                                     </button>
                                     
-                                    <div className="flex gap-4 sm:flex-1 justify-center sm:justify-end">
+                                    <div className="flex gap-3 sm:flex-1 justify-center sm:justify-end">
                                         <button 
                                             onClick={handleWishlist}
-                                            className={`size-16 rounded-md cursor-pointer flex items-center justify-center transition-all shadow-md active:scale-95 ${isInWishlist(product.id) ? 'bg-red-50 text-red-500 border border-red-100' : 'bg-gray-50 text-gray-400 border border-gray-100 hover:bg-gray-100'}`}
+                                            className={`size-12 rounded-xl cursor-pointer flex items-center justify-center transition-all shadow-sm active:scale-95 border ${isInWishlist(product.id) ? 'bg-red-50 text-red-500 border-red-100' : 'bg-white text-gray-400 border-gray-100 hover:bg-gray-50'}`}
                                         >
-                                            <Heart size={24} fill={isInWishlist(product.id) ? "currentColor" : "none"} />
+                                            <Heart size={20} fill={isInWishlist(product.id) ? "currentColor" : "none"} />
                                         </button>
 
                                         <button 
                                             onClick={handleCompare}
-                                            className="size-16 bg-gray-50 border border-gray-100 rounded-md cursor-pointer flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-all shadow-md active:scale-95"
+                                            className="size-12 bg-white border border-gray-100 rounded-xl cursor-pointer flex items-center justify-center text-gray-400 hover:bg-gray-50 transition-all shadow-sm active:scale-95"
                                         >
-                                            <Repeat size={24} />
+                                            <Repeat size={20} />
                                         </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between px-1">
+                                    <div className="flex items-center gap-2 text-[9px] text-gray-400 font-black uppercase tracking-[0.1em]">
+                                        <div className="size-1.5 bg-green-500 rounded-full" />
+                                        {t('FastShipping')}
+                                    </div>
+                                    <div className="text-[9px] text-gray-400 font-black uppercase tracking-[0.1em] flex items-center gap-2">
+                                        <Info size={12} />
+                                        {t('TermsConditions')}
                                     </div>
                                 </div>
                             </div>

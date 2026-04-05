@@ -6,6 +6,7 @@
     "AboutUs": "About Us",
     "ContactUs": "Contact Us",
     "Login": "Login",
+    
     "Products": "Products",
     "Offers": "Offers",
     "Logout": "Logout",
@@ -55,7 +56,7 @@
     "OrderSummary": "Order Summary",
     "ShippingFees": "Shipping Fees",
     "Free": "Free",
-    "CheckoutNow": "Checkout Now",
+    "RequestQuote": "Request a Quote",
     "ClearAll": "Clear All",
     "Featured": "Featured",
     "AddedToCartDesc": "Product successfully added to your cart.",
@@ -111,16 +112,38 @@
     }
   },
   "hero": {
+    "Slides": {
+      "1": {
+        "Tag": "Smart Printing",
+        "Title": "Korean Card Printers",
+        "Desc": "High-quality ID card printing solutions with 2-year warranty and nationwide delivery.",
+        "Bullet1": "300 DPI Resolution",
+        "Bullet2": "Fast 200 Cards/Hour",
+        "Bullet3": "Trusted by Corporates",
+        "Bullet4": "Full Technical Support"
+      },
+      "2": {
+        "Tag": "Security First",
+        "Title": "Electronic Safes",
+        "Desc": "Protect your assets with our premium selection of certified electronic and deposit safes.",
+        "Bullet1": "European Certified",
+        "Bullet2": "Fire Resistant",
+        "Bullet3": "Smart Digital Locks",
+        "Bullet4": "Multiple Sizes"
+      },
+      "3": {
+        "Tag": "Smart Tech",
+        "Title": "Security Solutions",
+        "Desc": "Integrated surveillance and access control systems using state-of-the-art AI technology.",
+        "Bullet1": "4K Smart Cameras",
+        "Bullet2": "Remote Accessibility",
+        "Bullet3": "Instant AI Alerts",
+        "Bullet4": "Expert Installation"
+      }
+    },
     "HotelSafes": "Hotel Safes",
     "DepositSafes": "Deposit Safes",
-    "Tag": "Korean Card Printer",
-    "Title": "FIN-CP",
-    "Bullet1": "Used by insurance companies",
-    "Bullet2": "High quality printing 300 DPI",
-    "Bullet3": "Fast printing 200 cards/hour",
-    "Bullet4": "2-year warranty",
-    "Bullet5": "Delivery available nationwide",
-    "MoreDetails": "More Details", 
+    "MoreDetails": "View Details", 
     "CardPrinters": "Card Printers",
     "CardPrintersSubtitle": "High-resolution badges, ribbons, and smart personalization.",
     "Explore": "Explore"
