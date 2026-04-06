@@ -81,7 +81,11 @@
     "DefaultSorting": "Default Sorting",
     "Newest": "Newest",
     "PriceLowHigh": "Price: Low to High",
-    "PriceHighLow": "Price: High to Low"
+    "PriceHighLow": "Price: High to Low",
+    "CallUs": "Call us",
+    "NoDescription": "No description available for this product yet.",
+    "NoSpecifications": "Specifications will be added soon.",
+    "RelatedProducts": "Related Products"
   },
   "contact": {
     "title": "Contact Us",

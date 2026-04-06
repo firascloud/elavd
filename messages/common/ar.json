@@ -81,7 +81,11 @@
     "DefaultSorting": "الترتيب الافتراضي",
     "Newest": "الأحدث",
     "PriceLowHigh": "السعر: من الأقل للأعلى",
-    "PriceHighLow": "السعر: من الأعلى للأقل"
+    "PriceHighLow": "السعر: من الأعلى للأقل",
+    "CallUs": "اتصل بنا",
+    "NoDescription": "لا يوجد وصف متاح لهذا المنتج حالياً.",
+    "NoSpecifications": "سيتم إضافة المواصفات قريباً.",
+    "RelatedProducts": "منتجات ذات صلة"
   },
   "contact": {
     "title": "تواصل معنا",

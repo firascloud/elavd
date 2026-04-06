@@ -21,6 +21,24 @@ export type Product = {
     category_id?: string;
 };
 
+export async function getProductBySlug(slug: string) {
+    const isUuid =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug);
+
+    const filter = isUuid
+        ? `slug_en.eq.${slug},slug_ar.eq.${slug},id.eq.${slug}`
+        : `slug_en.eq.${slug},slug_ar.eq.${slug}`;
+
+    const { data, error } = await supabaseBrowser
+        .from('products')
+        .select('*')
+        .or(filter)
+        .limit(1);
+
+    if (error) return null;
+    return ((data && data[0]) || null) as Product | null;
+}
+
 export async function getProducts({ 
     is_featured, 
     is_popular, 
@@ -47,4 +65,10 @@ export async function getProducts({
 
 export async function getFeaturedProducts(limit: number = 4) {
     return getProducts({ is_featured: true, limit });
+}
+
+export async function getRelatedProducts(product: Product, limit: number = 4) {
+    if (!product?.category_id) return [];
+    const prods = await getProducts({ categoryId: product.category_id, limit: Math.max(limit + 1, 8) });
+    return prods.filter((p) => p.id !== product.id).slice(0, limit);
 }
