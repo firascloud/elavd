@@ -7,6 +7,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Layers } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { getCategories, getFeaturedProducts, type Category, type Product } from '@/services/home';
+import Link from 'next/link';
 
 export default function ourCategories() {
     const t = useTranslations('common');
@@ -93,20 +94,23 @@ export default function ourCategories() {
                                                 </div>
 
                                               
-
-                                                <h3 className="text-center  font-extrabold line-clamp-1 text-[#1a1a1a] text-lg mb-6 leading-tight">
+                                               <Link href={`/${locale}/product-category/${locale === 'ar' ? cat.slug_ar : cat.slug_en}`}>
+                                                <h3 className="text-center font-extrabold line-clamp-1 text-[#1a1a1a] text-lg mb-6 leading-tight">
                                                     {loading ? (
                                                         <span className="block h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" />
                                                     ) : (
                                                         (locale === 'ar' ? cat.name_ar : cat.name_en) || '—'
                                                     )}
                                                 </h3>
+                                                </Link>
+                                                <Link href={`/${locale}/product-category/${locale === 'ar' ? cat.slug_ar : cat.slug_en}`} className=' py-2.5 px-3'>
                                                  <button
                                                     type="button"
-                                                    className="w-full py-2.5 cursor-pointer rounded-md bg-[#fbb034] text-white font-bold text-sm hover:bg-[#e9a12c] transition-colors shadow-sm"
+                                                    className="w-full py-2.5 px-3 cursor-pointer rounded-md bg-[#fbb034] text-white font-bold text-sm hover:bg-[#e9a12c] transition-colors shadow-sm"
                                                 >
                                                     {t('ViewMore')}
                                                 </button>
+                                                </Link>
                                             </article>
                                         </div>
                                     ))}
@@ -142,7 +146,7 @@ export default function ourCategories() {
                                                 {loading ? <div className="h-4 w-32 bg-gray-100  rounded  animate-pulse mx-auto" /> : (locale === 'ar' ? prod.name_ar : prod.name_en)}
                                             </div>
                                             <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">
-                                                {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : (prod.slug_en?.substring(0, 10).toUpperCase() || 'PROD')}
+                                                {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : ((locale === 'ar' ? prod.slug_ar : prod.slug_en)?.substring(0, 10).toUpperCase() || 'PROD')}
                                             </div>
                                         </div>
                                     </div>

@@ -2,6 +2,12 @@
   "common": {
     "Cancel": "إلغاء",
     "Home": "الرئيسية",
+    "Show": "عرض",
+    "Hot": "مميز",
+    "in": "في",
+    "CategoryMetalSafes": "الخزن الحديدية",
+    "Origin": "بلد المنشأ :",
+    "CountryKorea": "كوريا",
     "AboutUs": "من نحن",
     "Location": "جبر بن رشيد، المربع، الرياض 12628، المملكة العربية السعودية",
     "ContactUs": "اتصل بنا",
@@ -11,6 +17,9 @@
     "Logout": "تسجيل الخروج",
     "SpecialOffers": "عروض خاصة",
     "BrowseCategories": "أقسام الموقع",
+    "Page": "صفحة",
+    "Of": "من",
+    "PerPage": "صفحة",
     "Search": "ابحث هنا...",
     "MenuTitle": "القائمة",
     "Store": "المتجر",
@@ -67,7 +76,12 @@
     "FastShipping": "شحن سريع",
     "TwoYearWarranty": "ضمان سنتين",
     "TermsConditions": "تطبق الشروط والأحكام",
-    "AddedToCompare": "تمت الإضافة للمقارنة"
+    "AddedToCompare": "تمت الإضافة للمقارنة",
+    "Showing": "عرض",
+    "DefaultSorting": "الترتيب الافتراضي",
+    "Newest": "الأحدث",
+    "PriceLowHigh": "السعر: من الأقل للأعلى",
+    "PriceHighLow": "السعر: من الأعلى للأقل"
   },
   "contact": {
     "title": "تواصل معنا",

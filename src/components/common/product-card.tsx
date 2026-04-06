@@ -9,9 +9,11 @@ import useAppStore from "@/store/store";
 import { toast } from "sonner";
 import { Product } from "@/services/home";
 import { QuickViewModal } from "./QuickViewModal";
+import Link from "next/link";
 
 export interface ProductCardProps extends Product {
     is_hot?: boolean;
+    view?: "grid" | "list";
 }
 
 const Tooltip = ({ text, isVisible }: { text: string; isVisible: boolean }) => (
@@ -68,7 +70,10 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
         short_desc_ar,
         main_image,
         is_hot = true,
-        id
+        slug_en,
+        slug_ar,
+        id,
+        view = "grid"
     } = props;
 
     const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
@@ -78,12 +83,92 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
     
     const name = locale === 'ar' ? name_ar : name_en;
     const description = locale === 'ar' ? short_desc_ar : short_desc_en;
+    const localizedSlug = locale === 'ar' ? slug_ar : slug_en;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         addToCart(props);
-        toast.success(locale === 'ar' ? 'تمت الإضافة للسلة' : 'Added to cart');
+        toast.success(t('AddedToCartDesc'));
     };
+
+    if (view === "list") {
+        return (
+            <>
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="group relative flex flex-col md:flex-row bg-[#f9f9f9]/50 border border-gray-100 rounded-md overflow-hidden hover:shadow-md transition-all duration-500"
+                > 
+                    <div className="relative w-full md:w-80 h-64 md:h-auto bg-white flex items-center justify-center px-4 py-1 shrink-0">
+                         {main_image ? (
+                            <div className="relative size-48 md:size-56">
+                                <Image
+                                    src={main_image}
+                                    alt={name || ''}
+                                    fill
+                                    className="object-contain transition-transform duration-700 group-hover:scale-110"
+                                />
+                            </div>
+                        ) : (
+                            <Layers size={48} className="text-gray-200" />
+                        )}
+                        {is_hot && (
+                            <div className="absolute top-6 ltr:left-6 rtl:right-6 px-3 py-1 bg-[#d32f2f] text-white text-[10px] font-black rounded-full shadow-lg">
+                                {t('Hot')}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
+                        <div className="space-y-4">
+                            <h4 className="text-gray-400 font-bold text-xs uppercase tracking-widest font-cairo">
+                                {t('CategoryMetalSafes')}
+                            </h4>
+                            <Link href={`/product/${localizedSlug}`} className="text-xl md:text-2xl font-black text-[#1a1a1a] font-cairo leading-tight">
+                                {name || '—'}
+                            </Link>
+                           
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-6 mt-10">
+                            <button
+                                onClick={handleAddToCart}
+                                className="px-10 py-3 bg-[#f38d38] text-white font-black text-xs uppercase tracking-widest rounded-full hover:bg-[#e67e22] transition-all shadow-lg shadow-orange-100 transform active:scale-95"
+                            >
+                                {t('addToCart')}
+                            </button>
+                            
+                            <div className="flex items-center gap-3">
+                                <IconButton 
+                                    icon={Heart} 
+                                    tooltip={t('Wishlist')} 
+                                    onClick={() => toggleWishlist(props)}
+                                    isActive={isInWishlist(id)}
+                                />
+                                <IconButton 
+                                    icon={Repeat} 
+                                    tooltip={t('Compare')} 
+                                    onClick={() => addToCompare(props)}
+                                    isActive={isInCompare(id)}
+                                />
+                                <IconButton 
+                                    icon={Eye} 
+                                    tooltip={t('QuickView')} 
+                                    onClick={() => setIsQuickViewOpen(true)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+                <QuickViewModal 
+                    isOpen={isQuickViewOpen} 
+                    onClose={() => setIsQuickViewOpen(false)} 
+                    product={props} 
+                />
+            </>
+        )
+    }
 
     return (
         <>
@@ -95,7 +180,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
             > 
                 {is_hot && (
                     <div className="absolute top-4 ltr:right-4 rtl:left-4 z-10 px-3 py-1 bg-[#d32f2f] text-white text-[10px] font-extrabold rounded-full tracking-wider uppercase">
-                        HOT
+                        {t('Hot')}
                     </div>
                 )}
  
@@ -122,12 +207,14 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 <div className="relative h-60 w-full mb-6 flex items-center justify-center bg-white overflow-hidden shrink-0">
                     {main_image ? (
                         <div className="relative size-44">
+                             <Link href={`/product/${localizedSlug}`} >
                             <Image
                                 src={main_image}
                                 alt={name || 'Product'}
                                 fill
                                 className="object-contain transition-transform duration-700 group-hover:scale-110"
                             />
+                            </Link>
                         </div>
                     ) : (
                         <div className="size-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-200">
@@ -137,9 +224,11 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 </div>
  
                 <div className="flex flex-col items-center text-center flex-1">
+                   <Link href={`/product/${localizedSlug}`} >
                     <h3 className="text-[#1a1a1a] font-bold text-base line-clamp-1 mb-1 font-cairo">
                         {name || '—'}
                     </h3>
+                    </Link>
                     <p className="text-gray-400 text-xs font-medium mb-8 line-clamp-1 h-4">
                         {description || '—'}
                     </p>
