@@ -23,7 +23,7 @@ export default function FloatingActions() {
 
         <Icon icon="mdi:whatsapp" className="w-7 h-7 relative z-10" />
 
-        <span className="absolute right-full top-1/2 -translate-y-1/2 mr-3 
+        <span className="absolute right-full top-1/2 -translate-y-1/2 me-3 
         px-3 py-1.5 rounded-lg text-xs font-medium 
         bg-black/80 backdrop-blur-md text-white 
         opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0
@@ -42,7 +42,7 @@ export default function FloatingActions() {
       >
         <Icon icon="mdi:phone" className="w-6 h-6 relative z-10" />
 
-        <span className="absolute right-full top-1/2 -translate-y-1/2 mr-3 
+        <span className="absolute right-full top-1/2 -translate-y-1/2 me-3 
         px-3 py-1.5 rounded-lg text-xs font-medium 
         bg-black/80 backdrop-blur-md text-white 
         opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0

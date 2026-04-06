@@ -81,7 +81,10 @@
     "DefaultSorting": "الترتيب الافتراضي",
     "Newest": "الأحدث",
     "PriceLowHigh": "السعر: من الأقل للأعلى",
-    "PriceHighLow": "السعر: من الأعلى للأقل"
+    "PriceHighLow": "السعر: من الأعلى للأقل",
+    "PageNotFound": "الصفحة غير موجودة",
+    "PageNotFoundDescription": "عذراً! الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "BackToHome": "العودة للرئيسية"
   },
   "contact": {
     "title": "تواصل معنا",

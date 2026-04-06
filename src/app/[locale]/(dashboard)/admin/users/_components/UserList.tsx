@@ -108,7 +108,7 @@ export default function UserList() {
                     {tDashboard("TotalCount")}: <span className="text-foreground">{users.length}</span>
                 </p>
                 <Button variant="ghost" size="sm" onClick={fetchUsers} className="text-xs font-bold hover:text-primary">
-                    <RefreshCcw className="h-3 w-3 mr-2" />
+                    <RefreshCcw className="h-3 w-3 me-2" />
                     {tDashboard("Refresh")}
                 </Button>
             </div>

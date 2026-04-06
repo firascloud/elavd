@@ -81,7 +81,10 @@
     "DefaultSorting": "Default Sorting",
     "Newest": "Newest",
     "PriceLowHigh": "Price: Low to High",
-    "PriceHighLow": "Price: High to Low"
+    "PriceHighLow": "Price: High to Low",
+    "PageNotFound": "Page Not Found",
+    "PageNotFoundDescription": "Oops! The page you are looking for doesn't exist or has been moved.",
+    "BackToHome": "Back to Home"
   },
   "contact": {
     "title": "Contact Us",

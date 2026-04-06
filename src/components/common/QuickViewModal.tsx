@@ -16,10 +16,10 @@ interface QuickViewModalProps {
     product: Product;
 }
 
-export const QuickViewModal: React.FC<QuickViewModalProps> = ({ 
-    isOpen, 
-    onClose, 
-    product 
+export const QuickViewModal: React.FC<QuickViewModalProps> = ({
+    isOpen,
+    onClose,
+    product
 }) => {
     const locale = useLocale();
     const t = useTranslations('common');
@@ -53,8 +53,8 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
     const handleCompare = () => {
         addToCompare(product);
-        toast.success(name, { 
-            description: t('AddedToCompare') 
+        toast.success(name, {
+            description: t('AddedToCompare')
         });
     };
 
@@ -75,22 +75,22 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.98, y: 10 }}
                         className="relative w-full max-w-5xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
-                    > 
+                    >
                         <button
                             onClick={onClose}
                             className="absolute top-5 right-5 z-50 p-2.5 bg-white/80 hover:bg-white text-gray-900 rounded-lg shadow-sm cursor-pointer backdrop-blur-sm transition-all active:scale-95 border border-gray-100"
                         >
                             <X size={20} />
                         </button>
- 
+
                         {/* Image Left Canvas */}
                         <div className="w-full md:w-[45%] bg-[#fcfcfc] flex items-center justify-center p-8 lg:p-12 relative overflow-hidden">
-                             <div className="absolute top-0 right-0 w-full h-full bg-radial-gradient from-orange-50/20 to-transparent opacity-50" />
-                             
-                             <motion.div 
+                            <div className="absolute top-0 right-0 w-full h-full bg-radial-gradient from-orange-50/20 to-transparent opacity-50" />
+
+                            <motion.div
                                 layoutId={`image-${product.id}`}
                                 className="relative w-full aspect-square max-w-[320px]"
-                             >
+                            >
                                 <Image
                                     src={product.main_image || ''}
                                     alt={name || ''}
@@ -98,23 +98,23 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                     className="object-contain"
                                     priority
                                 />
-                             </motion.div>
- 
-                             <div className="absolute bottom-6 left-6 flex gap-2">
+                            </motion.div>
+
+                            <div className="absolute bottom-6 left-6 flex gap-2">
                                 {product.is_featured && (
                                     <div className="px-3 py-1.5 bg-white/90 backdrop-blur-sm border border-orange-100 text-[#f38d38] text-[9px] font-black rounded-lg shadow-sm tracking-widest flex items-center gap-1.5 uppercase">
                                         <div className="size-1.5 bg-[#f38d38] rounded-full animate-pulse" />
                                         {t('Featured')}
                                     </div>
                                 )}
-                             </div>
+                            </div>
                         </div>
- 
+
                         {/* Content Right Hub */}
                         <div className="w-full md:w-[55%] p-6 lg:p-10 overflow-y-auto flex flex-col bg-white">
                             <div className="mb-8 text-center md:text-start">
-                                <motion.div 
-                                    initial={{ opacity: 0, x: -5 }} 
+                                <motion.div
+                                    initial={{ opacity: 0, x: -5 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     className="text-[#f38d38] text-[10px] font-black tracking-[0.2em] mb-3 flex items-center justify-center md:justify-start gap-2 uppercase"
                                 >
@@ -128,13 +128,13 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
                             <div className="space-y-6 flex-1">
                                 <div className="space-y-4">
-                                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-l-3 border-[#f38d38] pl-2 rtl:border-l-0 rtl:border-r-3 rtl:pr-2">
+                                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-l-3 border-[#f38d38] ps-2 rtl:border-l-0 rtl:border-r-3 rtl:pe-2">
                                         {t('DescriptionTab')}
                                     </h4>
                                     <div className="text-gray-500 text-sm leading-7 font-medium line-clamp-6">
                                         {fullDesc || shortDesc}
                                     </div>
-                                    <Link 
+                                    <Link
                                         href={`/products/${product.id}`}
                                         className="text-[#f38d38] font-bold text-xs flex items-center gap-1 hover:underline underline-offset-4 group transition-all"
                                     >
@@ -144,7 +144,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                 </div>
                             </div>
 
-                             <div className="mt-8 pt-8 border-t border-gray-50 flex flex-col space-y-5">
+                            <div className="mt-8 pt-8 border-t border-gray-50 flex flex-col space-y-5">
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <button
                                         onClick={handleAddToCart}
@@ -153,16 +153,16 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                         <ShoppingCart size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                                         <span>{t('addToCart')}</span>
                                     </button>
-                                    
+
                                     <div className="flex gap-3 sm:flex-1 justify-center sm:justify-end">
-                                        <button 
+                                        <button
                                             onClick={handleWishlist}
                                             className={`size-12 rounded-xl cursor-pointer flex items-center justify-center transition-all shadow-sm active:scale-95 border ${isInWishlist(product.id) ? 'bg-red-50 text-red-500 border-red-100' : 'bg-white text-gray-400 border-gray-100 hover:bg-gray-50'}`}
                                         >
                                             <Heart size={20} fill={isInWishlist(product.id) ? "currentColor" : "none"} />
                                         </button>
 
-                                        <button 
+                                        <button
                                             onClick={handleCompare}
                                             className="size-12 bg-white border border-gray-100 rounded-xl cursor-pointer flex items-center justify-center text-gray-400 hover:bg-gray-50 transition-all shadow-sm active:scale-95"
                                         >

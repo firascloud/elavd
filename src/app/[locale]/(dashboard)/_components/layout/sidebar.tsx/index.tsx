@@ -153,9 +153,9 @@ export default function Sidebar() {
                         className="w-full h-12 hover:bg-rose-500 hover:text-white bg-rose-500/10 border-none text-rose-600 rounded-2xl font-bold transition-all duration-300 disabled:opacity-50"
                     >
                         {isLoading ? (
-                            <Loader2 className="h-5 w-5 mr-3 animate-spin" />
+                            <Loader2 className="h-5 w-5 me-3 animate-spin" />
                         ) : (
-                            <LogOut className="h-5 w-5 mr-3" />
+                            <LogOut className="h-5 w-5 me-3" />
                         )}
                         {t("Logout")}
                     </Button>

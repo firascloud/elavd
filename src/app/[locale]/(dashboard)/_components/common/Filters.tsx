@@ -21,14 +21,14 @@ interface SearchBoxProps {
 export function DashboardSearch({ placeholder, onChange, className }: SearchBoxProps) {
   return (
     <div className={cn("relative group flex-1", className)}>
-      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+      <div className="absolute inset-y-0 left-0 ps-4 flex items-center pointer-events-none">
         <SearchIcon className="h-4 w-4 text-muted-foreground group-focus-within:text-foreground transition-colors duration-300" />
       </div>
       <input
         type="text"
         placeholder={placeholder || "Search items..."}
         onChange={(e) => onChange?.(e.target.value)}
-        className="block h-12 w-full rounded-sm bg-background/40 backdrop-blur-xl border border-border/40 focus:ring-4 focus:ring-primary/5 focus:border-primary/20 transition-all duration-300 outline-none pl-11 pr-4 text-sm font-medium shadow-sm hover:bg-background/60"
+        className="block h-12 w-full rounded-sm bg-background/40 backdrop-blur-xl border border-border/40 focus:ring-4 focus:ring-primary/5 focus:border-primary/20 transition-all duration-300 outline-none ps-11 pe-4 text-sm font-medium shadow-sm hover:bg-background/60"
       />
     </div>
   );

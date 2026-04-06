@@ -78,7 +78,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
 
     return (
         <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-            <div className="max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar space-y-12 py-2 px-1">
+            <div className="max-h-[70vh] overflow-y-auto pe-2 custom-scrollbar space-y-12 py-2 px-1">
 
                 {/* Section: General */}
                 <section className="space-y-6">

@@ -29,7 +29,7 @@ export function Header() {
       setTimeout(() => searchInputRef.current?.focus(), 50)
     }
   }, [searchOpen])
- 
+
   useEffect(() => {
     setMenuOpen(false)
     setSearchOpen(false)
@@ -75,7 +75,7 @@ export function Header() {
               <div className="flex h-11 border-2 border-primary rounded-lg overflow-hidden group focus-within:ring-2 focus-within:ring-primary/20 transition-all">
                 <div className="bg-primary px-4 flex items-center text-white cursor-pointer hover:bg-primary/95 transition border-r border-primary/20">
                   <span className="text-sm font-medium">{t('All')}</span>
-                  <ChevronDown className="w-4 h-4 ml-2" />
+                  <ChevronDown className="w-4 h-4 ms-2" />
                 </div>
                 <input
                   type="text"
@@ -148,7 +148,7 @@ export function Header() {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center">
 
-             <button
+              <button
                 onClick={() => setMenuOpen(true)}
                 className="lg:hidden bg-primary h-[54px] px-5 flex items-center gap-2 text-white hover:brightness-105 transition font-black shadow-lg shadow-primary/20"
                 aria-label="Open menu"
@@ -156,12 +156,12 @@ export function Header() {
                 <Menu className="w-5 h-5" />
               </button>
 
-               <div className="hidden  lg:flex bg-primary h-[54px] px-8 items-center gap-3 cursor-pointer hover:brightness-105 transition font-black text-white shadow-lg shadow-primary/20">
+              <div className="hidden  lg:flex bg-primary h-[54px] px-8 items-center gap-3 cursor-pointer hover:brightness-105 transition font-black text-white shadow-lg shadow-primary/20">
                 <Menu className="w-5 h-5" />
                 <span className="text-sm tracking-wide uppercase">{t('BrowseCategories')}</span>
               </div>
 
-               <nav className="hidden lg:flex items-center mx-6 !mt-0 gap-1">
+              <nav className="hidden lg:flex items-center mx-6 !mt-0 gap-1">
                 {navLinks.map(link => (
                   <Link
                     key={link.href}
@@ -206,7 +206,7 @@ export function Header() {
             <div className="flex h-12 border-2 border-primary rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 transition-all">
               <div className="bg-primary px-3 flex items-center text-white cursor-pointer hover:bg-primary/95 transition border-r border-primary/20">
                 <span className="text-sm font-medium">{t('All')}</span>
-                <ChevronDown className="w-4 h-4 ml-1" />
+                <ChevronDown className="w-4 h-4 ms-1" />
               </div>
               <input
                 ref={searchInputRef}
@@ -259,7 +259,7 @@ export function Header() {
                 >
                   <span className="text-primary">{link.icon}</span>
                   {link.label}
-                  <ChevronRight className="w-4 h-4 ml-auto text-slate-300 group-hover:text-primary transition-colors" />
+                  <ChevronRight className="w-4 h-4 ms-auto text-slate-300 group-hover:text-primary transition-colors" />
                 </Link>
               ))}
             </nav>

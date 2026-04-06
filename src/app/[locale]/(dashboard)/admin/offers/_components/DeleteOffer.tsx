@@ -52,7 +52,7 @@ export default function DeleteOffer({ isOpen, onClose, onSuccess, offer }: Delet
                     </Button>
                     <Button variant="default" onClick={handleDelete} disabled={loading}>
                         {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                        <span className="ml-2">{t("Delete")}</span>
+                        <span className="ms-2">{t("Delete")}</span>
                     </Button>
                 </div>
             }

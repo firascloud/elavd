@@ -20,7 +20,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
     if (!order) return null;
 
     return (
-        <div className="space-y-12 py-8 max-h-[75vh] overflow-y-auto pr-4 custom-scrollbar">
+        <div className="space-y-12 py-8 max-h-[75vh] overflow-y-auto pe-4 custom-scrollbar">
 
             {/* Header / Summary Card */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

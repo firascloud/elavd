@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LanguageSwitcher from '@/components/Layout/header/LanguageSwitcher';
-import useAppStore from "@/store/store";    
+import useAppStore from "@/store/store";
 
 
 export default function Header() {
@@ -44,9 +44,9 @@ export default function Header() {
 
     return (
         <header className="sticky top-0 z-40 h-14 sm:h-16 border-b border-primary/10 bg-background/60 backdrop-blur-md flex items-center justify-between px-3 sm:px-6 transition-all duration-300">
-            <Button 
-                variant="ghost" 
-                size="icon" 
+            <Button
+                variant="ghost"
+                size="icon"
                 onClick={toggleSidebar}
                 className="text-foreground hover:bg-primary/10 hover:text-primary"
             >
@@ -89,9 +89,9 @@ export default function Header() {
                             className="focus:bg-red-500 bg-red-500/10 text-red-500 cursor-pointer rounded-md disabled:opacity-50"
                         >
                             {isLoading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                <Loader2 className="me-2 h-4 w-4 animate-spin" />
                             ) : (
-                                <LogOut className="mr-2 h-4 w-4" />
+                                <LogOut className="me-2 h-4 w-4" />
                             )}
                             <span>{t("Logout")}</span>
                         </DropdownMenuItem>

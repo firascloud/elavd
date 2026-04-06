@@ -120,7 +120,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
 
     return (
         <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-            <div className="max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar space-y-12 py-2 px-1">
+            <div className="max-h-[70vh] overflow-y-auto pe-2 custom-scrollbar space-y-12 py-2 px-1">
                 <section className="space-y-6">
                     <div className="flex items-center gap-4 transition-all group">
                         <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary ring-1 ring-primary/20 transition-transform">
@@ -182,7 +182,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                 ))}
                             </>
                         )}
-                        
+
                         {[
                             { label: t("DescriptionEn"), name: "description_en" },
                             { label: t("DescriptionAr"), name: "description_ar" },
@@ -206,7 +206,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                         ))}
                     </div>
                 </section>
- 
+
                 <section className="space-y-6">
                     <div className="flex items-center gap-4 transition-all group">
                         <div className="h-9 w-9 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-500 ring-1 ring-orange-500/20 transition-transform">

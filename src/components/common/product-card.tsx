@@ -23,7 +23,7 @@ const Tooltip = ({ text, isVisible }: { text: string; isVisible: boolean }) => (
                 initial={{ opacity: 0, scale: 0.8, x: 10 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.8, x: 10 }}
-                className="absolute top-1/2 -translate-y-1/2 ltr:right-full ltr:mr-3 rtl:left-full rtl:ml-3 px-2 py-1 bg-[#1a1a1a] text-white text-[10px] rounded whitespace-nowrap z-30 pointer-events-none"
+                className="absolute top-1/2 -translate-y-1/2 ltr:right-full ltr:me-3 rtl:left-full rtl:ms-3 px-2 py-1 bg-[#1a1a1a] text-white text-[10px] rounded whitespace-nowrap z-30 pointer-events-none"
             >
                 {text}
                 <div className="absolute top-1/2 -translate-y-1/2 ltr:-right-1 rtl:-left-1 border-t-4 border-t-transparent border-b-4 border-b-transparent ltr:border-l-4 ltr:border-l-[#1a1a1a] rtl:border-r-4 rtl:border-r-[#1a1a1a]" />
@@ -32,24 +32,24 @@ const Tooltip = ({ text, isVisible }: { text: string; isVisible: boolean }) => (
     </AnimatePresence>
 );
 
-const IconButton = ({ 
-    icon: Icon, 
-    tooltip, 
+const IconButton = ({
+    icon: Icon,
+    tooltip,
     onClick,
     isActive = false,
-    activeColor = "hover:bg-[#f38d38]" 
-}: { 
-    icon: any; 
-    tooltip: string; 
+    activeColor = "hover:bg-[#f38d38]"
+}: {
+    icon: any;
+    tooltip: string;
     onClick?: () => void;
     isActive?: boolean;
-    activeColor?: string 
+    activeColor?: string
 }) => {
     const [isHovered, setIsHovered] = useState(false);
     return (
         <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
             <Tooltip text={tooltip} isVisible={isHovered} />
-            <button 
+            <button
                 onClick={(e) => {
                     e.preventDefault();
                     onClick?.();
@@ -80,7 +80,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
     const locale = useLocale();
     const t = useTranslations('common');
     const { toggleWishlist, isInWishlist, addToCompare, isInCompare, addToCart } = useAppStore();
-    
+
     const name = locale === 'ar' ? name_ar : name_en;
     const description = locale === 'ar' ? short_desc_ar : short_desc_en;
     const localizedSlug = locale === 'ar' ? slug_ar : slug_en;
@@ -99,9 +99,9 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     className="group relative flex flex-col md:flex-row bg-[#f9f9f9]/50 border border-gray-100 rounded-md overflow-hidden hover:shadow-md transition-all duration-500"
-                > 
+                >
                     <div className="relative w-full md:w-80 h-64 md:h-auto bg-white flex items-center justify-center px-4 py-1 shrink-0">
-                         {main_image ? (
+                        {main_image ? (
                             <div className="relative size-48 md:size-56">
                                 <Image
                                     src={main_image}
@@ -128,7 +128,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             <Link href={`/product/${localizedSlug}`} className="text-xl md:text-2xl font-black text-[#1a1a1a] font-cairo leading-tight">
                                 {name || '—'}
                             </Link>
-                           
+
                         </div>
 
                         <div className="flex flex-wrap items-center gap-6 mt-10">
@@ -138,33 +138,33 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             >
                                 {t('addToCart')}
                             </button>
-                            
+
                             <div className="flex items-center gap-3">
-                                <IconButton 
-                                    icon={Heart} 
-                                    tooltip={t('Wishlist')} 
+                                <IconButton
+                                    icon={Heart}
+                                    tooltip={t('Wishlist')}
                                     onClick={() => toggleWishlist(props)}
                                     isActive={isInWishlist(id)}
                                 />
-                                <IconButton 
-                                    icon={Repeat} 
-                                    tooltip={t('Compare')} 
+                                <IconButton
+                                    icon={Repeat}
+                                    tooltip={t('Compare')}
                                     onClick={() => addToCompare(props)}
                                     isActive={isInCompare(id)}
                                 />
-                                <IconButton 
-                                    icon={Eye} 
-                                    tooltip={t('QuickView')} 
+                                <IconButton
+                                    icon={Eye}
+                                    tooltip={t('QuickView')}
                                     onClick={() => setIsQuickViewOpen(true)}
                                 />
                             </div>
                         </div>
                     </div>
                 </motion.div>
-                <QuickViewModal 
-                    isOpen={isQuickViewOpen} 
-                    onClose={() => setIsQuickViewOpen(false)} 
-                    product={props} 
+                <QuickViewModal
+                    isOpen={isQuickViewOpen}
+                    onClose={() => setIsQuickViewOpen(false)}
+                    product={props}
                 />
             </>
         )
@@ -177,43 +177,43 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 className="group relative flex flex-col bg-white border border-gray-300 p-6 transition-all hover:shadow-md shadow-sm rounded-md h-full"
-            > 
+            >
                 {is_hot && (
                     <div className="absolute top-4 ltr:right-4 rtl:left-4 z-10 px-3 py-1 bg-[#d32f2f] text-white text-[10px] font-extrabold rounded-full tracking-wider uppercase">
                         {t('Hot')}
                     </div>
                 )}
- 
+
                 <div className="absolute top-14 ltr:right-4 rtl:left-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 ltr:group-hover:translate-x-0 rtl:group-hover:-translate-x-0 z-20">
-                    <IconButton 
-                        icon={Heart} 
-                        tooltip={t('Wishlist')} 
+                    <IconButton
+                        icon={Heart}
+                        tooltip={t('Wishlist')}
                         onClick={() => toggleWishlist(props)}
                         isActive={isInWishlist(id)}
                     />
-                    <IconButton 
-                        icon={Repeat} 
-                        tooltip={t('Compare')} 
+                    <IconButton
+                        icon={Repeat}
+                        tooltip={t('Compare')}
                         onClick={() => addToCompare(props)}
                         isActive={isInCompare(id)}
                     />
-                    <IconButton 
-                        icon={Eye} 
-                        tooltip={t('QuickView')} 
+                    <IconButton
+                        icon={Eye}
+                        tooltip={t('QuickView')}
                         onClick={() => setIsQuickViewOpen(true)}
                     />
                 </div>
- 
+
                 <div className="relative h-60 w-full mb-6 flex items-center justify-center bg-white overflow-hidden shrink-0">
                     {main_image ? (
                         <div className="relative size-44">
-                             <Link href={`/product/${localizedSlug}`} >
-                            <Image
-                                src={main_image}
-                                alt={name || 'Product'}
-                                fill
-                                className="object-contain transition-transform duration-700 group-hover:scale-110"
-                            />
+                            <Link href={`/product/${localizedSlug}`} >
+                                <Image
+                                    src={main_image}
+                                    alt={name || 'Product'}
+                                    fill
+                                    className="object-contain transition-transform duration-700 group-hover:scale-110"
+                                />
                             </Link>
                         </div>
                     ) : (
@@ -222,17 +222,17 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                         </div>
                     )}
                 </div>
- 
+
                 <div className="flex flex-col items-center text-center flex-1">
-                   <Link href={`/product/${localizedSlug}`} >
-                    <h3 className="text-[#1a1a1a] font-bold text-base line-clamp-1 mb-1 font-cairo">
-                        {name || '—'}
-                    </h3>
+                    <Link href={`/product/${localizedSlug}`} >
+                        <h3 className="text-[#1a1a1a] font-bold text-base line-clamp-1 mb-1 font-cairo">
+                            {name || '—'}
+                        </h3>
                     </Link>
                     <p className="text-gray-400 text-xs font-medium mb-8 line-clamp-1 h-4">
                         {description || '—'}
                     </p>
- 
+
                     <button
                         onClick={handleAddToCart}
                         className="group/btn cursor-pointer relative w-full h-11 bg-[#f38d38] text-white font-bold text-sm rounded-full transition-all hover:bg-[#e67e22] shadow-sm mt-auto transform active:scale-95 overflow-hidden"
@@ -248,10 +248,10 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 </div>
             </motion.div>
 
-            <QuickViewModal 
-                isOpen={isQuickViewOpen} 
-                onClose={() => setIsQuickViewOpen(false)} 
-                product={props} 
+            <QuickViewModal
+                isOpen={isQuickViewOpen}
+                onClose={() => setIsQuickViewOpen(false)}
+                product={props}
             />
         </>
     );

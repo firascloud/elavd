@@ -53,13 +53,13 @@ export default function LoginForm() {
         toast.error(t("LoginError"));
       } else {
         const { data: { session: newSession } } = await supabaseBrowser.auth.getSession();
-        
+
         toast.success(t("LoginSuccessTitle"), {
           description: t("LoginSuccessDesc"),
         });
- 
+
         const isAdmin = newSession?.user?.email === "admin@dneest.com";
-        
+
         if (isAdmin) {
           router.push("/admin");
         } else {
@@ -121,14 +121,13 @@ export default function LoginForm() {
                   })}
                   type="email"
                   placeholder={t("EmailPlaceholder")}
-                  className={`bg-muted/30 border-muted-foreground/10 focus:border-primary/50 transition-all duration-300 h-11 ${
-                    errors.email ? "border-red-500/50" : ""
-                  }`}
+                  className={`bg-muted/30 border-muted-foreground/10 focus:border-primary/50 transition-all duration-300 h-11 ${errors.email ? "border-red-500/50" : ""
+                    }`}
                 />
                 <div className="absolute inset-0 rounded-md pointer-events-none group-focus-within:ring-2 ring-primary/20 transition-all duration-300" />
               </div>
               {errors.email && (
-                <p className="text-[11px] font-medium text-red-500 mt-1 ml-1">{errors.email.message}</p>
+                <p className="text-[11px] font-medium text-red-500 mt-1 ms-1">{errors.email.message}</p>
               )}
             </div>
 
@@ -138,8 +137,8 @@ export default function LoginForm() {
                   <Lock className="h-3.5 w-3.5 text-primary" />
                   {t("PasswordLabel")}
                 </label>
-                <Link 
-                  href="/forgot-password" 
+                <Link
+                  href="/forgot-password"
                   className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
                 >
                   {t("ForgotPassword")}
@@ -157,9 +156,8 @@ export default function LoginForm() {
                   })}
                   type={showPassword ? "text" : "password"}
                   placeholder={t("PasswordPlaceholder")}
-                  className={`bg-muted/30 border-muted-foreground/10 focus:border-primary/50 transition-all duration-300 h-11 pr-10 ${
-                    errors.password ? "border-red-500/50" : ""
-                  }`}
+                  className={`bg-muted/30 border-muted-foreground/10 focus:border-primary/50 transition-all duration-300 h-11 pe-10 ${errors.password ? "border-red-500/50" : ""
+                    }`}
                 />
                 <Button
                   type="button"
@@ -177,18 +175,18 @@ export default function LoginForm() {
                 <div className="absolute inset-0 rounded-md pointer-events-none group-focus-within:ring-2 ring-primary/20 transition-all duration-300" />
               </div>
               {errors.password && (
-                <p className="text-[11px] font-medium text-red-500 mt-1 ml-1">{errors.password.message}</p>
+                <p className="text-[11px] font-medium text-red-500 mt-1 ms-1">{errors.password.message}</p>
               )}
             </div>
 
-            <Button 
-              type="submit" 
-              disabled={loading} 
+            <Button
+              type="submit"
+              disabled={loading}
               className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20 transition-all duration-300 active:scale-[0.98]"
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
                   {t("LoggingIn")}
                 </>
               ) : (
@@ -203,8 +201,8 @@ export default function LoginForm() {
           <div className="text-center pt-2">
             <p className="text-sm text-muted-foreground">
               {t("NoAccount")}{" "}
-              <Link 
-                href="/register" 
+              <Link
+                href="/register"
                 className="font-bold text-foreground hover:text-primary transition-colors underline underline-offset-4 decoration-primary/30 hover:decoration-primary"
               >
                 {t("SignUp")}

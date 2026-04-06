@@ -340,7 +340,7 @@ const TextEditor = ({
               className={cn(
                 "h-6 w-6",
                 editor.isActive({ textAlign: "left" }) &&
-                  "bg-gray-100 text-gray-900"
+                "bg-gray-100 text-gray-900"
               )}
               onClick={() => editor.chain().focus().setTextAlign("left").run()}
             >
@@ -353,7 +353,7 @@ const TextEditor = ({
               className={cn(
                 "h-6 w-6",
                 editor.isActive({ textAlign: "center" }) &&
-                  "bg-gray-100 text-gray-900"
+                "bg-gray-100 text-gray-900"
               )}
               onClick={() =>
                 editor.chain().focus().setTextAlign("center").run()
@@ -368,7 +368,7 @@ const TextEditor = ({
               className={cn(
                 "h-6 w-6",
                 editor.isActive({ textAlign: "right" }) &&
-                  "bg-gray-100 text-gray-900"
+                "bg-gray-100 text-gray-900"
               )}
               onClick={() => editor.chain().focus().setTextAlign("right").run()}
             >
@@ -391,7 +391,7 @@ const TextEditor = ({
                       editor.isActive("heading", { level: 4 }) ||
                       editor.isActive("heading", { level: 5 }) ||
                       editor.isActive("heading", { level: 6 })) &&
-                      "bg-gray-100 text-gray-900"
+                    "bg-gray-100 text-gray-900"
                   )}
                 >
                   <Heading className="h-4 w-4" />
@@ -696,18 +696,18 @@ const TextEditor = ({
               <span>
                 {remainingChars >= 0
                   ? `${commonT(
-                      "Characters remaining"
-                    )}: ${remainingChars} ${commonT("characters")}`
+                    "Characters remaining"
+                  )}: ${remainingChars} ${commonT("characters")}`
                   : `${Math.abs(remainingChars)} ${commonT(
-                      "characters"
-                    )} over limit`}
+                    "characters"
+                  )} over limit`}
               </span>
             )}
           </div>
         )}
       </div>
       {error && (
-        <p className="ml-3 mt-1 text-xs font-medium text-red-500">{error}</p>
+        <p className="ms-3 mt-1 text-xs font-medium text-red-500">{error}</p>
       )}
 
       <Dialog open={openLinkDialog} onOpenChange={setOpenLinkDialog}>

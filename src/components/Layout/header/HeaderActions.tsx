@@ -15,7 +15,7 @@ export default function HeaderActions() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="hidden sm:flex items-center gap-4 text-xs font-medium mr-4">
+      <div className="hidden sm:flex items-center gap-4 text-xs font-medium me-4">
         <Link href="/favorite" className="flex flex-col items-center gap-1 cursor-pointer group">
           <div className="p-2.5 rounded-full bg-slate-50 group-hover:bg-primary/10 transition relative">
             <Heart className={`w-5 h-5 ${wishlist.length > 0 ? 'text-[#f38d38] fill-[#f38d38]' : 'text-foreground group-hover:text-primary'}`} />
@@ -40,7 +40,7 @@ export default function HeaderActions() {
         </Link>
       </div>
 
-      <Link href="/cart" className="flex items-center gap-3 pl-4 border-l border-border group cursor-pointer">
+      <Link href="/cart" className="flex items-center gap-3 ps-4 border-l border-border group cursor-pointer">
         <div className="bg-[#f38d38] p-3 rounded-full text-white shadow-md shadow-primary/20 group-hover:shadow-lg transition-all group-hover:-translate-y-0.5 relative">
           <ShoppingCart className="w-5 h-5" />
           {cartCount > 0 && (

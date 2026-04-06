@@ -94,7 +94,7 @@ export default function UpdateStatus({ order, onSuccess, onCancel }: UpdateStatu
                     className="h-10 rounded-full gap-2"
                 >
                     {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                    <span className="ml-1">{t("Update")}</span>
+                    <span className="ms-1">{t("Update")}</span>
                 </Button>
             </div>
         </div>

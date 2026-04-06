@@ -14,9 +14,9 @@ export default function Hero() {
   const isRtl = locale === 'ar'
 
   const autoplay = useMemo(() => Autoplay({ delay: 6000, stopOnInteraction: false }), [])
-  const [emblaRef] = useEmblaCarousel({ 
-    loop: true, 
-    direction: isRtl ? 'rtl' : 'ltr' 
+  const [emblaRef] = useEmblaCarousel({
+    loop: true,
+    direction: isRtl ? 'rtl' : 'ltr'
   }, [autoplay])
 
   const slides = [
@@ -29,7 +29,7 @@ export default function Hero() {
     <section className="bg-[#f8f9fa] py-10 px-4 font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          
+
           <div className="lg:col-span-3 flex flex-col gap-6 order-2 lg:order-1">
             <div className="flex-1 rounded-2xl overflow-hidden relative group shadow-sm border border-slate-100 cursor-pointer min-h-[200px] hover:border-primary/30 transition-all">
               <Image
@@ -65,21 +65,21 @@ export default function Hero() {
               </div>
             </div>
           </div>
- 
+
           <div className="lg:col-span-6 overflow-hidden rounded-[2rem] bg-[#1a1a1a] shadow-2xl border border-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
             <div className="flex h-full">
               {slides.map((slide) => (
                 <div key={slide.id} className="relative flex-[0_0_100%] min-w-0 h-full min-h-[500px] lg:min-h-full overflow-hidden group">
-                
+
                   <Image
                     src={slide.image}
                     alt="Banner Background"
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-[4000ms] ease-out"
                   />
-                   
+
                   <div className={`absolute inset-0 z-10 transition-opacity duration-1000 bg-gradient-to-b ${isRtl ? 'md:bg-gradient-to-l' : 'md:bg-gradient-to-r'} from-[#1a1a1a] via-[#1a1a1a]/85 md:via-[#1a1a1a]/70 to-transparent`} />
- 
+
                   <div className="relative z-20 h-full p-8 md:p-12 lg:p-16 flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="h-px w-8 bg-[#f38d38]" />
@@ -113,14 +113,14 @@ export default function Hero() {
                       <Button className="h-14 bg-[#f38d38] hover:bg-[#e67e22] text-white border-none group px-10 rounded-2xl transition-all shadow-2xl shadow-black/50 active:scale-95">
                         <span className="font-black text-sm tracking-wider uppercase">{t('MoreDetails')}</span>
                         {isRtl ? (
-                          <ArrowLeft className="w-5 h-5 mr-3 group-hover:-translate-x-1 transition-transform" />
+                          <ArrowLeft className="w-5 h-5 me-3 group-hover:-translate-x-1 transition-transform" />
                         ) : (
-                          <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-5 h-5 ms-3 group-hover:translate-x-1 transition-transform" />
                         )}
                       </Button>
                     </div>
                   </div>
-                   
+
                   <div className="absolute top-0 right-0 w-96 h-96 bg-[#f38d38]/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none z-[11]" />
                 </div>
               ))}
