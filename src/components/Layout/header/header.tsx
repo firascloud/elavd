@@ -29,8 +29,7 @@ export function Header() {
       setTimeout(() => searchInputRef.current?.focus(), 50)
     }
   }, [searchOpen])
-
-  // Close drawer on route change
+ 
   useEffect(() => {
     setMenuOpen(false)
     setSearchOpen(false)
@@ -66,7 +65,7 @@ export function Header() {
         </div>
 
         {/* ── Desktop logo + search + actions: lg+ only ──────────────────── */}
-        <div className="bg-white py-5 px-4 hidden lg:block">
+        <div className="bg-white py-5 px-4 hidden lg:block sticky top-0 z-50 shadow-sm border-b">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
             <Link href="/">
               <Image src={Logo} alt="Logo" width={200} height={200} />
@@ -94,7 +93,7 @@ export function Header() {
         </div>
 
 
-        <div className="bg-white px-4 py-3 hidden md:flex lg:hidden flex-col gap-3">
+        <div className="bg-white px-4 py-3 hidden md:flex lg:hidden flex-col gap-3 z-50 shadow-sm border-b">
           <div className="flex items-center justify-between gap-3">
             <Link href="/">
               <Image src={Logo} alt="Logo" width={160} height={160} className="w-32 h-auto" />
@@ -120,7 +119,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="bg-white px-4 py-3 flex md:hidden items-center justify-between gap-3">
+        <div className="bg-white px-4 py-3 flex md:hidden items-center justify-between gap-3 sticky top-0 z-50 shadow-sm border-b">
           <Link href="/">
             <Image src={Logo} alt="Logo" width={140} height={140} className="w-28 h-auto" />
           </Link>
@@ -134,17 +133,22 @@ export function Header() {
               <Search className="w-5 h-5" />
             </button>
             <LanguageSwitcher />
-            <HeaderActions />
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition"
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
         {/* ── Sticky nav bar ─────────────────────────────────────────────── */}
-        <div className="hidden lg:block bg-foreground px-4 sticky top-0 z-40 shadow-xl border-t border-white/5">
+        <div className="hidden lg:block bg-foreground px-4 sticky top-[88px] z-40 shadow-xl  border-t border-white/5">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center">
 
-              {/* Mobile/tablet: hamburger → drawer */}
-              <button
+             <button
                 onClick={() => setMenuOpen(true)}
                 className="lg:hidden bg-primary h-[54px] px-5 flex items-center gap-2 text-white hover:brightness-105 transition font-black shadow-lg shadow-primary/20"
                 aria-label="Open menu"
@@ -152,14 +156,12 @@ export function Header() {
                 <Menu className="w-5 h-5" />
               </button>
 
-              {/* Desktop: browse categories button */}
-              <div className="hidden  lg:flex bg-primary h-[54px] px-8 items-center gap-3 cursor-pointer hover:brightness-105 transition font-black text-white shadow-lg shadow-primary/20">
+               <div className="hidden  lg:flex bg-primary h-[54px] px-8 items-center gap-3 cursor-pointer hover:brightness-105 transition font-black text-white shadow-lg shadow-primary/20">
                 <Menu className="w-5 h-5" />
                 <span className="text-sm tracking-wide uppercase">{t('BrowseCategories')}</span>
               </div>
 
-              {/* Desktop nav links */}
-              <nav className="hidden lg:flex items-center mx-6 !mt-0 gap-1">
+               <nav className="hidden lg:flex items-center mx-6 !mt-0 gap-1">
                 {navLinks.map(link => (
                   <Link
                     key={link.href}
