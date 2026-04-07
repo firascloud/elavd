@@ -7,20 +7,25 @@ import { ProductCard } from '@/components/common/product-card'
 import { Heart } from 'lucide-react'
 import { Link } from '@/i18n/routing'
 import PageHeader from '@/components/common/page-header'
+import Script from 'next/script'
+import { getFavoriteJsonLd } from '@/seo/favorite'
 
 export default function FavoritePage() {
   const t = useTranslations('common')
   const locale = useLocale();
   const { wishlist } = useAppStore()
 
-  const countText = locale === 'ar' 
-    ? `لديك ${wishlist.length} منتجات في قائمتك` 
+  const countText = locale === 'ar'
+    ? `لديك ${wishlist.length} منتجات في قائمتك`
     : `You have ${wishlist.length} items in your wishlist`;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <PageHeader 
-        title={t('Wishlist')} 
+      <Script id="jsonld-favorite" type="application/ld+json" strategy="afterInteractive">
+        {JSON.stringify(getFavoriteJsonLd(locale))}
+      </Script>
+      <PageHeader
+        title={t('Wishlist')}
         subtitle={countText}
         icon={<Heart size={32} fill="currentColor" />}
       />
@@ -43,8 +48,8 @@ export default function FavoritePage() {
             <p className="text-gray-500 text-lg mb-10 max-w-sm mx-auto leading-relaxed">
               {t('WishlistDesc')}
             </p>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center px-10 py-4 bg-[#f38d38] text-white font-bold rounded-2xl hover:bg-[#e67e22] transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95"
             >
               {t('BrowseCategories')}

@@ -7,9 +7,6 @@ import Providers from "./providers";
 import { Toaster } from "sonner";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import { Footer } from "@/components/Layout/footer/footer";
-import { Header } from "@/components/Layout/header/header";
-import FloatingActions from "@/components/FloatingActions";
 
 const elMessiri = El_Messiri({
   variable: "--font-el-messiri",

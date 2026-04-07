@@ -8,13 +8,15 @@ import { Link } from '@/i18n/routing'
 import Image from 'next/image'
 import PageHeader from '@/components/common/page-header'
 import { cn } from '@/lib/utils'
+import Script from 'next/script'
+import { getCompareJsonLd } from '@/seo/compare'
 
 export default function ComparePage() {
   const t = useTranslations('common')
   const locale = useLocale();
-  const { 
-    compareItems, 
-    removeFromCompare, 
+  const {
+    compareItems,
+    removeFromCompare,
     clearCompare,
     addToCart,
     toggleWishlist,
@@ -27,9 +29,12 @@ export default function ComparePage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] pb-20">
-      <PageHeader 
-        title={t('Compare')} 
-        subtitle={countText} 
+      <Script id="jsonld-compare" type="application/ld+json" strategy="afterInteractive">
+        {JSON.stringify(getCompareJsonLd(locale))}
+      </Script>
+      <PageHeader
+        title={t('Compare')}
+        subtitle={countText}
         icon={<Repeat className="size-6" />}
       />
 
@@ -37,10 +42,10 @@ export default function ComparePage() {
         {compareItems.length > 0 ? (
           <div className="bg-white rounded-md p-4 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 overflow-x-auto">
             <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-               <h2 className="text-xl font-bold text-gray-900 font-cairo">
+              <h2 className="text-xl font-bold text-gray-900 font-cairo">
                 {locale === 'ar' ? 'جدول المقارنة' : 'Comparison Table'}
               </h2>
-              <button 
+              <button
                 onClick={clearCompare}
                 className="text-sm font-bold text-[#d32f2f] hover:bg-red-50 px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-transparent hover:border-red-100"
               >
@@ -55,7 +60,7 @@ export default function ComparePage() {
                   <th className="w-[200px] p-6 text-left border-b border-gray-100"></th>
                   {compareItems.map((item) => (
                     <th key={item.id} className="p-6 border-b border-gray-100 relative group min-w-[250px]">
-                      <button 
+                      <button
                         onClick={() => removeFromCompare(item.id)}
                         className="absolute top-4 right-4 p-2.5 bg-white text-gray-400 rounded-2xl shadow-lg border border-gray-100 hover:text-red-600 transition-all opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 z-10"
                         title={t('Remove')}
@@ -64,17 +69,17 @@ export default function ComparePage() {
                       </button>
                       <div className="relative aspect-square w-40 mx-auto mb-6 transform transition-all duration-500 group-hover:scale-105">
                         <div className="absolute inset-0 bg-[#f38d38]/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <Image 
-                          src={item.main_image || ''} 
-                          alt={item.name_ar || 'Product'} 
-                          fill 
-                          className="object-contain relative z-10" 
+                        <Image
+                          src={item.main_image || ''}
+                          alt={item.name_ar || 'Product'}
+                          fill
+                          className="object-contain relative z-10"
                         />
                       </div>
                       <h3 className="text-base sm:text-lg font-bold text-gray-900 line-clamp-2 h-14 font-cairo text-center px-4 leading-tight">
                         {locale === 'ar' ? item.name_ar : item.name_en}
                       </h3>
-                      
+
                       <div className="mt-4 flex flex-col gap-2 px-4">
                         <button
                           onClick={() => addToCart(item)}
@@ -87,8 +92,8 @@ export default function ComparePage() {
                           onClick={() => toggleWishlist(item)}
                           className={cn(
                             "w-full py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border transition-all",
-                            isInWishlist(item.id) 
-                              ? "bg-red-50 text-red-600 border-red-100" 
+                            isInWishlist(item.id)
+                              ? "bg-red-50 text-red-600 border-red-100"
                               : "bg-white text-gray-700 border-gray-200 hover:border-[#f38d38] hover:text-[#f38d38]"
                           )}
                         >
@@ -101,13 +106,13 @@ export default function ComparePage() {
                 </tr>
               </thead>
               <tbody className="text-sm text-gray-600">
-             
- 
+
+
                 {compareItems.some(item => item.country_of_origin) && (
                   <tr className="group hover:bg-gray-50/50 transition-colors">
                     <td className="p-6 font-bold text-gray-900 border-b border-gray-50 flex items-center gap-2">
                       <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                         <Globe size={16} />
+                        <Globe size={16} />
                       </div>
                       {locale === 'ar' ? 'بلد المنشأ' : 'Origin'}
                     </td>
@@ -118,11 +123,11 @@ export default function ComparePage() {
                     ))}
                   </tr>
                 )}
- 
+
                 <tr className="group hover:bg-gray-50/50 transition-colors">
                   <td className="p-6 font-bold text-gray-900 border-b border-gray-50 flex items-center gap-2">
                     <div className="p-2 bg-orange-50 text-[#f38d38] rounded-lg">
-                       <Repeat size={16} />
+                      <Repeat size={16} />
                     </div>
                     {locale === 'ar' ? 'الوصف المختصر' : 'Short Description'}
                   </td>
@@ -132,11 +137,11 @@ export default function ComparePage() {
                     </td>
                   ))}
                 </tr>
- 
+
                 <tr className="group hover:bg-gray-50/50 transition-colors">
-                   <td className="p-6 font-bold text-gray-900 border-b border-gray-50 flex items-center gap-2">
+                  <td className="p-6 font-bold text-gray-900 border-b border-gray-50 flex items-center gap-2">
                     <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-                       <Check size={16} />
+                      <Check size={16} />
                     </div>
                     {locale === 'ar' ? 'التوفر' : 'Availability'}
                   </td>
@@ -163,8 +168,8 @@ export default function ComparePage() {
             <p className="text-gray-500 text-lg mb-10 max-w-sm mx-auto">
               {t('CompareDesc')}
             </p>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center px-10 py-4 bg-[#f38d38] text-white font-bold rounded-2xl hover:bg-[#e67e22] transition-all shadow-xl shadow-orange-200"
             >
               {t('BrowseCategories')}

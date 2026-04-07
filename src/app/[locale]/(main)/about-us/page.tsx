@@ -5,6 +5,8 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Target, Eye, ShieldCheck, Trophy, Info, Users, Briefcase, Zap, Star } from 'lucide-react';
 import Image from 'next/image';
 import PageHeader from '@/components/common/page-header';
+import Script from 'next/script';
+import { getAboutJsonLd } from '@/seo/about';
 
 export default function AboutUsPage() {
     const t = useTranslations('about');
@@ -38,6 +40,9 @@ export default function AboutUsPage() {
 
     return (
         <div className="min-h-screen bg-white pb-20 overflow-hidden">
+            <Script id="jsonld-about" type="application/ld+json" strategy="afterInteractive">
+                {JSON.stringify(getAboutJsonLd(locale))}
+            </Script>
             <PageHeader
                 title={t('title')}
                 subtitle={t('subtitle')}

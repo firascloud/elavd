@@ -5,18 +5,20 @@ import PageHeader from '@/components/common/page-header'
 import { ProductCard } from '@/components/common/product-card'
 import CategorySidebar from '@/components/common/category-sidebar'
 import { getProducts, getCategories, searchProducts } from '@/services/home'
-import { Search, PackageX } from 'lucide-react' 
+import { Search, PackageX } from 'lucide-react'
 import FilterProduct from '../product-category/_components/fillterProduct'
 import Pagination from '../product-category/_components/pagination'
+import Script from 'next/script'
+import { getStoreJsonLd } from '@/seo/store'
 
 interface StorePageProps {
   params: Promise<{
     locale: string
   }>,
-  searchParams: Promise<{ 
-    page?: string, 
-    sort?: string, 
-    limit?: string, 
+  searchParams: Promise<{
+    page?: string,
+    sort?: string,
+    limit?: string,
     view?: string,
     s?: string,
     product_cat?: string
@@ -27,7 +29,7 @@ export async function generateMetadata({ params, searchParams }: StorePageProps)
   const { locale } = await params
   const { s } = await searchParams
   const t = await getTranslations('common')
-  
+
   if (s) {
     return {
       title: `${s} | ${t('Store')}`,
@@ -43,15 +45,15 @@ export async function generateMetadata({ params, searchParams }: StorePageProps)
 
 export default async function StorePage({ params, searchParams }: StorePageProps) {
   const { locale } = await params
-  const { 
-    page = '1', 
-    sort = 'default', 
-    limit = '12', 
+  const {
+    page = '1',
+    sort = 'default',
+    limit = '12',
     view = 'grid',
     s: query,
     product_cat: categoryId
   } = await searchParams
-  
+
   const t = await getTranslations('common')
   const isRtl = locale === 'ar'
 
@@ -67,18 +69,18 @@ export default async function StorePage({ params, searchParams }: StorePageProps
   // Use search if query exists
   let allProducts = []
   if (query) {
-    allProducts = await searchProducts({ 
-      query, 
-      categoryId: categoryId === '0' ? undefined : categoryId, 
-      limit: 1000 
+    allProducts = await searchProducts({
+      query,
+      categoryId: categoryId === '0' ? undefined : categoryId,
+      limit: 1000
     })
   } else {
     allProducts = await getProducts({ limit: 1000 })
   }
-   
+
   if (sort === 'newest') {
-    allProducts = [...allProducts].sort((a, b) => 
-        new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
+    allProducts = [...allProducts].sort((a, b) =>
+      new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
   } else if (sort === 'price-low') {
     allProducts = [...allProducts].sort((a, b) => (a.price || 0) - (b.price || 0))
   } else if (sort === 'price-high') {
@@ -92,73 +94,75 @@ export default async function StorePage({ params, searchParams }: StorePageProps
   const endIndex = startIndex + currentLimit
   const paginatedProducts = allProducts.slice(startIndex, endIndex)
 
-  const pageTitle = query 
+  const pageTitle = query
     ? (isRtl ? `نتائج البحث عن: ${query}` : `Search results for: ${query}`)
     : t('Store')
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-20">
-      <PageHeader 
-        title={pageTitle}  
+      <Script id="jsonld-store" type="application/ld+json" strategy="afterInteractive">
+        {JSON.stringify(getStoreJsonLd(locale, { query }))}
+      </Script>
+      <PageHeader
+        title={pageTitle}
       />
 
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-           
+
           <div className="lg:col-span-3 order-2 lg:order-1">
-             <CategorySidebar 
-                categories={allCategories} 
-                featuredProducts={featuredProducts} 
-                activeSlug=""
-             />
+            <CategorySidebar
+              categories={allCategories}
+              featuredProducts={featuredProducts}
+              activeSlug=""
+            />
           </div>
- 
+
           <div className="lg:col-span-9 order-1 lg:order-2 space-y-8">
-            
-            <FilterProduct 
-              categoryName={pageTitle} 
-              totalItems={totalItems} 
+
+            <FilterProduct
+              categoryName={pageTitle}
+              totalItems={totalItems}
               currentView={view}
             />
 
             {/* Grid */}
             {paginatedProducts.length > 0 ? (
-              <div className={`grid  ${
-                view === 'list' 
-                  ? 'grid-cols-1 gap-8' 
-                  : view === 'grid-2'
+              <div className={`grid  ${view === 'list'
+                ? 'grid-cols-1 gap-8'
+                : view === 'grid-2'
                   ? 'grid-cols-1 sm:grid-cols-2 gap-8'
                   : view === 'grid-4'
-                  ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
-                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
-              }`}>
+                    ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
+                    : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
+                }`}>
                 {paginatedProducts.map((product) => (
-                  <ProductCard 
-                    key={product.id} 
-                    {...product} 
-                    view={view === 'list' ? 'list' : 'grid'} 
+                  <ProductCard
+                    key={product.id}
+                    {...product}
+                    view={view === 'list' ? 'list' : 'grid'}
                   />
                 ))}
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 bg-white rounded-md border border-gray-100 shadow-sm">
-                 <div className="size-24 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
-                    <PackageX size={40} />
-                 </div>
-                 <div>
-                    <h3 className="text-2xl font-black text-gray-900 font-cairo mb-2">
-                      {t('NoResultsFound')}
-                    </h3>
-                    <p className="text-gray-500 max-w-sm mx-auto font-medium">
-                      {t('NoResultsFound')}
-                    </p>
-                 </div>
+                <div className="size-24 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                  <PackageX size={40} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-gray-900 font-cairo mb-2">
+                    {t('NoResultsFound')}
+                  </h3>
+                  <p className="text-gray-500 max-w-sm mx-auto font-medium">
+                    {t('NoResultsFound')}
+                  </p>
+                </div>
               </div>
             )}
-            
-            <Pagination 
-              currentPage={currentPage} 
-              totalPages={totalPages} 
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
               totalItems={totalItems}
             />
           </div>
