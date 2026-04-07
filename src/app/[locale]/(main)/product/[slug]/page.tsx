@@ -68,19 +68,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
            href: categoryHref 
         }} 
       />
-      <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div className="container mx-auto xl:px-16 lg:px-10 px-4 mt-12 lg:mt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
 
           <div className="lg:col-span-9 space-y-8 order-1">
             <ProductHero product={product} phone={phone} />
             <ProductTabs product={product} />
-            <RelatedProducts products={relatedProducts} />
+           
           </div>
 
           <div className="lg:col-span-3 order-2">
             <CategorySidebar categories={categories} featuredProducts={featuredProducts} activeSlug={""} />
           </div>
         </div>
+        <RelatedProducts products={relatedProducts} />
       </div>
     </div>
   );

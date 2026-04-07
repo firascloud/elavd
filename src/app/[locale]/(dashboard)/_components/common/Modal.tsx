@@ -30,10 +30,16 @@ export function DashboardModal({ isOpen, onClose, title, description, children, 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className={cn(
-        "sm:max-w-3xl p-0 z-[2000]",
+        "sm:max-w-3xl p-0 z-[2000] gap-0",
         className
       )}>
-        <div className="flex flex-col h-full max-h-[90vh] !z-[9999999]">
+        <button 
+          onClick={onClose}
+          className="absolute cursor-pointer right-6 top-6 rounded-full p-2 hover:bg-muted transition-colors z-50 text-muted-foreground hover:text-foreground outline-none"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        <div className="flex flex-col h-full max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
             <DialogTitle className="text-lg font-semibold tracking-tight text-foreground">
               {title}

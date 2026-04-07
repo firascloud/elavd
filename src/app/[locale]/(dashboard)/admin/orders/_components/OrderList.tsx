@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import { Edit2, Eye, RefreshCw, ShoppingBag, User as UserIcon, Calendar, CheckCircle2, Clock, Truck, XCircle, MoreVertical } from "lucide-react";
+import { Edit2, Eye, RefreshCw, ShoppingBag, User as UserIcon, Calendar, CheckCircle2, Clock, Truck, XCircle, MoreVertical, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import UpdateStatus from "./UpdateStatus";
 import OrderDetails from "./OrderDetails";
@@ -47,7 +47,7 @@ export default function OrderList() {
         // Assuming 'orders' table joined with profiles for name
         let query = supabaseBrowser
             .from('orders')
-            .select('*', { count: 'exact' });
+            .select('*, items:order_items(*)', { count: 'exact' });
 
         if (search) {
             query = query.ilike('id', `%${search}%`);
@@ -102,10 +102,8 @@ export default function OrderList() {
     const getStatusStyle = (status: string) => {
         switch (status) {
             case 'pending': return 'bg-orange-500/10 text-orange-600 border-orange-500/20';
-            case 'processing': return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
             case 'shipped': return 'bg-purple-500/10 text-purple-600 border-purple-500/20';
             case 'delivered': return 'bg-green-500/10 text-green-600 border-green-500/20';
-            case 'canceled': return 'bg-red-500/10 text-red-600 border-red-500/20';
             default: return 'bg-muted/30 text-muted-foreground border-transparent';
         }
     };
@@ -113,10 +111,8 @@ export default function OrderList() {
     const getStatusIcon = (status: string) => {
         switch (status) {
             case 'pending': return <Clock className="h-3 w-3" />;
-            case 'processing': return <RefreshCw className="h-3 w-3 animate-spin" />;
             case 'shipped': return <Truck className="h-3 w-3" />;
             case 'delivered': return <CheckCircle2 className="h-3 w-3" />;
-            case 'canceled': return <XCircle className="h-3 w-3" />;
             default: return null;
         }
     };
@@ -152,10 +148,8 @@ export default function OrderList() {
                         options={[
                             { label: t("All"), value: "all" },
                             { label: t("Pending"), value: "pending" },
-                            { label: t("Processing"), value: "processing" },
                             { label: t("Shipped"), value: "shipped" },
                             { label: t("Delivered"), value: "delivered" },
-                            { label: t("Canceled"), value: "canceled" },
                         ]}
                         placeholder={t("Filter")}
                         className="w-full sm:w-[180px]"
@@ -166,12 +160,13 @@ export default function OrderList() {
             <DashboardTable headers={[
                 t("OrderID"),
                 t("Customer"),
+                t("Phone"),
                 t("Total"),
                 t("Status"),
                 t("CreatedAt"),
                 t("Actions")
             ]}
-                headerClasses={["", "", "", "hidden sm:table-cell", "hidden md:table-cell", ""]}
+                headerClasses={["", "", "", "", "hidden sm:table-cell", "hidden md:table-cell", ""]}
                 isLoading={loading}
                 emptyMessage={t("NoOrdersFound") || "No orders found."}
             >
@@ -187,11 +182,28 @@ export default function OrderList() {
                                 <div className="h-8 w-8 rounded-full bg-primary/5 flex items-center justify-center text-primary">
                                     <UserIcon className="h-4 w-4" />
                                 </div>
-                                <span className="font-bold tracking-tight text-sm">{t("CustomerHash")} {order.user_id?.slice(0, 4)}</span>
+                                <span className="font-bold tracking-tight text-sm truncate max-w-[120px]">
+                                    {order.customer_name || `${t("CustomerHash")} ${order.user_id?.slice(0, 4)}`}
+                                </span>
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <span className="font-bold text-primary font-mono">${order.total_amount?.toFixed(2)}</span>
+                            {order.customer_phone ? (
+                                <a 
+                                    href={`https://wa.me/${order.customer_phone.replace(/\+/g, '')}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-1.5 text-xs font-bold text-green-600 hover:text-green-700 bg-green-50 px-3 py-1.5 rounded-lg transition-colors w-fit"
+                                >
+                                    <MessageSquare className="h-3 w-3" />
+                                    {order.customer_phone}
+                                </a>
+                            ) : (
+                                <span className="text-xs text-muted-foreground">—</span>
+                            )}
+                        </DashboardTableCell>
+                        <DashboardTableCell>
+                            <span className="font-bold text-primary font-mono">${order.total?.toFixed(2)}</span>
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden sm:table-cell">
                             <div className={`flex items-center gap-2 px-3 py-1 rounded-xl border border-dashed font-bold text-[10px] uppercase w-fit ${getStatusStyle(order.status)}`}>

@@ -13,6 +13,7 @@ export type Product = {
     full_desc_ar?: string | null;
     price?: number | null;
     discount_price?: number | null;
+    country_of_origin?: string | null;
     is_featured?: boolean;
     is_popular?: boolean;
     is_event?: boolean;

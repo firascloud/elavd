@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { ShoppingBag, Truck, CreditCard, User as UserIcon, Calendar, Package, MapPin, Receipt, ArrowRight } from "lucide-react";
+import { ShoppingCart, Truck, CreditCard, User as UserIcon, Calendar, Package, MapPin, Receipt, ArrowRight, MessageSquare, Mail } from "lucide-react";
 import {
     DashboardTable,
     DashboardTableRow,
@@ -16,6 +16,7 @@ interface OrderDetailsProps {
 export default function OrderDetails({ order }: OrderDetailsProps) {
     const t = useTranslations("dashboard");
     const locale = useLocale();
+    const isAr = locale === "ar";
 
     if (!order) return null;
 
@@ -58,15 +59,31 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                 <UserIcon className="h-4 w-4" />
                             </div>
                             <div className="space-y-1">
-                                <p className="text-sm font-semibold text-foreground leading-none">{order.full_name || t("GuestCheckout")}</p>
-                                <p className="text-xs text-muted-foreground">{order.email || t("NoContactInfo")}</p>
+                                <p className="text-sm font-semibold text-foreground leading-none">{order.customer_name || t("GuestCheckout")}</p>
+                                <div className="flex items-center gap-2 mt-1">
+                                    <Mail className="h-3 w-3 text-muted-foreground" />
+                                    <p className="text-xs text-muted-foreground">{order.customer_email || t("NoContactInfo")}</p>
+                                </div>
+                                {order.customer_phone && (
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <MessageSquare className="h-3 w-3 text-green-500" />
+                                        <a 
+                                            href={`https://wa.me/${order.customer_phone.replace(/\+/g, '')}`} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="text-xs text-green-600 font-bold hover:underline"
+                                        >
+                                            {order.customer_phone}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="h-px bg-border w-full" />
                         <div className="space-y-2">
                             <p className="text-[11px] font-medium text-muted-foreground">{t("StreetAddress")}</p>
                             <p className="text-xs leading-relaxed text-foreground/80">
-                                {order.shipping_address || t("AddressNotDisclosed")}
+                                {order.address || order.city || t("AddressNotDisclosed")}
                             </p>
                         </div>
                     </div>
@@ -88,18 +105,18 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                         <div className="absolute top-0 right-0 h-24 w-24 bg-green-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
 
                         {[
-                            { label: t("Subtotal"), value: order.total_amount - (order.shipping_cost || 0) },
-                            { label: t("ShippingCost"), value: order.shipping_cost || 0 },
+                            { label: t("Subtotal"), value: order.subtotal || order.total },
+                            { label: t("ShippingCost"), value: order.shipping_fee || 0 },
                         ].map((row, idx) => (
                             <div key={idx} className="flex justify-between items-center">
                                 <span className="text-xs font-medium text-muted-foreground tracking-tight">{row.label}</span>
-                                <span className="text-sm font-semibold text-foreground font-mono">${row.value.toFixed(2)}</span>
+                                <span className="text-sm font-semibold text-foreground font-mono">${row.value?.toFixed(2)}</span>
                             </div>
                         ))}
                         <div className="h-px bg-border w-full" />
                         <div className="flex justify-between items-center pt-2">
                             <span className="text-sm font-semibold text-foreground">{t("Total")}</span>
-                            <span className="text-xl font-bold text-foreground font-mono">${order.total_amount.toFixed(2)}</span>
+                            <span className="text-xl font-bold text-foreground font-mono">${order.total?.toFixed(2)}</span>
                         </div>
                     </div>
                 </section>
@@ -118,14 +135,16 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                     t("Quantity"),
                     t("Total")
                 ]}>
-                    {(order.items || [{ id: 1, name: t("SampleItem"), price: order.total_amount, quantity: 1 }]).map((item: any) => (
+                    {(order.items || []).map((item: any) => (
                         <DashboardTableRow key={item.id}>
                             <DashboardTableCell>
                                 <div className="flex items-center gap-3">
                                     <div className="h-12 w-12 rounded-xl bg-foreground/[0.06] flex items-center justify-center text-muted-foreground text-xs font-mono">
                                         PCK
                                     </div>
-                                    <span className="font-medium text-sm tracking-tight">{item.name || t("DefaultOffering")}</span>
+                                    <span className="font-medium text-sm tracking-tight">
+                                        {isAr ? item.product_name_ar : item.product_name_en}
+                                    </span>
                                 </div>
                             </DashboardTableCell>
                             <DashboardTableCell><span className="font-medium text-xs">${(item.price || 0).toFixed(2)}</span></DashboardTableCell>

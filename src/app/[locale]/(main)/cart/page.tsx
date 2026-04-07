@@ -7,11 +7,13 @@ import { ShoppingCart, Trash2, Minus, Plus, FileText, Info } from 'lucide-react'
 import { Link } from '@/i18n/routing'
 import Image from 'next/image'
 import PageHeader from '@/components/common/page-header'
+import QuoteModal from '@/components/common/QuoteModal'
 
 export default function CartPage() {
   const t = useTranslations('common')
   const locale = useLocale();
   const { cartItems, removeFromCart, updateQuantity, clearCart } = useAppStore()
+  const [isQuoteOpen, setIsQuoteOpen] = React.useState(false)
 
   const count = cartItems.reduce((acc, item) => acc + item.quantity, 0)
 
@@ -118,13 +120,19 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <Link 
-                  href="#"
-                  className="w-full h-14 bg-[#f38d38] text-white font-black text-sm rounded-xl hover:bg-[#e67e22] transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95 group uppercase tracking-[0.1em]"
+                <button 
+                  onClick={() => setIsQuoteOpen(true)}
+                  className="w-full h-14 bg-[#f38d38] text-white font-black text-sm rounded-xl hover:bg-[#e67e22] transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95 group uppercase tracking-[0.1em] cursor-pointer"
                 >
                   <FileText className="group-hover:-translate-y-0.5 transition-transform" size={18} />
                   {t('RequestQuote')}
-                </Link>
+                </button>
+
+                <QuoteModal 
+                  isOpen={isQuoteOpen} 
+                  onClose={() => setIsQuoteOpen(false)} 
+                  items={cartItems} 
+                />
                 
                 <p className="text-[9px] text-gray-500 text-center uppercase tracking-widest font-black">
                    {t('TermsConditions')}

@@ -47,10 +47,8 @@ export default function UpdateStatus({ order, onSuccess, onCancel }: UpdateStatu
 
     const statuses = [
         { value: "pending", label: t("Pending"), icon: <Clock className="h-4 w-4" /> },
-        { value: "processing", label: t("Processing"), icon: <Package className="h-4 w-4" /> },
         { value: "shipped", label: t("Shipped"), icon: <Truck className="h-4 w-4" /> },
         { value: "delivered", label: t("Delivered"), icon: <CheckCircle2 className="h-4 w-4" /> },
-        { value: "canceled", label: t("Canceled"), icon: <XCircle className="h-4 w-4" /> },
     ];
 
     return (
@@ -60,19 +58,23 @@ export default function UpdateStatus({ order, onSuccess, onCancel }: UpdateStatu
                     {t("CurrentWorkflowStage")}
                 </Label>
                 <Select onValueChange={(val) => setStatus(val)} defaultValue={status}>
-                    <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm">
+                    <SelectTrigger className="h-11 rounded-xl border-border/60 bg-white shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm">
                         <SelectValue placeholder={t("SelectStatus")} />
                     </SelectTrigger>
-                    <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/70 backdrop-blur z-[999] p-1">
+                    <SelectContent 
+                        position="popper" 
+                        sideOffset={4}
+                        className="rounded-xl border border-border/60 shadow-2xl overflow-hidden bg-white z-[9999] p-1 min-w-[var(--radix-select-trigger-width)]"
+                    >
                         {statuses.map((s) => (
                             <SelectItem
                                 key={s.value}
                                 value={s.value}
-                                className="py-3 px-4 border-b border-border/60 last:border-none focus:bg-foreground/[0.04] transition-colors cursor-pointer font-medium text-sm flex gap-3"
+                                className="py-2.5 px-4 rounded-lg focus:bg-primary/5 focus:text-primary transition-all cursor-pointer font-medium text-sm my-0.5"
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className="h-2 w-2 rounded-full bg-current opacity-30" />
-                                    {s.label}
+                                    <div className="h-2 w-2 rounded-full bg-current opacity-30 shrink-0" />
+                                    <span>{s.label}</span>
                                 </div>
                             </SelectItem>
                         ))}

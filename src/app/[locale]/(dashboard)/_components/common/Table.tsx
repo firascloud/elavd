@@ -25,18 +25,18 @@ export function DashboardTable({ headers, children, className, isLoading, emptyM
   const hasRows = React.Children.count(children) > 0;
   return (
     <div className={cn("rounded-2xl sm:rounded-[2.5rem] border border-border/40 bg-background/20 backdrop-blur-2xl overflow-hidden shadow-2xl shadow-black/[0.02]", className)}>
-      <div className="w-full overflow-x-auto no-scrollbar">
-        <Table className="min-w-[700px] lg:min-w-0 table-fixed sm:table-auto">
-          <TableHeader className="bg-foreground/[0.02] sticky top-0 z-10">
-            <TableRow className="hover:bg-transparent border-border/40 h-14 sm:h-16">
+      <div className="w-full overflow-hidden">
+        <Table className="w-full sm:table-auto border-collapse">
+          <TableHeader className="hidden sm:table-header-group bg-foreground/[0.02] sticky top-0 z-10">
+            <TableRow className="hover:bg-transparent border-border/40 h-16">
               {headers.map((header, index) => (
-                <TableHead key={index} className={cn("text-[10px] ltr:text-left rtl:text-right uppercase font-[800] tracking-widest text-muted-foreground/50 px-4 sm:px-6", headerClasses[index])}>
+                <TableHead key={index} className={cn("text-[10px] ltr:text-left rtl:text-right uppercase font-[800] tracking-widest text-muted-foreground/50 px-6", headerClasses[index])}>
                   {header}
                 </TableHead>
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody className="divide-y divide-border/10">
+          <TableBody className="flex flex-col sm:table-row-group divide-y divide-border/10">
             {isLoading ? (
               <TableRow className="border-none">
                 <TableCell colSpan={headers.length}>
@@ -75,7 +75,7 @@ export function DashboardTable({ headers, children, className, isLoading, emptyM
 
 export function DashboardTableRow({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <TableRow className={cn("border-border/10 hover:bg-foreground/[0.03] odd:bg-foreground/[0.01] transition-all duration-300 group h-16 sm:h-20", className)}>
+    <TableRow className={cn("flex flex-col sm:table-row border-border/10 hover:bg-foreground/[0.03] odd:bg-foreground/[0.01] transition-all duration-300 group h-auto sm:h-20 p-4 sm:p-0", className)}>
       {children}
     </TableRow>
   );
@@ -83,7 +83,7 @@ export function DashboardTableRow({ children, className }: { children: React.Rea
 
 export function DashboardTableCell({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <TableCell className={cn("px-4 sm:px-6 py-3 sm:py-4 text-sm font-bold tracking-tight text-foreground/80 whitespace-nowrap transition-all duration-300 group-hover:text-foreground", className)}>
+    <TableCell className={cn("flex sm:table-cell px-0 sm:px-6 py-2 sm:py-4 text-sm font-bold tracking-tight text-foreground/80 whitespace-normal sm:whitespace-nowrap transition-all duration-300 group-hover:text-foreground border-none sm:border-b", className)}>
       {children}
     </TableCell>
   );

@@ -44,7 +44,7 @@ export type OrderItemRow = {
 export type OrderRow = {
     id: string
     user_id: string | null
-    status: 'pending' | 'paid' | 'shipped' | 'completed' | 'cancelled'
+    status: 'pending' | 'shipped' | 'delivered'
     total: number
     customer_name?: string | null
     customer_email?: string | null
