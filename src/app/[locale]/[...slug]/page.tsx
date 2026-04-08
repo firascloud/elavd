@@ -6,7 +6,7 @@ import { Home, ArrowLeft, Search } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import Logo from '@/assets/dneest-logo.webp';
+import Logo from '@/assets/logo.svg';
 import Image from 'next/image';
 
 const NotFoundPage = () => {
@@ -14,7 +14,7 @@ const NotFoundPage = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-background overflow-hidden relative font-sans">
-       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(242,133,56,0.02),transparent_70%)]" />
         <motion.div
           animate={{
@@ -37,9 +37,9 @@ const NotFoundPage = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
- 
- <div className='flex flex-col items-center justify-center'>
-        <motion.div
+
+        <div className='flex flex-col items-center justify-center'>
+          <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", damping: 15 }}
@@ -48,7 +48,7 @@ const NotFoundPage = () => {
             <div className="text-[100px] md:text-[180px] font-black leading-none text-muted dark:text-accent/30 select-none tracking-tighter drop-shadow-sm">
               404
             </div>
-           </motion.div>
+          </motion.div>
 
           {/* Content */}
           <div className="space-y-3 mb-10 text-center">

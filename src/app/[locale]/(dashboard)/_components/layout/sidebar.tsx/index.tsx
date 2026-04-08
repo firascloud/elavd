@@ -25,7 +25,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
-import logo from '@/assets/dneest-logo.webp';
+import logo from '@/assets/logo.svg';
 import { useRouter } from 'next/navigation';
 import useAppStore from '@/store/store';
 import { useEffect } from 'react';

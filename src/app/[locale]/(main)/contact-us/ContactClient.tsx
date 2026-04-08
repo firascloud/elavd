@@ -67,7 +67,7 @@ export default function ContactClient() {
           <div className="lg:col-span-5 bg-muted/30 border border-border rounded-[2rem] p-10 flex flex-col items-center text-center justify-center space-y-8 group">
             <div className="relative w-full max-w-[220px] h-28 transform transition-transform group-hover:scale-105 duration-700">
               <Image
-                src={require('@/assets/dneest-logo.webp')}
+                src={require('@/assets/logo.svg')}
                 alt="Logo"
                 fill
                 className="object-contain"

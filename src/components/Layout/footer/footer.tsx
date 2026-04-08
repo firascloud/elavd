@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/routing'
-import Logo from '@/assets/dneest-logo.webp'
+import Logo from '@/assets/logo.svg'
 
 export function Footer() {
   const t = useTranslations('footer')

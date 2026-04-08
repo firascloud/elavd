@@ -5,11 +5,24 @@ import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { getOffers, type Offer } from '@/services/home';
+import Logo from '@/assets/money-safe-security-cash-protection.svg'
+import card1 from '@/assets/card-printer-ribbon-accessories.svg'
+import card2 from '@/assets/magnetic-plastic-cards-high-quality.svg'
+import card3 from '@/assets/plastic-card-printer-primacy-lava.svg'
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 
 export default function SpecialOffers({ position }: { position: number }) {
     const locale = useLocale();
+    const altText = locale === 'ar'
+        ? "خزنة أموال آمنة لحماية النقود والأصول"
+        : "secure money safe for cash protection";
+    
+    const cardImages = [card1, card2, card3];
+    const cardAlts = locale === 'ar'
+        ? ["شرائط وطابعات بطاقات ملحقات", "بطاقات بلاستيكية مغناطيسية عالية الجودة", "طابعة بطاقات بلاستيكية بريماسي لافا"]
+        : ["card printer ribbon accessories", "magnetic plastic cards high quality", "plastic card printer primacy lava"];
+
     const [offers, setOffers] = useState<Offer[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,7 +50,7 @@ export default function SpecialOffers({ position }: { position: number }) {
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex gap-4 md:gap-6">
-                            {offers.map((offer) => (
+                            {offers.map((offer, index) => (
                                 <div 
                                     key={offer.id}  
                                     className="relative flex-[0_0_100%] sm:flex-[0_0_48%] lg:flex-[0_0_32%] min-w-0 aspect-[16/9] md:aspect-[4/3]  overflow-hidden "
@@ -45,8 +58,8 @@ export default function SpecialOffers({ position }: { position: number }) {
                                     {offer.link ? (
                                         <Link href={offer.link as any} className="block w-full h-full relative">
                                             <Image
-                                                src={offer.image_url}
-                                                alt="Offer"
+                                                src={cardImages[index % 3]}
+                                                alt={cardAlts[index % 3]}
                                                 fill
                                                 className="object-contain group-hover:scale-105 transition-transform duration-1000"
                                                 priority
@@ -54,8 +67,8 @@ export default function SpecialOffers({ position }: { position: number }) {
                                         </Link>
                                     ) : (
                                         <Image
-                                            src={offer.image_url}
-                                            alt="Offer"
+                                            src={cardImages[index % 3]}
+                                            alt={cardAlts[index % 3]}
                                             fill
                                             className="object-contain transition-transform duration-1000"
                                             priority
@@ -80,16 +93,16 @@ export default function SpecialOffers({ position }: { position: number }) {
                                 {offer.link ? (
                                     <Link href={offer.link as any} className="block relative w-full h-full">
                                          <Image
-                                            src={offer.image_url}
-                                            alt="Banner Offer"
+                                            src={Logo}
+                                            alt={altText}
                                             fill
                                             className="object-contain  transition-transform duration-1000"
                                         />
                                     </Link>
                                 ) : (
                                     <Image
-                                        src={offer.image_url}
-                                        alt="Banner Offer"
+                                        src={Logo}
+                                        alt={altText}
                                         fill
                                         className="object-contain transition-transform duration-1000"
                                     />

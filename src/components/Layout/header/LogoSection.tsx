@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Search, ChevronDown, Menu, Loader2, Star, Tag, ChevronRight } from 'lucide-react'
 import { Link, useRouter } from '@/i18n/routing'
 import { useTranslations, useLocale } from 'next-intl'
-import Logo from '@/assets/dneest-logo.webp'
+import Logo from '@/assets/logo.svg'
 import LanguageSwitcher from './LanguageSwitcher'
 import HeaderActions from './HeaderActions'
 import { getCategories, type Category } from '@/services/categoryService'
@@ -28,7 +28,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
   const [results, setResults] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const [showCatMenu, setShowCatMenu] = useState(false)
-  
+
   const catMenuRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
 
@@ -106,13 +106,13 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
 
         {/* Desktop Search */}
         <div className="hidden lg:flex flex-1 max-w-2xl w-full relative">
-          <form 
+          <form
             onSubmit={handleSearchRedirect}
             className="flex h-11 border-2 border-primary rounded-lg group focus-within:ring-2 focus-within:ring-primary/20 transition-all w-full relative"
           >
             {/* Category Select */}
             <div className="relative z-[120]" ref={catMenuRef}>
-              <div 
+              <div
                 onClick={() => setShowCatMenu(!showCatMenu)}
                 className="bg-primary px-4 h-full flex items-center text-white cursor-pointer hover:bg-primary/95 transition border-r border-primary/20 gap-3 min-w-[130px] justify-center rounded-s-[6px]"
               >
@@ -124,7 +124,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
 
               <AnimatePresence>
                 {showCatMenu && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -175,8 +175,8 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
               placeholder={t('Search')}
               className="flex-1 px-4 text-sm outline-none placeholder:text-muted-foreground/60"
             />
-            
-            <button 
+
+            <button
               type="submit"
               disabled={loading}
               className="bg-primary px-6 flex items-center justify-center text-white hover:bg-primary/95 transition disabled:opacity-80 rounded-e-[6px]"
@@ -192,7 +192,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
           {/* Desktop Results Menu */}
           <AnimatePresence>
             {searchTerm.length >= 2 && (
-              <motion.div 
+              <motion.div
                 ref={resultsRef}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -219,10 +219,10 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                         >
                           <div className="relative w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                             {product.main_image ? (
-                              <Image 
-                                src={product.main_image || ''} 
-                                alt={getProductName(product)} 
-                                fill 
+                              <Image
+                                src={product.main_image || ''}
+                                alt={getProductName(product)}
+                                fill
                                 className="object-cover group-hover:scale-110 transition-transform duration-500"
                               />
                             ) : (

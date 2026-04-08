@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
 import { Search, Menu } from 'lucide-react'
-import Logo from '@/assets/dneest-logo.webp'
+import Logo from '@/assets/logo.svg'
 import LanguageSwitcher from './LanguageSwitcher'
 
 interface MobileHeaderProps {

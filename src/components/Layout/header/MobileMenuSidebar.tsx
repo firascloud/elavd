@@ -6,7 +6,7 @@ import { Link } from '@/i18n/routing'
 import { X, ChevronRight, Tag, Heart, Repeat, ShoppingCart, User, Phone } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useTranslations, useLocale } from 'next-intl'
-import Logo from '@/assets/dneest-logo.webp'
+import Logo from '@/assets/logo.svg'
 import type { Category } from '@/services/categoryService'
 
 interface NavLink {
@@ -102,7 +102,7 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
             {t('Compare') ?? 'Compare'}
           </button>
 
-{/* <button className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors w-full text-start">
+          {/* <button className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors w-full text-start">
             <ShoppingCart className="w-5 h-5 text-primary" />
             {t('Cart') ?? 'Cart'}
           </button> */}
