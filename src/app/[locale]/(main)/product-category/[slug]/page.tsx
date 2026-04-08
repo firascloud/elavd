@@ -12,6 +12,7 @@ import Pagination from '../_components/pagination'
 import { motion } from 'framer-motion'
 import Script from 'next/script'
 import { getCategoryJsonLd } from '@/seo/category'
+import { categoryMetadata } from '@/metadata/category'
 
 interface CategoryPageProps {
   params: Promise<{
@@ -26,11 +27,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   if (!category) return { title: 'Category Not Found' }
 
-  const name = locale === 'ar' ? category.name_ar : category.name_en
-  return {
-    title: `${name} | DUBAI NETWORK IT`,
-    description: locale === 'ar' ? category.description_ar : category.description_en,
-  }
+  return categoryMetadata({ locale, slug, category: category as any })
 }
 
 export default async function CategoryPage({ params, searchParams }: {

@@ -10,6 +10,7 @@ import FilterProduct from '../product-category/_components/fillterProduct'
 import Pagination from '../product-category/_components/pagination'
 import Script from 'next/script'
 import { getStoreJsonLd } from '@/seo/store'
+import { storeMetadata } from '@/metadata/store'
 
 interface StorePageProps {
   params: Promise<{
@@ -28,19 +29,7 @@ interface StorePageProps {
 export async function generateMetadata({ params, searchParams }: StorePageProps): Promise<Metadata> {
   const { locale } = await params
   const { s } = await searchParams
-  const t = await getTranslations('common')
-
-  if (s) {
-    return {
-      title: `${s} | ${t('Store')}`,
-      description: locale === 'ar' ? `نتائج البحث عن ${s}` : `Search results for ${s}`,
-    }
-  }
-
-  return {
-    title: `${t('Store')} | DUBAI NETWORK IT`,
-    description: locale === 'ar' ? 'استكشف جميع منتجاتنا' : 'Explore all our products',
-  }
+  return storeMetadata(locale, s)
 }
 
 export default async function StorePage({ params, searchParams }: StorePageProps) {

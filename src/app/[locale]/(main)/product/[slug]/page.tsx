@@ -9,6 +9,7 @@ import ProductTabs from "./_components/ProductTabs";
 import RelatedProducts from "./_components/RelatedProducts";
 import Script from "next/script";
 import { getProductJsonLd } from "@/seo/product";
+import { productMetadata } from "@/metadata/product";
 import {
   getCategories,
   getFeaturedProducts,
@@ -29,13 +30,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) return { title: "Product Not Found" };
 
-  const name = locale === "ar" ? product.name_ar : product.name_en;
-  const desc = locale === "ar" ? product.short_desc_ar : product.short_desc_en;
-
-  return {
-    title: `${name || "Product"} | DUBAI NETWORK IT`,
-    description: desc || undefined,
-  };
+  return productMetadata({ locale, slug, product: product as any });
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {

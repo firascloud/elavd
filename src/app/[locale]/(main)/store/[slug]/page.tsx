@@ -10,6 +10,7 @@ import FilterProduct from '../../product-category/_components/fillterProduct'
 import Pagination from '../../product-category/_components/pagination'
 import Script from 'next/script'
 import { getStoreDynamicJsonLd } from '@/seo/storeDynamic'
+import { storeSlugMetadata } from '@/metadata/storeSlug'
 
 interface StoreDynamicPageProps {
   params: Promise<{
@@ -27,21 +28,19 @@ interface StoreDynamicPageProps {
 export async function generateMetadata({ params }: StoreDynamicPageProps): Promise<Metadata> {
   const { slug, locale } = await params
   const category = await getCategoryBySlug(slug)
-  const t = await getTranslations('common')
 
   if (category) {
     const name = locale === 'ar' ? category.name_ar : category.name_en
-    return {
-      title: `${name} | ${t('Store')}`,
-      description: locale === 'ar' ? category.description_ar : category.description_en,
-    }
+    return storeSlugMetadata({
+      locale,
+      slug,
+      title: name || undefined,
+      description: (locale === 'ar' ? category.description_ar : category.description_en) || undefined,
+    })
   }
 
   const displaySlug = decodeURIComponent(slug).replace(/-/g, ' ')
-  return {
-    title: `${displaySlug} | ${t('Store')}`,
-    description: locale === 'ar' ? `نتائج عن ${displaySlug}` : `Results for ${displaySlug}`,
-  }
+  return storeSlugMetadata({ locale, slug, title: displaySlug })
 }
 
 export default async function StoreDynamicPage({ params, searchParams }: StoreDynamicPageProps) {

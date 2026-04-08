@@ -11,6 +11,7 @@ import FilterProduct from '../../../product-category/_components/fillterProduct'
 import Pagination from '../../../product-category/_components/pagination'
 import Script from 'next/script'
 import { getStoreDynamicJsonLd } from '@/seo/storeDynamic'
+import { storeSubSlugMetadata } from '@/metadata/storeSubSlug'
 
 interface SubCategoryPageProps {
   params: Promise<{
@@ -27,23 +28,23 @@ interface SubCategoryPageProps {
 }
 
 export async function generateMetadata({ params }: SubCategoryPageProps): Promise<Metadata> {
-  const { subSlug, locale } = await params
+  const { subSlug, slug, locale } = await params
   const subCategory = await getSubCategoryBySlug(subSlug)
   const t = await getTranslations('common')
 
   if (subCategory) {
     const name = locale === 'ar' ? subCategory.name_ar : subCategory.name_en
-    return {
-      title: `${name} | ${t('Store')}`,
-      description: locale === 'ar' ? subCategory.description_ar : subCategory.description_en,
-    }
+    return storeSubSlugMetadata({
+      locale,
+      slug,
+      subSlug,
+      title: name || undefined,
+      description: (locale === 'ar' ? subCategory.description_ar : subCategory.description_en) || undefined,
+    })
   }
 
   const displaySlug = decodeURIComponent(subSlug).replace(/-/g, ' ')
-  return {
-    title: `${displaySlug} | ${t('Store')}`,
-    description: locale === 'ar' ? `نتائج عن ${displaySlug}` : `Results for ${displaySlug}`,
-  }
+  return storeSubSlugMetadata({ locale, slug, subSlug, title: displaySlug })
 }
 
 export default async function SubCategoryPage({ params, searchParams }: SubCategoryPageProps) {
