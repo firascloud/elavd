@@ -23,7 +23,7 @@ export default function ContactClient() {
     {
       icon: <Mail className="size-6 text-primary" />,
       title: t('email'),
-      content: "info@dneest.com",
+      content: "sales@elavd.com",
     },
     {
       icon: <Phone className="size-6 text-primary" />,

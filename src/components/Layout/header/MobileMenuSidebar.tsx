@@ -124,7 +124,7 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
           </div>
           <div className="flex items-center gap-3 text-slate-500 text-sm">
             <Icon icon="mdi:email" className="w-4 h-4 text-primary" />
-            <span>info@dneest.com</span>
+            <span>sales@elavd.com</span>
           </div>
         </div>
       </div>

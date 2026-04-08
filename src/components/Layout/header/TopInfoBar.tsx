@@ -18,7 +18,7 @@ export default function TopInfoBar() {
         <div className="flex items-center gap-5" dir="ltr">
           <div className="flex items-center gap-2">
             <Icon icon="mdi:email" className="w-4 h-4" />
-            <span>info@dneest.com</span>
+            <span>sales@elavd.com</span>
           </div>
           <LanguageSwitcher />
         </div>

@@ -27,7 +27,7 @@ export function getContactJsonLd(locale: string) {
                         "@type": "ContactPoint",
                         "@id": contactPointId,
                         contactType: "customer support",
-                        email: "info@dneest.com",
+                        email: "sales@elavd.com",
                         telephone: "+966553202091",
                         areaServed: ["SA"],
                         availableLanguage: ["ar", "en"],

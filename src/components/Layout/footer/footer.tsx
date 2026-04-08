@@ -101,7 +101,7 @@ export function Footer() {
                 </div>
                 <div className="flex flex-col  gap-1.5">
                   <span className="font-bold opacity-70">{t('EmailLabel')}</span>
-                  <a href="mailto:info@dneest.com" className="hover:text-primary transition">info@dneest.com</a>
+                  <a href="mailto:sales@elavd.com" className="hover:text-primary transition">sales@elavd.com</a>
                 </div>
               </li>
               <li className="flex  items-center  gap-3 group">
