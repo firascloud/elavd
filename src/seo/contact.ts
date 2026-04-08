@@ -54,6 +54,20 @@ export function getContactJsonLd(locale: string) {
                 ],
             },
             {
+                "@type": "WebPage",
+                "@id": webPageId,
+                url: `${base}${pagePath}`,
+                name: locale === "ar" ? "اتصل بنا" : "Contact Us",
+                description:
+                    locale === "ar"
+                        ? "تواصل معنا للاستفسارات والدعم الفني"
+                        : "Get in touch for inquiries and technical support",
+                inLanguage: locale,
+                isPartOf: { "@id": websiteId },
+                mainEntity: { "@id": organizationId },
+                breadcrumb: { "@id": breadcrumbId },
+            },
+            {
                 "@type": "ContactPage",
                 "@id": webPageId,
                 url: `${base}${pagePath}`,

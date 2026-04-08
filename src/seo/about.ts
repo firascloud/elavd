@@ -21,6 +21,23 @@ export function getAboutJsonLd(locale: string) {
                 "@id": organizationId,
                 name: "Dubai Network IT EST",
                 url: base,
+                logo: `${base}/placeholder-logo.svg`,
+                sameAs: [
+                    // Add socials if available
+                ],
+                contactPoint: [
+                    {
+                        "@type": "ContactPoint",
+                        contactType: "customer support",
+                        telephone: "+966553202091",
+                        email: "info@dneest.com",
+                        availableLanguage: ["ar", "en"],
+                    },
+                ],
+                address: {
+                    "@type": "PostalAddress",
+                    addressCountry: "SA",
+                },
             },
             {
                 "@type": "BreadcrumbList",

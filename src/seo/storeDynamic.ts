@@ -28,6 +28,16 @@ export function getStoreDynamicJsonLd(locale: string, data: {
         ]
       },
       {
+        "@type": "WebPage",
+        "@id": webPageId,
+        url: `${base}${pagePath}`,
+        name: pageName,
+        inLanguage: locale,
+        isPartOf: { "@id": websiteId },
+        mainEntity: { "@id": organizationId },
+        breadcrumb: { "@id": breadcrumbId }
+      },
+      {
         "@type": data.isCategory ? "CollectionPage" : "SearchResultsPage",
         "@id": webPageId,
         url: `${base}${pagePath}`,

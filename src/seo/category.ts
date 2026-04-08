@@ -31,6 +31,17 @@ export function getCategoryJsonLd(locale: string, category: {
         ]
       },
       {
+        "@type": "WebPage",
+        "@id": webPageId,
+        url: `${base}${pagePath}`,
+        name,
+        description,
+        inLanguage: locale,
+        isPartOf: { "@id": websiteId },
+        breadcrumb: { "@id": breadcrumbId },
+        mainEntity: { "@id": collectionId }
+      },
+      {
         "@type": "CollectionPage",
         "@id": webPageId,
         url: `${base}${pagePath}`,

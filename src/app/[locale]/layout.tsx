@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { BASE_URL, SITE_NAME } from "@/metadata/utils";
+import Script from "next/script";
 
 const elMessiri = El_Messiri({
   variable: "--font-el-messiri",
@@ -22,8 +23,6 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
-
-export const metadata: Metadata = {};
 
 export async function generateStaticParams() {
   const locales = ["en", "ar"];
@@ -49,7 +48,21 @@ export default async function RootLayout({
         dir={locale === "ar" ? "rtl" : "ltr"}
         className={`${locale === "ar" ? elMessiri.className : inter.className}`}
         suppressHydrationWarning
+        data-scroll-behavior="smooth"
       >
+        <head>
+          <meta name="next-head-count" content="0" />
+          <meta name="robots" content="index, follow" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="theme-color" content="#f38d38" />
+          <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+          <link rel="dns-prefetch" href="https://connect.facebook.net" />
+          <link rel="dns-prefetch" href="https://script.hotjar.com" />
+          {/* Defer any third-party loaders until afterInteractive if needed */}
+          <Script id="defer-third-party" strategy="afterInteractive">
+            {`/* place deferred third-party loaders here if required */`}
+          </Script>
+        </head>
         <body className="antialiased">
           <Providers>
             <ThemeProvider

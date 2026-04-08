@@ -25,6 +25,16 @@ export function getStoreJsonLd(locale: string, opts: { query?: string } = {}) {
         ]
       },
       {
+        "@type": "WebPage",
+        "@id": webPageId,
+        url: `${base}${pagePath}`,
+        name: pageName,
+        inLanguage: locale,
+        isPartOf: { "@id": websiteId },
+        mainEntity: { "@id": organizationId },
+        breadcrumb: { "@id": breadcrumbId }
+      },
+      {
         "@type": isSearch ? "SearchResultsPage" : "CollectionPage",
         "@id": webPageId,
         url: `${base}${pagePath}`,

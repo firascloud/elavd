@@ -67,8 +67,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           short_desc_ar: product.short_desc_ar ?? undefined,
           short_desc_en: product.short_desc_en ?? undefined,
           main_image: product.main_image ?? undefined,
-          sku: (product as any).sku ?? String(product.id)
-        }))}
+          sku: (product as any).sku ?? String(product.id),
+          price: (product as any).price ?? null,
+          discount_price: (product as any).discount_price ?? null,
+          rating: (product as any).rating ?? null,
+          images: Array.isArray((product as any).images) ? (product as any).images : undefined
+        }, { categoryName: categoryName ?? undefined }))}
       </Script>
       <PageHeader
         title={name || t("Products")}
