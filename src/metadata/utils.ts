@@ -56,7 +56,7 @@ export function buildMetadata(opts: {
   const ogImages = buildOpenGraphImages(
     opts.images?.length
       ? opts.images
-      : [{ url: "/og.png", width: 1200, height: 630, alt: SITE_NAME }]
+      : [{ url: "/placeholder-logo.svg", width: 1200, height: 630, alt: SITE_NAME }]
   );
 
   return {

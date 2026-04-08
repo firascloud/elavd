@@ -17,7 +17,7 @@ export async function homeMetadata(locale: string): Promise<Metadata> {
         title,
         description,
         keywords: ["IT", "Security", "Networking", "Saudi Arabia", "Riyadh"],
-        images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE_NAME }],
+        images: [{ url: "/placeholder-logo.svg", width: 1200, height: 630, alt: SITE_NAME }],
     });
 }
 

@@ -7,6 +7,7 @@ import Providers from "./providers";
 import { Toaster } from "sonner";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { BASE_URL, SITE_NAME } from "@/metadata/utils";
 
 const elMessiri = El_Messiri({
   variable: "--font-el-messiri",
@@ -69,4 +70,32 @@ export default async function RootLayout({
       </html>
     </NextIntlClientProvider>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const languages: Record<string, string> = {
+    en: `/en`,
+    ar: `/ar`,
+  };
+
+  return {
+    metadataBase: new URL(BASE_URL),
+    title: {
+      default: SITE_NAME,
+      template: `%s | ${SITE_NAME}`,
+    },
+    alternates: {
+      languages,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
+  };
 }
