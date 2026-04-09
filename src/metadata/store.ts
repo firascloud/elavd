@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { buildMetadata } from "./utils";
+import { buildMetadata, buildMetadataSmart } from "./utils";
 
 export async function storeMetadata(locale: string, query?: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "common" });
@@ -14,7 +14,9 @@ export async function storeMetadata(locale: string, query?: string): Promise<Met
         ? "تصفح متجر إيلافد واستكشف مجموعة واسعة من أنظمة الأمن والمراقبة وشبكات الاتصالات وحلول تقنية المعلومات من علامات تجارية عالمية موثوقة."
         : "Browse the Elavd store and discover a wide range of security systems, surveillance cameras, networking equipment and IT solutions from trusted global brands.");
 
-  return buildMetadata({
+  // For the base /store page use buildMetadataSmart (reads real path from headers).
+  // When a search query is active the path is still /store, so smart is fine too.
+  return buildMetadataSmart({
     locale,
     path: "/store",
     title,

@@ -12,5 +12,6 @@ export async function generateMetadata({
 }
 
 export default function ComparePage() {
+  
   return <CompareClient />;
 }

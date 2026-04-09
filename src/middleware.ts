@@ -16,7 +16,13 @@ export default async function middleware(request: NextRequest) {
     }
   }
 
-  return intlMiddleware(request);
+  // Inject current pathname so server components can read it via next/headers
+  // without needing to receive it as a param — used by getPageSeoData()
+  const response = await intlMiddleware(request);
+  if (response) {
+    response.headers.set("x-pathname", pathname);
+  }
+  return response;
 }
 
 export const config = {

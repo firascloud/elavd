@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { buildMetadata } from "./utils";
+import { buildMetadataSmart } from "./utils";
 
 export async function aboutMetadata(locale: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "about" });
-  return buildMetadata({
+  return buildMetadataSmart({
     locale,
     path: "/about-us",
     title: t("title"),

@@ -8,8 +8,6 @@ import { Link } from '@/i18n/routing'
 import Image from 'next/image'
 import PageHeader from '@/components/common/page-header'
 import { cn } from '@/lib/utils'
-import Script from 'next/script'
-import { getCompareJsonLd } from '@/seo/compare'
 
 export default function CompareClient() {
     const t = useTranslations('common')
@@ -29,9 +27,6 @@ export default function CompareClient() {
 
     return (
         <div className="min-h-screen bg-muted/30 pb-20">
-            <Script id="jsonld-compare" type="application/ld+json" strategy="afterInteractive">
-                {JSON.stringify(getCompareJsonLd(locale))}
-            </Script>
             <PageHeader
                 title={t('Compare')}
                 subtitle={countText}

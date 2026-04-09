@@ -1,4 +1,12 @@
 import type { Metadata } from "next";
+import {
+  generateCanonicalUrl,
+  generateHreflangUrls,
+  generateXDefaultUrl,
+  validateCanonicalUrl,
+  validateHreflangUrls,
+  getPageSeoData,
+} from "@/seo/canonical";
 
 export const BASE_URL = "https://elavd.com";
 export const SITE_NAME = "Dubai Network IT EST";
@@ -22,14 +30,34 @@ export function cleanPath(path: string) {
   return p === "/" ? "" : p;
 }
 
-export function buildLanguageAlternates(path: string) {
-  const p = cleanPath(path);
+/**
+ * Builds the alternates object (canonical + hreflang languages) using
+ * the canonical.ts utilities — includes validation and x-default.
+ *
+ * @param path  Route path without locale prefix, e.g. "/store" or "/product/my-slug"
+ * @param locale  Active locale, e.g. "en" | "ar"
+ */
+export function buildLanguageAlternates(path: string, locale = "en") {
+  const currentPath = path || "/";
+
+  const canonical = generateCanonicalUrl({ baseUrl: BASE_URL, currentPath, locale });
+  const hreflangList = generateHreflangUrls({ baseUrl: BASE_URL, currentPath, locale });
+  const xDefault = generateXDefaultUrl(BASE_URL, currentPath, locale);
+
+  // Validate in dev — warnings only, never throw
+  if (process.env.NODE_ENV !== "production") {
+    validateCanonicalUrl(canonical);
+    if (hreflangList.length) validateHreflangUrls(hreflangList);
+  }
+
+  // Build the Record<locale, url> that Next.js Metadata expects
   const languages: Record<string, string> = {};
-  // hreflang spec requires absolute URLs
-  for (const l of DEFAULT_LOCALES) languages[l] = `${BASE_URL}/${l}${p}`;
-  // x-default signals preferred fallback language to Google
-  languages["x-default"] = `${BASE_URL}/en${p}`;
-  return languages;
+  for (const { locale: loc, url } of hreflangList) {
+    languages[loc] = url;
+  }
+  if (xDefault) languages["x-default"] = xDefault;
+
+  return { canonical, languages };
 }
 
 export function buildOpenGraphImages(images?: SeoImage[]) {
@@ -42,21 +70,25 @@ export function buildOpenGraphImages(images?: SeoImage[]) {
   }));
 }
 
-export function buildMetadata(opts: {
+// ─── Shared opts type ────────────────────────────────────────────────────────
+
+interface BuildMetadataOpts {
   locale: string;
-  path: string; // "/cart" | "/product/x" etc (no locale prefix)
+  /** Route path WITHOUT locale prefix, e.g. "/store" | "/product/x" | "/" */
+  path: string;
   title: string;
   description: string;
   keywords?: string[];
   images?: SeoImage[];
   noindex?: boolean;
   type?: "website" | "article";
-}): Metadata {
-  const p = cleanPath(opts.path);
-  const url = `${BASE_URL}/${opts.locale}${p}`;
-  // Canonical must be absolute to avoid ambiguity
-  const canonical = `${BASE_URL}/${opts.locale}${p}`;
-  const languages = buildLanguageAlternates(opts.path);
+}
+
+function buildMetadataBase(
+  opts: BuildMetadataOpts,
+  canonical: string,
+  languages: Record<string, string>
+): Metadata {
   const ogImages = buildOpenGraphImages(
     opts.images?.length
       ? opts.images
@@ -68,10 +100,7 @@ export function buildMetadata(opts: {
     title: opts.title,
     description: opts.description,
 
-    alternates: {
-      canonical,
-      languages,
-    },
+    alternates: { canonical, languages },
 
     robots: opts.noindex
       ? { index: false, follow: false, googleBot: { index: false, follow: false } }
@@ -86,7 +115,7 @@ export function buildMetadata(opts: {
     openGraph: {
       title: opts.title,
       description: opts.description,
-      url,
+      url: canonical,
       siteName: SITE_NAME,
       locale: opts.locale,
       type: opts.type ?? "website",
@@ -102,11 +131,49 @@ export function buildMetadata(opts: {
   };
 }
 
+/**
+ * Synchronous metadata builder — uses the explicit `path` param.
+ * Use this when you know the path at build/request time.
+ */
+export function buildMetadata(opts: BuildMetadataOpts): Metadata {
+  const { canonical, languages } = buildLanguageAlternates(opts.path, opts.locale);
+  return buildMetadataBase(opts, canonical, languages);
+}
+
+/**
+ * Async metadata builder — reads the current path from the
+ * middleware-injected `x-pathname` header via getPageSeoData().
+ *
+ * Use this in generateMetadata() functions where you want the canonical /
+ * hreflang URLs derived from the *actual* incoming request pathname,
+ * rather than a statically known path.
+ *
+ * For pages with dynamic slugs (product/[slug], store/[slug]) prefer
+ * buildMetadata() and pass the path explicitly.
+ *
+ * @example
+ * export async function generateMetadata({ params }) {
+ *   const { locale } = await params;
+ *   return buildMetadataSmart({ locale, path: "/store", title: "…", description: "…" });
+ * }
+ */
+export async function buildMetadataSmart(opts: BuildMetadataOpts): Promise<Metadata> {
+  const seoData = await getPageSeoData(opts.locale);
+
+  const canonical = seoData.canonicalUrl;
+  const languages: Record<string, string> = {};
+  for (const { locale: loc, url } of seoData.hreflangUrls) {
+    languages[loc] = url;
+  }
+  if (seoData.xDefaultUrl) languages["x-default"] = seoData.xDefaultUrl;
+
+  return buildMetadataBase(opts, canonical, languages);
+}
+
 export function normalizeKeywords(value: unknown): string[] | undefined {
   if (!value) return undefined;
   if (Array.isArray(value)) return value.filter(Boolean).map(String);
   if (typeof value === "string") {
-    // handles JSON-stringified arrays too
     try {
       const parsed = JSON.parse(value);
       if (Array.isArray(parsed)) return parsed.filter(Boolean).map(String);
@@ -120,4 +187,3 @@ export function normalizeKeywords(value: unknown): string[] | undefined {
   }
   return undefined;
 }
-

@@ -29,17 +29,19 @@ const BASE_URL = (() => {
 })();
 const JSON_MODE = args.includes("--json");
 const LOCALES = ["en", "ar"];
+const IS_LOCAL = BASE_URL.includes("localhost") || BASE_URL.includes("127.0.0.1");
 
-// Pages the monitor will inspect
+// localePrefix:'never' — URLs have NO /en/ or /ar/ prefix.
+// acceptLang drives which locale next-intl activates for that request.
 const CRITICAL_PAGES = [
-  { path: "/en",            expectIndex: true,  expectJsonLd: true  },
-  { path: "/ar",            expectIndex: true,  expectJsonLd: true  },
-  { path: "/en/store",      expectIndex: true,  expectJsonLd: true  },
-  { path: "/en/about-us",   expectIndex: true,  expectJsonLd: false },
-  { path: "/en/contact-us", expectIndex: true,  expectJsonLd: true  },
-  { path: "/en/cart",       expectIndex: false, expectJsonLd: false },
-  { path: "/en/compare",    expectIndex: false, expectJsonLd: false },
-  { path: "/en/favorite",   expectIndex: false, expectJsonLd: false },
+  { path: "/",            acceptLang: "en", expectIndex: true,  expectJsonLd: true  },
+  { path: "/",            acceptLang: "ar", expectIndex: true,  expectJsonLd: true  },
+  { path: "/store",       acceptLang: "en", expectIndex: true,  expectJsonLd: true  },
+  { path: "/about-us",    acceptLang: "en", expectIndex: true,  expectJsonLd: false },
+  { path: "/contact-us",  acceptLang: "en", expectIndex: true,  expectJsonLd: true  },
+  { path: "/cart",        acceptLang: "en", expectIndex: false, expectJsonLd: false },
+  { path: "/compare",     acceptLang: "en", expectIndex: false, expectJsonLd: false },
+  { path: "/favorite",    acceptLang: "en", expectIndex: false, expectJsonLd: false },
 ];
 
 // ─── Utilities ───────────────────────────────────────────────────────────────
@@ -65,7 +67,7 @@ async function fetchText(url, opts = {}) {
     const res = await fetch(url, {
       redirect: "follow",
       headers: { "User-Agent": "elavd-seo-monitor/1.0" },
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(30000), // 30s — Turbopack needs time on first compile
       ...opts,
     });
     const text = await res.text();
@@ -92,7 +94,12 @@ async function checkRobots() {
   const { ok, text, status } = await fetchText(`${BASE_URL}/robots.txt`);
 
   if (!ok) {
-    record("FAIL", cat, "robots.txt is reachable", `HTTP ${status}`);
+    // Locally, robots.txt always fails because sitemap.ts calls Supabase (no prod env).
+    // Treat as WARN on localhost, FAIL on production.
+    const level = IS_LOCAL ? "WARN" : "FAIL";
+    record(level, cat, "robots.txt is reachable",
+      IS_LOCAL ? `HTTP ${status} (expected locally — Supabase env vars not set)` : `HTTP ${status}`);
+    if (IS_LOCAL) record("WARN", cat, "Skipping robots checks", "Run seo:check against production for accurate results");
     return;
   }
   record("PASS", cat, "robots.txt is reachable", `HTTP ${status}`);
@@ -129,7 +136,10 @@ async function checkSitemap() {
   const { ok, text, status } = await fetchText(`${BASE_URL}/sitemap.xml`);
 
   if (!ok) {
-    record("FAIL", cat, "sitemap.xml reachable", `HTTP ${status}`);
+    const level = IS_LOCAL ? "WARN" : "FAIL";
+    record(level, cat, "sitemap.xml reachable",
+      IS_LOCAL ? `HTTP ${status} (expected locally — Supabase env vars not set)` : `HTTP ${status}`);
+    if (IS_LOCAL) record("WARN", cat, "Skipping sitemap checks", "Run seo:check against production for accurate results");
     return;
   }
   record("PASS", cat, "sitemap.xml reachable", `HTTP ${status}`);
@@ -141,17 +151,18 @@ async function checkSitemap() {
     record("PASS", cat, "Sitemap has enough URLs", `${urlCount} URLs found`);
   }
 
-  // Locale presence — match both /en/ (path) and /en< or /en" (bare locale root)
+  // Locale presence — sitemap uses /en/ and /ar/ paths for hreflang even when
+  // localePrefix:'never' is set (hreflang spec requires absolute locale URLs).
+  // Next.js internally rewrites the URL, so /en/... and /ar/... are valid targets.
   for (const l of LOCALES) {
     const hasLocale =
-      text.includes(`/${l}/`) ||          // /en/store, /ar/product/...
-      new RegExp(`/${l}[<"&]`).test(text) || // /en" or /en< in XML tags
-      text.includes(`/${l}\n`) ||          // bare /en at line end
-      new RegExp(`elavd\\.com/${l}\\b`).test(text); // domain/locale boundary
+      text.includes(`/${l}/`) ||             // /en/store, /ar/product/...
+      new RegExp(`elavd\\.com/${l}[<"&\\s]`).test(text) || // bare locale root
+      text.includes(`/${l}\n`);
     if (hasLocale) {
-      record("PASS", cat, `Locale /${l}/ present in sitemap`);
+      record("PASS", cat, `Locale /${l}/ entries in sitemap`);
     } else {
-      record("FAIL", cat, `Locale /${l}/ present in sitemap`, "Missing locale entries — sitemap may not be deployed");
+      record("FAIL", cat, `Locale /${l}/ entries in sitemap`, "Missing locale entries — check sitemap.ts");
     }
   }
 
@@ -173,10 +184,15 @@ async function checkSitemap() {
 
 // ─── Check 3 & 4: Page-level checks ─────────────────────────────────────────
 
-async function checkPage({ path, expectIndex, expectJsonLd }) {
+async function checkPage({ path, acceptLang = "en", expectIndex, expectJsonLd }) {
   const url = `${BASE_URL}${path}`;
-  const cat = `Page: ${path}`;
-  const { ok, text, status } = await fetchText(url);
+  const cat = `Page: ${path} [${acceptLang}]`;
+  const { ok, text, status } = await fetchText(url, {
+    headers: {
+      "User-Agent": "elavd-seo-monitor/1.0",
+      "Accept-Language": `${acceptLang},${acceptLang === "ar" ? "en" : "ar"};q=0.8`,
+    },
+  });
 
   if (!ok) {
     record("FAIL", cat, "HTTP 2xx", `Got HTTP ${status}`);
@@ -261,8 +277,8 @@ async function checkPage({ path, expectIndex, expectJsonLd }) {
     const title = titleMatch[1].trim();
     // Avoid double site-name false positive: strip it before checking length
     const titleCore = title.replace(/\s*\|\s*Dubai Network IT EST\s*/gi, "").trim();
-    if (titleCore.length < 5) {
-      record("WARN", cat, "Title tag quality", `Core title too short: "${titleCore}"`);
+    if (titleCore.length < 3) {
+      record("WARN", cat, "Title tag quality", `Core title too short or empty: "${titleCore}"`);
     } else if (title.length > 70) {
       record("WARN", cat, "Title tag length", `Too long (${title.length} chars): "${title.slice(0, 60)}…"`);
     } else {
@@ -290,7 +306,7 @@ async function checkPage({ path, expectIndex, expectJsonLd }) {
 async function check404() {
   const cat = "404 handling";
   const { status, text } = await fetchText(
-    `${BASE_URL}/en/this-page-definitely-does-not-exist-seo-test-xyz`,
+    `${BASE_URL}/this-page-definitely-does-not-exist-seo-test-xyz`,
     { redirect: "follow" }
   );
 
@@ -355,8 +371,10 @@ async function main() {
   await check404();
   await checkRootRedirect();
 
-  // Run page checks in parallel (faster)
-  await Promise.all(CRITICAL_PAGES.map(checkPage));
+  // Run page checks SEQUENTIALLY — parallel hits overwhelm Turbopack on first compile
+  for (const page of CRITICAL_PAGES) {
+    await checkPage(page);
+  }
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
 

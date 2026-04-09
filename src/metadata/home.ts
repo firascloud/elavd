@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { buildMetadata, SITE_NAME } from "./utils";
+import { buildMetadataSmart, SITE_NAME } from "./utils";
 
 export async function homeMetadata(locale: string): Promise<Metadata> {
     const t = await getTranslations({ locale, namespace: "common" });
@@ -11,7 +11,7 @@ export async function homeMetadata(locale: string): Promise<Metadata> {
         (t as any)?.optional?.("HomeDescription") ??
         "Leading IT establishment offering technology solutions, services and products.";
 
-    return buildMetadata({
+    return buildMetadataSmart({
         locale,
         path: "/",
         title,
@@ -30,7 +30,7 @@ export async function simplePageMetadata(opts: {
     images?: { url: string; width?: number; height?: number; alt?: string }[];
     noindex?: boolean;
 }): Promise<Metadata> {
-    return buildMetadata({
+    return buildMetadataSmart({
         locale: opts.locale,
         path: opts.path,
         title: opts.title,
