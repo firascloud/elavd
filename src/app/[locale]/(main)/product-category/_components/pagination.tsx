@@ -38,7 +38,7 @@ export default function Pagination({ currentPage, totalPages, totalItems }: Pagi
 
   return (
     <nav className="flex justify-center mt-20 mb-10" aria-label="Pagination">
-      <div className="inline-flex items-center bg-background rounded-md shadow-md shadow-muted hover:shadow-xl transition-all border border-border px-8 py-3 gap-2 md:gap-4 flex-wrap justify-center font-sans">
+      <div className="inline-flex items-center bg-background rounded-md shadow-sm shadow-muted hover:shadow-md transition-all border border-border px-8 py-3 gap-2 md:gap-4 flex-wrap justify-center font-sans">
 
         {/* Previous Button */}
         {currentPage > 1 ? (
