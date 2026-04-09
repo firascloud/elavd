@@ -8,7 +8,6 @@ import { getProducts, getCategories, searchProducts } from '@/services/home'
 import { Search, PackageX } from 'lucide-react'
 import FilterProduct from '../product-category/_components/fillterProduct'
 import Pagination from '../product-category/_components/pagination'
-import Script from 'next/script'
 import { getStoreJsonLd } from '@/seo/store'
 import { storeMetadata } from '@/metadata/store'
 
@@ -89,16 +88,16 @@ export default async function StorePage({ params, searchParams }: StorePageProps
 
   return (
     <div className="min-h-screen bg-muted/30 pb-20">
-      <Script id="jsonld-store" type="application/ld+json" strategy="afterInteractive">
-        {JSON.stringify(getStoreJsonLd(locale, { query }))}
-      </Script>
+       <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getStoreJsonLd(locale, { query })) }}
+      />
       <PageHeader
         title={pageTitle}
       />
 
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-
           <div className="lg:col-span-3 order-2 lg:order-1">
             <CategorySidebar
               categories={allCategories}
@@ -115,8 +114,7 @@ export default async function StorePage({ params, searchParams }: StorePageProps
               currentView={view}
             />
 
-            {/* Grid */}
-            {paginatedProducts.length > 0 ? (
+             {paginatedProducts.length > 0 ? (
               <div className={`grid  ${view === 'list'
                 ? 'grid-cols-1 gap-8'
                 : view === 'grid-2'

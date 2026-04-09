@@ -90,20 +90,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
-  const languages: Record<string, string> = {
-    en: `/en`,
-    ar: `/ar`,
-  };
-
-  return {
+ 
+   return {
     metadataBase: new URL(BASE_URL),
     title: {
       default: SITE_NAME,
-      template: `%s | ${SITE_NAME}`,
-    },
-    alternates: {
-      languages,
+       template: `%s | ${SITE_NAME}`,
     },
     robots: {
       index: true,

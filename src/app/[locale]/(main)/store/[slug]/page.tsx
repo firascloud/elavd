@@ -9,7 +9,6 @@ import { getBrandBySlug } from '@/services/brandService'
 import { Search, PackageX } from 'lucide-react'
 import FilterProduct from '../../product-category/_components/fillterProduct'
 import Pagination from '../../product-category/_components/pagination'
-import Script from 'next/script'
 import { getStoreDynamicJsonLd } from '@/seo/storeDynamic'
 import { getBrandJsonLd } from '@/seo/brand'
 import { storeSlugMetadata } from '@/metadata/storeSlug'
@@ -115,17 +114,20 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
 
   return (
     <div className="min-h-screen bg-muted/30 pb-20">
-      <Script id="jsonld-store-dynamic" type="application/ld+json" strategy="afterInteractive">
-        {JSON.stringify(getStoreDynamicJsonLd(locale, {
+      {/* Inline JSON-LD — rendered in initial HTML so Googlebot sees it immediately */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getStoreDynamicJsonLd(locale, {
           isCategory: Boolean(category),
           slug,
           name: pageTitle
-        }))}
-      </Script>
+        })) }}
+      />
       {brand && (
-        <Script id="jsonld-brand" type="application/ld+json" strategy="afterInteractive">
-            {JSON.stringify(getBrandJsonLd(locale, { ...brand, slug }, totalItems))}
-        </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getBrandJsonLd(locale, { ...brand, slug }, totalItems)) }}
+        />
       )}
       <PageHeader
         title={t('Store')}

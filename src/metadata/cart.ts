@@ -8,13 +8,15 @@ export async function cartMetadata(locale: string): Promise<Metadata> {
     locale,
     path: "/cart",
     title: t("Cart"),
-    description: locale === "ar" ? "مراجعة العناصر وطلب عرض سعر" : "Review items and request a quote.",
+    description: locale === "ar"
+      ? "راجع المنتجات التي أضفتها إلى السلة وأرسل طلب عرض سعر لأنظمة الأمن وتقنية الاتصالات. فريق إيلافد جاهز للرد على استفساراتك."
+      : "Review the security systems and IT products in your cart and submit a quote request. The Elavd team will respond with pricing details promptly.",
     keywords:
       locale === "ar"
         ? ["سلة", "طلب عرض سعر", "منتجات", "شركة إيلافد للأنظمة الأمنية وتقنية الاتصالات"]
         : ["cart", "request quote", "products", "Dubai Network IT EST"],
-    // Usually carts should not be indexed (optional); keep indexed by default.
-    // noindex: true,
+    
+    noindex: true,
   });
 }
 

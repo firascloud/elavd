@@ -5,8 +5,6 @@ import { useTranslations, useLocale } from 'next-intl';
 import { MapPin, Mail, Phone, Send } from 'lucide-react';
 import Image from 'next/image';
 import PageHeader from '@/components/common/page-header';
-import Script from 'next/script';
-import { getContactJsonLd } from '@/seo/contact';
 
 export default function ContactClient() {
   const t = useTranslations('contact');
@@ -34,9 +32,6 @@ export default function ContactClient() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <Script id="jsonld-contact" type="application/ld+json" strategy="afterInteractive">
-        {JSON.stringify(getContactJsonLd(locale))}
-      </Script>
       <PageHeader
         title={t('title')}
         subtitle={t('subtitle')}

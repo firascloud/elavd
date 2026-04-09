@@ -7,7 +7,6 @@ import CategorySidebar from "@/components/common/category-sidebar";
 import ProductHero from "./_components/ProductHero";
 import ProductTabs from "./_components/ProductTabs";
 import RelatedProducts from "./_components/RelatedProducts";
-import Script from "next/script";
 import { getProductJsonLd } from "@/seo/product";
 import { productMetadata } from "@/metadata/product";
 import {
@@ -72,8 +71,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="min-h-screen bg-muted/30 pb-20" dir={isRtl ? "rtl" : "ltr"}>
-      <Script id="jsonld-product" type="application/ld+json" strategy="afterInteractive">
-        {JSON.stringify(getProductJsonLd(locale, {
+      {/* Inline JSON-LD — rendered in initial HTML so Googlebot sees it immediately */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getProductJsonLd(locale, {
           id: product.id,
           slug: (product as any).slug ?? "",
           name_ar: product.name_ar ?? undefined,
@@ -86,8 +87,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           discount_price: (product as any).discount_price ?? null,
           rating: (product as any).rating ?? null,
           images: Array.isArray((product as any).images) ? (product as any).images : undefined
-        }, { categoryName: categoryName ?? undefined }))}
-      </Script>
+        }, { categoryName: categoryName ?? undefined })) }}
+      />
       <PageHeader
         title={name || t("Products")}
         parent={{

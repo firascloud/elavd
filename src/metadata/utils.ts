@@ -25,7 +25,10 @@ export function cleanPath(path: string) {
 export function buildLanguageAlternates(path: string) {
   const p = cleanPath(path);
   const languages: Record<string, string> = {};
-  for (const l of DEFAULT_LOCALES) languages[l] = `/${l}${p}`;
+  // hreflang spec requires absolute URLs
+  for (const l of DEFAULT_LOCALES) languages[l] = `${BASE_URL}/${l}${p}`;
+  // x-default signals preferred fallback language to Google
+  languages["x-default"] = `${BASE_URL}/en${p}`;
   return languages;
 }
 
@@ -51,7 +54,8 @@ export function buildMetadata(opts: {
 }): Metadata {
   const p = cleanPath(opts.path);
   const url = `${BASE_URL}/${opts.locale}${p}`;
-  const canonical = `/${opts.locale}${p}`;
+  // Canonical must be absolute to avoid ambiguity
+  const canonical = `${BASE_URL}/${opts.locale}${p}`;
   const languages = buildLanguageAlternates(opts.path);
   const ogImages = buildOpenGraphImages(
     opts.images?.length

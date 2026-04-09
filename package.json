@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seo:check": "node scripts/seo-monitor.mjs --url https://elavd.com",
+    "seo:check:local": "node scripts/seo-monitor.mjs --url http://localhost:3000",
+    "seo:check:json": "node scripts/seo-monitor.mjs --url https://elavd.com --json"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

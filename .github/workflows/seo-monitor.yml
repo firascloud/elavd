@@ -1,0 +1,162 @@
+name: 🔍 Weekly SEO Health Monitor
+
+on:
+  # Run every Monday at 08:00 UTC
+  schedule:
+    - cron: "0 8 * * 1"
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Site URL to audit"
+        required: false
+        default: "https://elavd.com"
+
+jobs:
+  seo-monitor:
+    name: SEO Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run SEO monitor (JSON output)
+        id: seo
+        run: |
+          TARGET_URL="${{ github.event.inputs.url || 'https://elavd.com' }}"
+          echo "Auditing: $TARGET_URL"
+
+          # Run monitor and capture JSON output + exit code
+          set +e
+          node scripts/seo-monitor.mjs --url "$TARGET_URL" --json > seo-report.json 2>&1
+          EXIT_CODE=$?
+          set -e
+
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "url=$TARGET_URL" >> $GITHUB_OUTPUT
+
+          # Parse summary from JSON
+          PASSED=$(jq '.summary.pass'  seo-report.json 2>/dev/null || echo "?")
+          FAILED=$(jq '.summary.fail'  seo-report.json 2>/dev/null || echo "?")
+          WARNED=$(jq '.summary.warn'  seo-report.json 2>/dev/null || echo "?")
+          TOTAL=$(jq  '.summary.total' seo-report.json 2>/dev/null || echo "?")
+          ELAPSED=$(jq '.elapsed_s'    seo-report.json 2>/dev/null || echo "?")
+
+          echo "passed=$PASSED"  >> $GITHUB_OUTPUT
+          echo "failed=$FAILED"  >> $GITHUB_OUTPUT
+          echo "warned=$WARNED"  >> $GITHUB_OUTPUT
+          echo "total=$TOTAL"    >> $GITHUB_OUTPUT
+          echo "elapsed=$ELAPSED" >> $GITHUB_OUTPUT
+
+          # Print human-readable to Actions log too
+          node scripts/seo-monitor.mjs --url "$TARGET_URL" || true
+
+      - name: Upload SEO report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-report-${{ github.run_number }}
+          path: seo-report.json
+          retention-days: 90
+
+      - name: Generate Markdown summary
+        run: |
+          FAILED=${{ steps.seo.outputs.failed }}
+          PASSED=${{ steps.seo.outputs.passed }}
+          WARNED=${{ steps.seo.outputs.warned }}
+          TOTAL=${{ steps.seo.outputs.total }}
+          URL=${{ steps.seo.outputs.url }}
+          DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
+
+          # Status badge
+          if [ "$FAILED" = "0" ]; then
+            STATUS="✅ All Clear"
+            COLOR="green"
+          else
+            STATUS="🚨 Issues Detected"
+            COLOR="red"
+          fi
+
+          # Write step summary (shown in GitHub Actions UI)
+          echo "# SEO Health Report — $STATUS" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌐 Site | $URL |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🕐 Run date | $DATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed  | $PASSED / $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed  | $FAILED |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚠️  Warnings | $WARNED |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$FAILED" != "0" ]; then
+            echo "## ❌ Failed Checks" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            jq '[.results[] | select(.level == "FAIL")]' seo-report.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "$WARNED" != "0" ]; then
+            echo "## ⚠️ Warnings" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            jq '[.results[] | select(.level == "WARN")]' seo-report.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "## 🔗 Useful Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [Google Search Console](https://search.google.com/search-console)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Rich Results Test](https://search.google.com/test/rich-results)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Schema Validator](https://validator.schema.org)" >> $GITHUB_STEP_SUMMARY
+          echo "- [PageSpeed Insights]($URL?url=$URL)" >> $GITHUB_STEP_SUMMARY
+
+      # ── Alert on failure ─────────────────────────────────────────────────────
+      # Uncomment & configure ONE of these notification methods:
+
+      # Option A: Slack webhook (add SLACK_WEBHOOK_URL to repo secrets)
+      # - name: Slack alert on failure
+      #   if: steps.seo.outputs.failed != '0'
+      #   run: |
+      #     curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+      #       -H "Content-Type: application/json" \
+      #       -d "{
+      #         \"text\": \"🚨 *SEO Monitor Alert — elavd.com*\",
+      #         \"attachments\": [{
+      #           \"color\": \"danger\",
+      #           \"fields\": [
+      #             {\"title\": \"Failed checks\", \"value\": \"${{ steps.seo.outputs.failed }}\", \"short\": true},
+      #             {\"title\": \"Warnings\", \"value\": \"${{ steps.seo.outputs.warned }}\", \"short\": true},
+      #             {\"title\": \"Run\", \"value\": \"<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Report>\", \"short\": false}
+      #           ]
+      #         }]
+      #       }"
+
+      # Option B: Email via SendGrid (add SENDGRID_API_KEY + ALERT_EMAIL to secrets)
+      # - name: Email alert on failure
+      #   if: steps.seo.outputs.failed != '0'
+      #   run: |
+      #     curl -X POST "https://api.sendgrid.com/v3/mail/send" \
+      #       -H "Authorization: Bearer ${{ secrets.SENDGRID_API_KEY }}" \
+      #       -H "Content-Type: application/json" \
+      #       -d "{
+      #         \"personalizations\": [{\"to\": [{\"email\": \"${{ secrets.ALERT_EMAIL }}\"}]}],
+      #         \"from\": {\"email\": \"seo-monitor@elavd.com\"},
+      #         \"subject\": \"🚨 SEO Monitor: ${{ steps.seo.outputs.failed }} issue(s) on elavd.com\",
+      #         \"content\": [{
+      #           \"type\": \"text/plain\",
+      #           \"value\": \"SEO health check failed. View report at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+      #         }]
+      #       }"
+
+      - name: Fail workflow if critical SEO issues detected
+        if: steps.seo.outputs.failed != '0'
+        run: |
+          echo "::error::SEO monitor detected ${{ steps.seo.outputs.failed }} critical issue(s). Review the report above."
+          exit 1
