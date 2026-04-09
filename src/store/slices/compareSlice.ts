@@ -10,7 +10,7 @@ export interface CompareState {
   isInCompare: (productId: string) => boolean;
 }
 
-const COOKIE_NAME = "dneest_compare";
+const COOKIE_NAME = "elavd_compare";
 
 const getInitialCompare = (): Product[] => {
   const saved = getCookie(COOKIE_NAME);

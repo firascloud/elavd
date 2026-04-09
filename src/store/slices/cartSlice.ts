@@ -16,7 +16,7 @@ export interface CartState {
   getCartTotal: () => number;
 }
 
-const COOKIE_NAME = "dneest_cart";
+const COOKIE_NAME = "elavd_cart";
 
 const getInitialCart = (): CartItem[] => {
   const saved = getCookie(COOKIE_NAME);

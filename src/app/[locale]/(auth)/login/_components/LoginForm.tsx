@@ -58,7 +58,7 @@ export default function LoginForm() {
           description: t("LoginSuccessDesc"),
         });
 
-        const isAdmin = newSession?.user?.email === "admin@dneest.com";
+        const isAdmin = newSession?.user?.email === "admin@elavd.com";
 
         if (isAdmin) {
           router.push("/admin");

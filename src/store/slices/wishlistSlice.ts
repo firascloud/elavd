@@ -10,7 +10,7 @@ export interface WishlistState {
   isInWishlist: (productId: string) => boolean;
 }
 
-const COOKIE_NAME = "dneest_wishlist";
+const COOKIE_NAME = "elavd_wishlist";
 
 const getInitialWishlist = (): Product[] => {
   const saved = getCookie(COOKIE_NAME);
