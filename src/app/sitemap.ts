@@ -50,11 +50,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const categories = await getCategories(1000);
     for (const c of categories || []) {
-      const slug = c?.slug || c?.slug_en || c?.slug_ar || "";
+      const slug = c?.slug_en || c?.slug_ar || "";
       if (!slug) continue;
       entries.push(...withAlternates(`/product-category/${slug}`));
       entries.push(...withAlternates(`/store/${slug}`));
     }
+  } catch {
+    // ignore fetch errors
+  }
+
+  // Dynamic: Brands (brands/[slug])
+  try {
+    const { getBrands } = await import("@/services/brandService");
+    const brands = await getBrands(1000);
+    for (const b of brands || []) {
+      const slug = b?.slug_en || b?.slug_ar || "";
+      if (!slug) continue;
+      entries.push(...withAlternates(`/store/${slug}`));
+    }
+    entries.push(...withAlternates("/brands"));
   } catch {
     // ignore fetch errors
   }

@@ -32,6 +32,14 @@ export type Product = {
         name_en: string | null;
         name_ar: string | null;
         slug: string | null;
+    },
+    brand_id?: string | null;
+    brand?: {
+        id: string;
+        name_en: string | null;
+        name_ar: string | null;
+        slug_en: string | null;
+        slug_ar: string | null;
     }
 };
 
@@ -45,7 +53,7 @@ export async function getProductBySlug(slug: string) {
 
     const { data, error } = await supabaseBrowser
         .from('products')
-        .select('*, category:categories(*), sub_category:sub_categories(*)')
+        .select('*, category:categories(*), sub_category:sub_categories(*), brand:brands(*)')
         .or(filter)
         .limit(1);
 
@@ -56,22 +64,25 @@ export async function getProductBySlug(slug: string) {
 export async function getProducts({ 
     is_featured, 
     is_popular, 
-    categoryId,
-    subCategoryId,
+    categoryId, 
+    subCategoryId, 
+    brandId, 
     limit = 20 
 }: { 
     is_featured?: boolean, 
     is_popular?: boolean, 
     categoryId?: string,
     subCategoryId?: string,
+    brandId?: string,
     limit?: number 
 }) {
-    let query = supabaseBrowser.from('products').select('*, categories(*), sub_categories(*)');
+    let query = supabaseBrowser.from('products').select('*, categories(*), sub_categories(*), brands(*)');
     
     if (is_featured) query = query.eq('is_featured', true);
     if (is_popular) query = query.eq('is_popular', true);
     if (categoryId) query = query.eq('category_id', categoryId);
     if (subCategoryId) query = query.eq('sub_category_id', subCategoryId);
+    if (brandId) query = query.eq('brand_id', brandId);
     
     const { data } = await query
         .order('created_at', { ascending: false })
@@ -94,20 +105,25 @@ export async function searchProducts({
     query,
     categoryId,
     subCategoryId,
+    brandId,
     limit = 10
 }: {
     query: string;
     categoryId?: string;
     subCategoryId?: string;
+    brandId?: string;
     limit?: number;
 }) {
-    let supabaseQuery = supabaseBrowser.from('products').select('*, categories(*), sub_categories(*)');
+    let supabaseQuery = supabaseBrowser.from('products').select('*, categories(*), sub_categories(*), brands(*)');
 
     if (categoryId) {
         supabaseQuery = supabaseQuery.eq('category_id', categoryId);
     }
     if (subCategoryId) {
         supabaseQuery = supabaseQuery.eq('sub_category_id', subCategoryId);
+    }
+    if (brandId) {
+        supabaseQuery = supabaseQuery.eq('brand_id', brandId);
     }
 
     if (query) {

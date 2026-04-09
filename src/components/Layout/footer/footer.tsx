@@ -77,6 +77,16 @@ export function Footer() {
                   <span>{t('ContactTitle')}</span>
                 </Link>
               </li>
+              <li>
+                <Link href="/brands" className="flex items-center gap-2 hover:text-primary transition group">
+                  {isRtl ? (
+                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  ) : (
+                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  )}
+                  <span>{useTranslations('dashboard')('Brands')}</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

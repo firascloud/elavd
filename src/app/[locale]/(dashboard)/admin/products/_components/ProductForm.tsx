@@ -34,6 +34,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
     const t = useTranslations("dashboard");
     const [categories, setCategories] = useState<any[]>([]);
     const [subCategories, setSubCategories] = useState<any[]>([]);
+    const [brands, setBrands] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
 
     const { register, handleSubmit, setValue, watch, reset, control } = useForm({
@@ -46,6 +47,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
             discount_price: 0,
             category_id: initialData?.category_id || "",
             sub_category_id: initialData?.sub_category_id || "",
+            brand_id: initialData?.brand_id || "",
             main_image: "",
         }
     });
@@ -57,13 +59,16 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
         const fetchData = async () => {
             const [
                 { data: catData },
-                { data: subData }
+                { data: subData },
+                { data: brandData }
             ] = await Promise.all([
                 supabaseBrowser.from('categories').select('id, name_en, name_ar'),
-                supabaseBrowser.from('sub_categories').select('id, name_en, name_ar, category_id')
+                supabaseBrowser.from('sub_categories').select('id, name_en, name_ar, category_id'),
+                supabaseBrowser.from('brands').select('id, name_en, name_ar')
             ]);
             if (catData) setCategories(catData);
             if (subData) setSubCategories(subData);
+            if (brandData) setBrands(brandData);
         };
         fetchData();
     }, []);
@@ -87,6 +92,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                 discount_price: data.discount_price ? parseFloat(data.discount_price) : null,
                 category_id: data.category_id || null,
                 sub_category_id: data.sub_category_id || null,
+                brand_id: data.brand_id || null,
                 seo_keywords_en: toKeywordsArray(data.seo_keywords_en),
                 seo_keywords_ar: toKeywordsArray(data.seo_keywords_ar),
             };
@@ -95,6 +101,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
             const {
                 categories: _categories,
                 sub_categories: _sub_categories,
+                brands: _brands,
                 id: _id,
                 created_at: _createdAt,
                 updated_at: _updatedAt,
@@ -213,6 +220,36 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                             {filteredSubCategories.length === 0 && (
                                                 <div className="p-4 text-xs text-muted-foreground text-center">{t("None")}</div>
                                             )}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                        </div>
+
+                        <div className="space-y-2 group">
+                            <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                                {t("Brand")}
+                            </Label>
+                            <Controller
+                                name="brand_id"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select 
+                                        onValueChange={field.onChange} 
+                                        value={field.value}
+                                    >
+                                        <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm text-start">
+                                            <SelectValue placeholder={t("Brand")} />
+                                        </SelectTrigger>
+                                        <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
+                                            <SelectItem value="none" className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm italic opacity-70">
+                                                {t("None")}
+                                            </SelectItem>
+                                            {brands.map((brand) => (
+                                                <SelectItem key={brand.id} value={brand.id} className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm">
+                                                    {brand.name_en}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 )}

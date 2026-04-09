@@ -20,7 +20,8 @@ import {
     X,
     ArrowLeft,
     ArrowRight,
-    Layers
+    Layers,
+    Award
 } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
@@ -37,6 +38,7 @@ const nav = [
     { href: '/admin/products', label: { en: 'Products', ar: 'المنتجات' }, icon: Package },
     { href: '/admin/categories', label: { en: 'Categories', ar: 'التصنيفات' }, icon: LayoutGrid },
     { href: '/admin/sub-categories', label: { en: 'Sub-categories', ar: 'التصنيفات الفرعية' }, icon: Layers },
+    { href: '/admin/brands', label: { en: 'Brands', ar: 'العلامات التجارية' }, icon: Award },
     { href: '/admin/orders', label: { en: 'Orders', ar: 'الطلبات' }, icon: ShoppingCart },
     { href: '/admin/offers', label: { en: 'Offers', ar: 'العروض' }, icon: Tag },
 ];

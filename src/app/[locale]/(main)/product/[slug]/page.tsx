@@ -16,6 +16,8 @@ import {
   getProductBySlug,
   getRelatedProducts,
 } from "@/services/home";
+import { getBrandBySlug } from "@/services/brandService";
+import { redirect } from "next/navigation";
 
 interface ProductPageProps {
   params: Promise<{
@@ -26,11 +28,15 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug, locale } = await params;
-  const product = await getProductBySlug(slug);
+  const [product, brand] = await Promise.all([
+    getProductBySlug(slug),
+    getBrandBySlug(slug)
+  ]);
 
-  if (!product) return { title: "Product Not Found" };
+  if (product) return productMetadata({ locale, slug, product: product as any });
+  if (brand) return { title: locale === 'ar' ? brand.name_ar : brand.name_en };
 
-  return productMetadata({ locale, slug, product: product as any });
+  return { title: "Product Not Found" };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -40,7 +46,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const phone = "+966556482799";
 
-  const product = await getProductBySlug(slug);
+  const [product, brand] = await Promise.all([
+    getProductBySlug(slug),
+    getBrandBySlug(slug)
+  ]);
+
+  if (!product && brand) {
+    redirect(`/${locale}/store/${slug}`);
+  }
+
   if (!product) notFound();
 
   const [categories, featuredProducts, relatedProducts] = await Promise.all([

@@ -5,12 +5,15 @@ import PageHeader from '@/components/common/page-header'
 import { ProductCard } from '@/components/common/product-card'
 import CategorySidebar from '@/components/common/category-sidebar'
 import { getProducts, getCategories, searchProducts, getCategoryBySlug } from '@/services/home'
+import { getBrandBySlug } from '@/services/brandService'
 import { Search, PackageX } from 'lucide-react'
 import FilterProduct from '../../product-category/_components/fillterProduct'
 import Pagination from '../../product-category/_components/pagination'
 import Script from 'next/script'
 import { getStoreDynamicJsonLd } from '@/seo/storeDynamic'
+import { getBrandJsonLd } from '@/seo/brand'
 import { storeSlugMetadata } from '@/metadata/storeSlug'
+import { brandMetadata } from '@/metadata/brand'
 
 interface StoreDynamicPageProps {
   params: Promise<{
@@ -27,7 +30,10 @@ interface StoreDynamicPageProps {
 
 export async function generateMetadata({ params }: StoreDynamicPageProps): Promise<Metadata> {
   const { slug, locale } = await params
-  const category = await getCategoryBySlug(slug)
+  const [category, brand] = await Promise.all([
+    getCategoryBySlug(slug),
+    getBrandBySlug(slug)
+  ])
 
   if (category) {
     const name = locale === 'ar' ? category.name_ar : category.name_en
@@ -36,6 +42,14 @@ export async function generateMetadata({ params }: StoreDynamicPageProps): Promi
       slug,
       title: name || undefined,
       description: (locale === 'ar' ? category.description_ar : category.description_en) || undefined,
+    })
+  }
+
+  if (brand) {
+    return brandMetadata({
+        locale,
+        slug,
+        brand
     })
   }
 
@@ -58,8 +72,9 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   const currentPage = parseInt(page)
   const currentLimit = parseInt(limit)
 
-  const [category, allCategories, featuredProducts] = await Promise.all([
+  const [category, brand, allCategories, featuredProducts] = await Promise.all([
     getCategoryBySlug(slug),
+    getBrandBySlug(slug),
     getCategories(100),
     getProducts({ is_featured: true, limit: 4 })
   ])
@@ -71,6 +86,10 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   if (category) {
     allProducts = await getProducts({ categoryId: category.id, limit: 1000 })
     pageTitle = isRtl ? category.name_ar || '' : category.name_en || ''
+  } else if (brand) {
+    allProducts = await getProducts({ brandId: brand.id, limit: 1000 })
+    pageTitle = isRtl ? brand.name_ar || '' : brand.name_en || ''
+    ValsearchQuery = pageTitle
   } else {
     const searchQuery = decodeURIComponent(slug).replace(/-/g, ' ')
     allProducts = await searchProducts({ query: searchQuery, limit: 1000 })
@@ -103,6 +122,11 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
           name: pageTitle
         }))}
       </Script>
+      {brand && (
+        <Script id="jsonld-brand" type="application/ld+json" strategy="afterInteractive">
+            {JSON.stringify(getBrandJsonLd(locale, { ...brand, slug }, totalItems))}
+        </Script>
+      )}
       <PageHeader
         title={t('Store')}
         parent={{ label: t('Store'), href: '/store' }}
@@ -111,6 +135,31 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
       />
 
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
+        {brand && (
+            <div className="bg-white rounded-[2rem] p-8 shadow-2xl shadow-black/5 border border-[#eee1e1] flex flex-col md:flex-row items-center gap-8 mb-12 animate-in fade-in slide-in-from-top-4 duration-500">
+                <div className="w-24 h-24 relative flex items-center justify-center bg-white rounded-2xl border border-[#eee1e1] p-4 shrink-0 overflow-hidden shadow-inner">
+                    {brand.image_url ? (
+                        <img 
+                            src={brand.image_url} 
+                            alt={pageTitle} 
+                            className="w-full h-full object-contain"
+                        />
+                    ) : (
+                        <Search className="w-12 h-12 text-muted-foreground/20" />
+                    )}
+                </div>
+                <div className="text-center md:text-start flex-1">
+                    <h2 className="text-2xl font-black text-[#1a1a1b] mb-1">{pageTitle}</h2>
+                    <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs font-semibold text-muted-foreground">
+                        <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full border border-border">
+                            <PackageX className="size-3.5 text-primary rotate-180" />
+                            <span>{totalItems} {isRtl ? 'منتجات' : 'Products'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
           <div className="lg:col-span-3 order-2 lg:order-1">

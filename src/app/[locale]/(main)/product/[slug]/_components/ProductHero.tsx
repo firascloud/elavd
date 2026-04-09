@@ -7,6 +7,7 @@ import { Layers, Phone, Tag, Maximize2, X, Globe } from "lucide-react";
 import type { Product } from "@/services/home";
 import QuoteModal from "@/components/common/QuoteModal";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Link } from "@/i18n/routing";
 
 interface ProductHeroProps {
   product: Product;
@@ -77,9 +78,23 @@ export default function ProductHero({ product, phone }: ProductHeroProps) {
 
         <div className="px-8 py-6 lg:px-8 lg:py-8 flex flex-col justify-center">
           <div className="space-y-4">
-            <div className="text-primary text-[10px] font-black tracking-[0.2em] flex items-center gap-2 uppercase">
-              <Tag className="size-3.5" />
-              {t("Products")}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="text-primary text-[10px] font-black tracking-[0.2em] flex items-center gap-2 uppercase">
+                <Tag className="size-3.5" />
+                {t("Products")}
+              </div>
+              {product.brand && (
+                <>
+                  <span className="text-muted-foreground/30 font-black">•</span>
+                  <Link 
+                    href={`/product/${isAr ? product.brand.slug_ar : product.brand.slug_en}`}
+                    className="text-secondary text-[10px] font-black tracking-[0.2em] flex items-center gap-2 uppercase hover:text-primary transition-colors"
+                  >
+                    <Globe className="size-3.5" />
+                    {isAr ? product.brand.name_ar : product.brand.name_en}
+                  </Link>
+                </>
+              )}
             </div>
 
             <h2 className="text-2xl lg:text-3xl font-black text-foreground">

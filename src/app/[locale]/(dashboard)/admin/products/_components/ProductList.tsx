@@ -50,7 +50,8 @@ export default function ProductList() {
             .select(`
                 *,
                 categories(name_en, name_ar),
-                sub_categories(name_en, name_ar)
+                sub_categories(name_en, name_ar),
+                brands(name_en, name_ar)
             `, { count: 'exact' });
 
         if (search) {
@@ -162,11 +163,12 @@ export default function ProductList() {
                 t("NameEn"),
                 t("Category"),
                 t("SubCategory"),
+                t("Brand"),
                 t("Price"),
                 t("Status"),
                 t("Actions")
             ]}
-                headerClasses={["", "", "hidden md:table-cell", "hidden md:table-cell", "", "hidden sm:table-cell", ""]}
+                headerClasses={["", "", "hidden md:table-cell", "hidden lg:table-cell", "hidden lg:table-cell", "", "hidden sm:table-cell", ""]}
                 isLoading={loading}
                 emptyMessage={t("NoProductsFound") || "No products found."}
             >
@@ -196,9 +198,14 @@ export default function ProductList() {
                                 {isAr ? product.categories?.name_ar : product.categories?.name_en || "-"}
                             </span>
                         </DashboardTableCell>
-                        <DashboardTableCell className="hidden md:table-cell">
+                        <DashboardTableCell className="hidden lg:table-cell">
                             <span className="text-xs font-semibold px-3 py-1 bg-primary/5 text-primary border border-primary/20 rounded-full">
                                 {isAr ? product.sub_categories?.name_ar : product.sub_categories?.name_en || "-"}
+                            </span>
+                        </DashboardTableCell>
+                        <DashboardTableCell className="hidden lg:table-cell">
+                            <span className="text-xs font-semibold px-3 py-1 bg-accent/5 text-accent border border-accent/20 rounded-full">
+                                {isAr ? product.brands?.name_ar : product.brands?.name_en || "-"}
                             </span>
                         </DashboardTableCell>
                         <DashboardTableCell>

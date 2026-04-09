@@ -17,6 +17,19 @@ export type CategoryRow = {
     created_at: string
 }
 
+export type BrandRow = {
+    id: string
+    name_en: string
+    name_ar: string
+    brand_index_en?: string | null
+    brand_index_ar?: string | null
+    slug_en: string
+    slug_ar: string
+    image_url?: string | null
+    created_at: string
+    updated_at: string
+}
+
 export type ProductRow = {
     id: string
     sku: string
@@ -29,6 +42,7 @@ export type ProductRow = {
     featured?: boolean
     popular?: boolean
     event?: boolean
+    brand_id?: string | null
     image?: string | null
     created_at: string
 }

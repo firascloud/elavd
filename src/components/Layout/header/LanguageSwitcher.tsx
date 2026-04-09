@@ -55,7 +55,7 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
         title="Language"
         aria-label="Language"
         type="button"
-        className={`group relative cursor-pointer flex items-center gap-2 px-1 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-in-out`}
+        className={`group relative flex items-center gap-2 px-1 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-in-out`}
         onClick={handleToggle}
       >
         <div className="flex items-center gap-2">
