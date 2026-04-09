@@ -17,7 +17,6 @@
     "AboutUs": "About Us",
     "ContactUs": "Contact Us",
     "Login": "Login",
-    
     "Products": "Products",
     "Offers": "Offers",
     "Logout": "Logout",
@@ -25,17 +24,17 @@
     "Page": "Page",
     "Of": "Of",
     "PerPage": "Page",
-  "MyAccount": "My Account",
-  "Total": "Total",
-  "Cart": "Cart",
-  "Store": "Store",
-  "ContactTitle": "Contact Us",
-  "PhoneLabel": "Phone Number",
-  "EmailLabel": "Email",
-  "LocationLabel": "Location",
-  "Address": "Jabr Bin Rashid, Al Murabba, Riyadh 12628, Kingdom of Saudi Arabia",
-  "CompanyTitle": "Dubai Network IT Establishment",
-  "TaxNumber": "Tax Registration Number",
+    "MyAccount": "My Account",
+    "Total": "Total",
+    "Cart": "Cart",
+    "Store": "Store",
+    "ContactTitle": "Contact Us",
+    "PhoneLabel": "Phone Number",
+    "EmailLabel": "Email",
+    "LocationLabel": "Location",
+    "Address": "Jabr Bin Rashid, Al Murabba, Riyadh 12628, Kingdom of Saudi Arabia",
+    "CompanyTitle": "Dubai Network IT Establishment",
+    "TaxNumber": "Tax Registration Number",
     "SpecialOffers": "Special Offers",
     "BrowseCategories": "Categories",
     "Search": "Search here...",
@@ -192,7 +191,7 @@
     },
     "HotelSafes": "Hotel Safes",
     "DepositSafes": "Deposit Safes",
-    "MoreDetails": "View Details", 
+    "MoreDetails": "View Details",
     "CardPrinters": "Card Printers",
     "CardPrintersSubtitle": "High-resolution badges, ribbons, and smart personalization.",
     "Explore": "Explore"
@@ -210,6 +209,6 @@
     "TaxNumber": "Tax Registration Number",
     "TaxId": "310079237600003",
     "AboutUs": "About Us",
-    "Copyright": "All rights reserved © Dubai Network IT Est 2024"
+    "Copyright": "All rights reserved © Elavd Office Equipment Est. 2024"
   }
 }
