@@ -101,21 +101,27 @@ export default function ContactClient() {
             <form className="space-y-6" dir={isRtl ? 'rtl' : 'ltr'}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                  <label htmlFor="contact-name" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
                     {t('name')}
                   </label>
                   <input
+                    id="contact-name"
                     type="text"
+                    name="name"
+                    autoComplete="name"
                     placeholder={t('name')}
                     className="w-full h-12 bg-muted/50 border border-border rounded-xl px-5 focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all text-xs text-foreground font-bold"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                  <label htmlFor="contact-phone" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
                     {t('phone')}
                   </label>
                   <input
+                    id="contact-phone"
                     type="tel"
+                    name="phone"
+                    autoComplete="tel"
                     placeholder={t('phone')}
                     className="w-full h-12 bg-muted/50 border border-border rounded-xl px-5 focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all text-xs text-foreground font-bold"
                   />
@@ -123,21 +129,26 @@ export default function ContactClient() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                <label htmlFor="contact-email" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
                   {t('emailLabel')}
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
+                  name="email"
+                  autoComplete="email"
                   placeholder="example@gmail.com"
                   className="w-full h-12 bg-muted/50 border border-border rounded-xl px-5 focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all text-xs text-foreground font-bold"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                <label htmlFor="contact-message" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
                   {t('message')}
                 </label>
                 <textarea
+                  id="contact-message"
+                  name="message"
                   rows={4}
                   placeholder={t('placeholder')}
                   className="w-full bg-muted/50 border border-border rounded-2xl p-5 focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all text-xs text-foreground font-bold resize-none"

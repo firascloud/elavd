@@ -10,6 +10,7 @@ import FilterProduct from '../product-category/_components/fillterProduct'
 import Pagination from '../product-category/_components/pagination'
 import { getStoreJsonLd } from '@/seo/store'
 import { storeMetadata } from '@/metadata/store'
+import Script from 'next/script'
 
 interface StorePageProps {
   params: Promise<{
@@ -88,7 +89,8 @@ export default async function StorePage({ params, searchParams }: StorePageProps
 
   return (
     <div className="min-h-screen bg-muted/30 pb-20">
-       <script
+       <Script
+        id="store-json-ld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(getStoreJsonLd(locale, { query })) }}
       />
@@ -98,15 +100,15 @@ export default async function StorePage({ params, searchParams }: StorePageProps
 
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          <div className="lg:col-span-3 order-2 lg:order-1">
+          <aside className="lg:col-span-3 order-2 lg:order-1">
             <CategorySidebar
               categories={allCategories}
               featuredProducts={featuredProducts}
               activeSlug=""
             />
-          </div>
+          </aside>
 
-          <div className="lg:col-span-9 order-1 lg:order-2 space-y-8">
+          <section className="lg:col-span-9 order-1 lg:order-2 space-y-8" aria-label={t('Products')}>
 
             <FilterProduct
               categoryName={pageTitle}
@@ -152,7 +154,7 @@ export default async function StorePage({ params, searchParams }: StorePageProps
               totalPages={totalPages}
               totalItems={totalItems}
             />
-          </div>
+          </section>
         </div>
       </div>
     </div>

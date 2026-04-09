@@ -74,15 +74,20 @@ export default function CartClient() {
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       className="p-1.5 cursor-pointer text-muted-foreground hover:text-primary transition-colors"
+                      aria-label={locale === 'ar' ? 'نقص الكمية' : 'Decrease quantity'}
                     >
                       <Minus size={14} />
                     </button>
-                    <span className="w-10 text-center font-black text-sm text-foreground font-inter">
+                    <span 
+                      className="w-10 text-center font-black text-sm text-foreground font-inter"
+                      aria-label={`${t('Quantity')}: ${item.quantity}`}
+                    >
                       {item.quantity}
                     </span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       className="p-1.5 cursor-pointer text-muted-foreground hover:text-primary transition-colors"
+                      aria-label={locale === 'ar' ? 'زيادة الكمية' : 'Increase quantity'}
                     >
                       <Plus size={14} />
                     </button>
@@ -91,6 +96,7 @@ export default function CartClient() {
                   <button
                     onClick={() => removeFromCart(item.id)}
                     className="p-2.5 cursor-pointer bg-gray-50/50 rounded-xl text-gray-300 hover:text-red-500 hover:bg-red-50/50 transition-all"
+                    aria-label={locale === 'ar' ? 'إزالة من السلة' : 'Remove from cart'}
                   >
                     <Trash2 size={18} />
                   </button>
@@ -107,14 +113,14 @@ export default function CartClient() {
                   </p>
                 </div>
 
-                <div className="space-y-4 pt-4 border-t border-primary-foreground/5">
+                <div className="space-y-4 pt-4 border-t border-primary-foreground/5" role="region" aria-label={t('OrderSummary')}>
                   <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-muted-foreground">
                     <span>{t('Items')}</span>
-                    <span className="text-primary-foreground bg-primary-foreground/10 px-3 py-1 rounded-lg">{count}</span>
+                    <span className="text-primary-foreground bg-primary-foreground/10 px-3 py-1 rounded-lg" aria-label={`${count} ${t('Items')}`}>{count}</span>
                   </div>
 
-                  <div className="p-4 bg-primary-foreground/5 rounded-xl border border-primary-foreground/5 flex gap-3 items-start">
-                    <Info size={16} className="text-primary shrink-0" />
+                  <div className="p-4 bg-primary-foreground/5 rounded-xl border border-primary-foreground/5 flex gap-3 items-start" role="status">
+                    <Info size={16} className="text-primary shrink-0" aria-hidden="true" />
                     <div className="space-y-1">
                       <p className="text-[10px] text-primary-foreground/80 leading-relaxed font-medium uppercase tracking-[0.05em]">
                         {locale === 'ar'
@@ -127,6 +133,7 @@ export default function CartClient() {
 
                 <button
                   onClick={() => setIsQuoteOpen(true)}
+                  aria-label={t('RequestQuote')}
                   className="w-full h-14 bg-primary text-primary-foreground font-black text-sm rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95 group uppercase tracking-[0.1em] cursor-pointer"
                 >
                   <FileText className="group-hover:-translate-y-0.5 transition-transform" size={18} />

@@ -85,6 +85,7 @@ export default function BrandsClient() {
                                 <a 
                                     key={index} 
                                     href={`#group-${index}`}
+                                    aria-label={isAr ? `انتقال إلى الحرف ${index}` : `Jump to letter ${index}`}
                                     className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all font-bold text-sm border ${
                                         isActive 
                                         ? 'bg-primary text-white shadow-lg shadow-primary/30 border-primary' 

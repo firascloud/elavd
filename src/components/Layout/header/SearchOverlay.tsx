@@ -66,16 +66,18 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
     return () => clearTimeout(timer)
   }, [searchTerm, selectedCategory])
 
-  // Close category menu on click outside
+  // Handle Escape key to close
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (catMenuRef.current && !catMenuRef.current.contains(e.target as Node)) {
-        setShowCatMenu(false)
-      }
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSearchOpen(false)
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    if (searchOpen) {
+      window.addEventListener('keydown', handleEsc)
+    }
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [searchOpen, setSearchOpen])
+
+  // Close category menu on click outside
 
   const handleSearchRedirect = (e?: React.FormEvent) => {
     e?.preventDefault()
@@ -90,10 +92,13 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
     return (locale === 'ar' ? product.name_ar || product.name_en : product.name_en || product.name_ar) || ''
   }
 
-  if (!searchOpen) return null
-
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col lg:hidden">
+    <div 
+      className="fixed inset-0 z-[100] flex flex-col lg:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('SearchProducts')}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -126,15 +131,16 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
             className="flex h-[52px] border-2 border-slate-200 focus-within:border-primary rounded-xl focus-within:ring-4 focus-within:ring-primary/10 transition-all relative"
           > 
             <div className="relative z-[120]" ref={catMenuRef}>
-              <div 
+              <button 
+                type="button"
                 onClick={() => setShowCatMenu(!showCatMenu)}
-                className="bg-slate-50 h-full px-4 flex items-center gap-2 text-slate-600 cursor-pointer hover:bg-slate-100 transition-colors border-r border-slate-200 min-w-[120px] justify-center rounded-s-[9px]"
+                className="bg-slate-50 h-full px-4 flex items-center gap-2 text-slate-600 cursor-pointer hover:bg-slate-100 transition-colors border-r border-slate-200 min-w-[120px] justify-center rounded-s-[9px] outline-none"
               >
                 <span className="text-sm font-semibold truncate max-w-[110px]">
                   {selectedCategory ? (locale === 'ar' ? selectedCategory.name_ar : selectedCategory.name_en) : t('All')}
                 </span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showCatMenu ? 'rotate-180' : ''}`} />
-              </div>
+              </button>
 
               <AnimatePresence>
                 {showCatMenu && (

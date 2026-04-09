@@ -93,15 +93,15 @@ export default async function CategoryPage({ params, searchParams }: {
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-          <div className="lg:col-span-3 order-2 lg:order-1">
+          <aside className="lg:col-span-3 order-2 lg:order-1">
             <CategorySidebar
               categories={allCategories}
               featuredProducts={featuredProducts}
               activeSlug={slug}
             />
-          </div>
+          </aside>
 
-          <div className="lg:col-span-9 order-1 lg:order-2 space-y-8">
+          <section className="lg:col-span-9 order-1 lg:order-2 space-y-8" aria-label={t('Products')}>
 
             <FilterProduct
               categoryName={categoryName || ''}
@@ -148,7 +148,7 @@ export default async function CategoryPage({ params, searchParams }: {
               totalPages={totalPages}
               totalItems={totalItems}
             />
-          </div>
+          </section>
         </div>
       </div>
     </div>

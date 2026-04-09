@@ -62,7 +62,13 @@ export default async function RootLayout({
             {`/* place deferred third-party loaders here if required */`}
           </Script>
         </head>
-        <body className="antialiased">
+        <body className="antialiased font-sans">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[1000] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none transition-all"
+          >
+            {locale === "en" ? "Skip to main content" : "الانتقال إلى المحتوى الرئيسي"}
+          </a>
           <Providers>
             <ThemeProvider
               attribute="class"

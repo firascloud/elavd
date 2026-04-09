@@ -70,7 +70,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const categoryHref = product.category ? `/store/${categorySlug}` : "/store";
 
   return (
-    <div className="min-h-screen bg-muted/30 pb-20" dir={isRtl ? "rtl" : "ltr"}>
+    <article className="min-h-screen bg-muted/30 pb-20" dir={isRtl ? "rtl" : "ltr"}>
       {/* Inline JSON-LD — rendered in initial HTML so Googlebot sees it immediately */}
       <script
         type="application/ld+json"
@@ -104,12 +104,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           </div>
 
-          <div className="lg:col-span-3 order-2 lg:order-1">
+          <aside className="lg:col-span-3 order-2 lg:order-1">
             <CategorySidebar categories={categories} featuredProducts={featuredProducts} activeSlug={""} />
-          </div>
+          </aside>
         </div>
         <RelatedProducts products={relatedProducts} />
       </div>
-    </div>
+    </article>
   );
 }

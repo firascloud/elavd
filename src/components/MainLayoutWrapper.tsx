@@ -18,7 +18,9 @@ export default function MainLayoutWrapper({ children }: { children: React.ReactN
   return (
     <>
       <Header />
-      {children}
+      <main id="main-content" className="outline-none">
+        {children}
+      </main>
       <Footer />
       <FloatingActions />
     </>

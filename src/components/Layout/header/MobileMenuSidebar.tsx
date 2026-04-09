@@ -25,11 +25,38 @@ interface MobileMenuSidebarProps {
 export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, categories }: MobileMenuSidebarProps) {
   const t = useTranslations('common')
   const locale = useLocale()
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null)
+  const lastActiveElement = React.useRef<HTMLElement | null>(null)
+
+  // Accessibility: Focus management and Escape key support
+  React.useEffect(() => {
+    if (menuOpen) {
+      lastActiveElement.current = document.activeElement as HTMLElement
+      // Slight delay to ensure element is in DOM before focusing
+      const timer = setTimeout(() => closeButtonRef.current?.focus(), 100)
+      
+      const handleEsc = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setMenuOpen(false)
+      }
+      window.addEventListener('keydown', handleEsc)
+      
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('keydown', handleEsc)
+        lastActiveElement.current?.focus()
+      }
+    }
+  }, [menuOpen, setMenuOpen])
 
   if (!menuOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex lg:hidden">
+    <div 
+      className="fixed inset-0 z-50 flex lg:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('MenuTitle')}
+    >
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setMenuOpen(false)}
@@ -45,8 +72,10 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
             className="w-24 h-auto brightness-0 invert"
           />
           <button
+            ref={closeButtonRef}
             onClick={() => setMenuOpen(false)}
             className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+            aria-label={t('Close') || 'Close menu'}
           >
             <X className="w-5 h-5" />
           </button>

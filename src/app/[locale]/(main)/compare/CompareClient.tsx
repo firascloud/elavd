@@ -49,15 +49,18 @@ export default function CompareClient() {
                             </button>
                         </div>
 
-                        <table className="w-full min-w-[900px] border-collapse">
+                        <table className="w-full min-w-[900px] border-collapse" role="table">
                             <thead>
-                                <tr>
-                                    <th className="w-[200px] p-6 text-left border-b border-border"></th>
+                                <tr role="row">
+                                    <th scope="col" className="w-[200px] p-6 text-left border-b border-border">
+                                        <span className="sr-only">{t('Features')}</span>
+                                    </th>
                                     {compareItems.map((item) => (
-                                        <th key={item.id} className="p-6 border-b border-border relative group min-w-[250px]">
+                                        <th key={item.id} scope="col" className="p-6 border-b border-border relative group min-w-[250px]">
                                             <button
                                                 onClick={() => removeFromCompare(item.id)}
                                                 className="absolute top-4 right-4 p-2.5 bg-background text-muted-foreground rounded-2xl shadow-lg border border-border hover:text-destructive transition-all opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 z-10"
+                                                aria-label={`${t('Remove')} ${locale === 'ar' ? item.name_ar : item.name_en}`}
                                                 title={t('Remove')}
                                             >
                                                 <X size={16} />
@@ -102,13 +105,13 @@ export default function CompareClient() {
                             </thead>
                             <tbody className="text-sm text-muted-foreground">
                                 {compareItems.some(item => item.country_of_origin) && (
-                                    <tr className="group hover:bg-muted/30 transition-colors">
-                                        <td className="p-6 font-bold text-foreground border-b border-border flex items-center gap-2">
-                                            <div className="p-2 bg-secondary/10 text-secondary rounded-lg">
+                                    <tr role="row" className="group hover:bg-muted/30 transition-colors">
+                                        <th scope="row" className="p-6 font-bold text-foreground border-b border-border flex items-center gap-2 text-start">
+                                            <div className="p-2 bg-secondary/10 text-secondary rounded-lg" aria-hidden="true">
                                                 <Globe size={16} />
                                             </div>
                                             {locale === 'ar' ? 'بلد المنشأ' : 'Origin'}
-                                        </td>
+                                        </th>
                                         {compareItems.map((item) => (
                                             <td key={item.id} className="p-6 border-b border-border text-center font-medium">
                                                 {item.country_of_origin || (locale === 'ar' ? 'غير محدد' : 'Not Specified')}
@@ -117,13 +120,13 @@ export default function CompareClient() {
                                     </tr>
                                 )}
 
-                                <tr className="group hover:bg-muted/30 transition-colors">
-                                    <td className="p-6 font-bold text-foreground border-b border-border flex items-center gap-2">
-                                        <div className="p-2 bg-primary/10 text-primary rounded-lg">
+                                <tr role="row" className="group hover:bg-muted/30 transition-colors">
+                                    <th scope="row" className="p-6 font-bold text-foreground border-b border-border flex items-center gap-2 text-start">
+                                        <div className="p-2 bg-primary/10 text-primary rounded-lg" aria-hidden="true">
                                             <Repeat size={16} />
                                         </div>
                                         {locale === 'ar' ? 'الوصف المختصر' : 'Short Description'}
-                                    </td>
+                                    </th>
                                     {compareItems.map((item) => (
                                         <td key={item.id} className="p-6 border-b border-border text-center italic text-muted-foreground leading-relaxed font-cairo">
                                             {locale === 'ar' ? item.short_desc_ar : item.short_desc_en}
@@ -131,13 +134,13 @@ export default function CompareClient() {
                                     ))}
                                 </tr>
 
-                                <tr className="group hover:bg-muted/30 transition-colors">
-                                    <td className="p-6 font-bold text-foreground border-b border-border flex items-center gap-2">
-                                        <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                                <tr role="row" className="group hover:bg-muted/30 transition-colors">
+                                    <th scope="row" className="p-6 font-bold text-foreground border-b border-border flex items-center gap-2 text-start">
+                                        <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg" aria-hidden="true">
                                             <Check size={16} />
                                         </div>
                                         {locale === 'ar' ? 'التوفر' : 'Availability'}
-                                    </td>
+                                    </th>
                                     {compareItems.map((item) => (
                                         <td key={item.id} className="p-6 border-b border-border">
                                             <div className="flex items-center justify-center gap-2 text-emerald-600 font-bold">

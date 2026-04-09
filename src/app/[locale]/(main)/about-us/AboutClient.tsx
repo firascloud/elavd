@@ -50,11 +50,11 @@ export default function AboutClient() {
 
       <div className="max-w-7xl mx-auto px-4 mt-16 lg:mt-20">
         {/* Story Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24 lg:mb-32">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24 lg:mb-32" aria-labelledby="story-title">
           <div className="relative h-[400px] lg:h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl group border border-border">
             <Image
               src={require('@/assets/banner-1.png')}
-              alt="About DUBAI NETWORK IT EST"
+              alt={locale === 'ar' ? 'فريق عمل مؤسسة رائدة في تقنية المعلومات' : 'DUBAI NETWORK IT EST Team working'}
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />
@@ -75,7 +75,7 @@ export default function AboutClient() {
                 <span className="size-1.5 bg-primary rounded-full animate-pulse" />
                 Our Story
               </div>
-              <h2 className="text-3xl lg:text-4xl font-black text-foreground font-cairo leading-tight">
+              <h2 id="story-title" className="text-3xl lg:text-4xl font-black text-foreground font-cairo leading-tight">
                 {t('subtitle')}
               </h2>
               <p className="text-muted-foreground text-base leading-relaxed font-bold border-l-4 border-primary ps-5 rtl:border-l-0 rtl:border-r-4 rtl:pe-5 rtl:ps-0 font-cairo">
@@ -88,24 +88,24 @@ export default function AboutClient() {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <div className="flex-1 min-w-[140px] p-5 bg-muted/30 rounded-2xl space-y-2 border border-border group">
-                <Target className="text-primary size-6 group-hover:scale-110 transition-transform" />
+                <Target className="text-primary size-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 <h4 className="font-black text-foreground text-sm font-cairo">{t('mission')}</h4>
                 <p className="text-muted-foreground text-[11px] leading-relaxed">{t('missionDesc')}</p>
               </div>
               <div className="flex-1 min-w-[140px] p-5 bg-muted/30 rounded-2xl space-y-2 border border-border group">
-                <Eye className="text-primary size-6 group-hover:scale-110 transition-transform" />
+                <Eye className="text-primary size-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 <h4 className="font-black text-foreground text-sm font-cairo">{t('vision')}</h4>
                 <p className="text-muted-foreground text-[11px] leading-relaxed">{t('visionDesc')}</p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-24 lg:mb-32">
+        <section className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-24 lg:mb-32" aria-label={t('stats.experience')}>
           {stats.map((stat, i) => (
             <div key={i} className="p-8 bg-background border border-border rounded-[1.5rem] text-center shadow-sm hover:shadow-xl hover:shadow-muted/50 transition-all group">
-              <div className="size-12 bg-muted/50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+              <div className="size-12 bg-muted/50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all" aria-hidden="true">
                 {stat.icon}
               </div>
               <div className="text-2xl font-black text-gray-900 font-inter mb-1">
@@ -116,10 +116,10 @@ export default function AboutClient() {
               </div>
             </div>
           ))}
-        </div>
+        </section>
 
         {/* Why Choose Us Section */}
-        <div className="relative bg-foreground rounded-[3rem] p-10 lg:p-20 overflow-hidden">
+        <section className="relative bg-foreground rounded-[3rem] p-10 lg:p-20 overflow-hidden" aria-labelledby="benefits-title">
           <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 blur-[100px] rounded-full" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 blur-[80px] rounded-full" />
 
@@ -128,7 +128,7 @@ export default function AboutClient() {
               <div className="text-primary text-[10px] font-black tracking-[0.2em] uppercase">
                 Benefits
               </div>
-              <h2 className="text-3xl text-primary-foreground font-black font-cairo leading-tight">
+              <h2 id="benefits-title" className="text-3xl text-primary-foreground font-black font-cairo leading-tight">
                 {t('whyChooseUs.title')}
               </h2>
               <p className="text-gray-400 text-sm leading-relaxed font-medium">
@@ -139,7 +139,7 @@ export default function AboutClient() {
             <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
               {whyChooseUs.map((item, i) => (
                 <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 space-y-4 hover:bg-white/10 transition-colors group">
-                  <div className="size-14 bg-white/10 rounded-2xl flex items-center justify-center group-hover:rotate-6 transition-transform">
+                  <div className="size-14 bg-white/10 rounded-2xl flex items-center justify-center group-hover:rotate-6 transition-transform" aria-hidden="true">
                     {item.icon}
                   </div>
                   <h3 className="text-white font-black text-lg font-cairo">{item.title}</h3>
@@ -150,7 +150,7 @@ export default function AboutClient() {
               ))}
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
