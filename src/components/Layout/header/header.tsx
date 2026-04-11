@@ -43,6 +43,26 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Update CSS variable for header height to allow other components to sync
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const isDesktop = window.innerWidth >= 768
+      let height = 0
+      
+      if (isDesktop) {
+        height = isVisible ? 194 : 50
+      } else {
+        height = isVisible ? 64 : 0
+      }
+      
+      document.documentElement.style.setProperty('--header-height', `${height}px`)
+    }
+
+    updateHeaderHeight()
+    window.addEventListener('resize', updateHeaderHeight)
+    return () => window.removeEventListener('resize', updateHeaderHeight)
+  }, [isVisible])
+
   // Initial data fetching
   useEffect(() => {
     const fetchCategories = async () => {

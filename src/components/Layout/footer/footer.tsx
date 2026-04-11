@@ -32,39 +32,49 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="lg:col-span-2 flex flex-col ">
+          <div className="lg:col-span-3 flex flex-col ">
             <h3 className="text-xl font-bold mb-8 relative after:content-[''] after:absolute after:bottom-[-8px] after:right-0 after:left-0 after:w-8 after:h-[3px] after:bg-primary rounded-full">
-              {t('MenuTitle')}
+              {t('Information')}
             </h3>
-            <ul className="flex flex-col  gap-6 text-[15px] font-medium">
+            <ul className="flex flex-col gap-6 text-[15px] font-medium">
               <li>
-                <Link href="/" className="flex items-center gap-2 hover:text-primary transition group">
+                <Link href="/delivery-information" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
                     <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
                     <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
-                  <span>{useTranslations('common')('Home')}</span>
+                  <span>{t('DeliveryInformation')}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/store" className="flex items-center gap-2 hover:text-primary transition group">
+                <Link href="/privacy-policy" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
                     <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
                     <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
-                  <span>{t('Store')}</span>
+                  <span>{t('PrivacyPolicy')}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/about-us" className="flex items-center gap-2 hover:text-primary transition group">
+                <Link href="/refund-policy" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
                     <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
                     <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
-                  <span>{t('AboutUs')}</span>
+                  <span>{t('RefundPolicy')}</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/partnerships" className="flex items-center gap-2 hover:text-primary transition group">
+                  {isRtl ? (
+                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  ) : (
+                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  )}
+                  <span>{t('Partnerships')}</span>
                 </Link>
               </li>
               <li>
@@ -77,6 +87,14 @@ export function Footer() {
                   <span>{t('ContactTitle')}</span>
                 </Link>
               </li>
+            </ul>
+          </div>
+          
+          <div className="lg:col-span-2 flex flex-col ">
+            <h3 className="text-xl font-bold mb-8 relative after:content-[''] after:absolute after:bottom-[-8px] after:right-0 after:left-0 after:w-8 after:h-[3px] after:bg-primary rounded-full">
+              {t('Extras')}
+            </h3>
+            <ul className="flex flex-col gap-6 text-[15px] font-medium">
               <li>
                 <Link href="/brands" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
@@ -84,7 +102,27 @@ export function Footer() {
                   ) : (
                     <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
-                  <span>{useTranslations('dashboard')('Brands')}</span>
+                  <span>{t('Brands')}</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/specials" className="flex items-center gap-2 hover:text-primary transition group">
+                  {isRtl ? (
+                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  ) : (
+                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  )}
+                  <span>{t('Specials')}</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/site-map" className="flex items-center gap-2 hover:text-primary transition group">
+                  {isRtl ? (
+                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  ) : (
+                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  )}
+                  <span>{t('SiteMap')}</span>
                 </Link>
               </li>
             </ul>
@@ -128,17 +166,6 @@ export function Footer() {
                 </div>
               </li>
             </ul>
-          </div>
-
-          <div className="lg:col-span-3 h-full">
-            <div className="bg-white/40 backdrop-blur-[2px] border-2 border-[#dcd8cf] rounded-2xl px-3 py-4 h-full flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-all shadow-black/5 group">
-              <h4 className="text-lg font-bold text-[#1a1a1b] mb-4 group-hover:text-primary transition-colors">
-                {t('CompanyTitle')}
-              </h4>
-              <div className="flex items-center gap-2 text-primary font-bold bg-primary/5 px-4 py-2 rounded-lg border border-primary/10">
-                <span className="text-[13px]">{t('TaxNumber')} {t('TaxId')}</span>
-              </div>
-            </div>
           </div>
 
         </div>

@@ -16,6 +16,7 @@ export default function BrandsClient() {
     const [brands, setBrands] = useState<Brand[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeLetter, setActiveLetter] = useState<string>('');
+    const [isStuck, setIsStuck] = useState(false);
 
     useEffect(() => {
         const fetchBrands = async () => {
@@ -27,7 +28,30 @@ export default function BrandsClient() {
         fetchBrands();
     }, []);
 
+    // Observer for detecting when the navbar becomes sticky
     useEffect(() => {
+        if (loading) return;
+
+        const sentinel = document.getElementById('nav-sentinel');
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsStuck(!entry.isIntersecting);
+            },
+            { 
+                threshold: [1],
+                rootMargin: '-50px 0px 0px 0px' // Trigger slightly before hitting the top
+            }
+        );
+
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [loading]);
+
+    useEffect(() => {
+        if (loading) return;
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -37,7 +61,8 @@ export default function BrandsClient() {
                 }
             });
         }, {
-            rootMargin: '-10% 0px -80% 0px',
+            // Detect active section around 30% from the top of the viewport
+            rootMargin: '-30% 0px -65% 0px',
             threshold: 0
         });
 
@@ -47,7 +72,7 @@ export default function BrandsClient() {
         return () => {
             sections.forEach((section) => observer.unobserve(section));
         };
-    }, [brands]);
+    }, [brands, loading]);
 
     // Group brands by index
     const groupedBrands: Record<string, Brand[]> = brands.reduce((acc, brand) => {
@@ -75,18 +100,34 @@ export default function BrandsClient() {
                 subtitle={t('BrandsDescription')}
             />
 
-            <div className="max-w-7xl mx-auto px-4 mt-10 relative z-10">
-                {/* Alphabet Navigation */}
-                <div className="mb-12 sticky top-20 z-20 bg-white/90 backdrop-blur-md border border-[#eee1e1] rounded-3xl p-4 shadow-xl shadow-black/5 overflow-x-auto no-scrollbar">
-                    <div className="flex items-center justify-between gap-2 min-w-max px-2">
+            <div id="nav-sentinel" className="h-0" />
+            
+            {/* Alphabet Navigation - Moved outside container for better full-width behavior */}
+            <div 
+                className={`sticky z-30 transition-all duration-300 ease-in-out ${
+                    isStuck 
+                    ? 'bg-white shadow-xl shadow-black/5 border-b border-[#eee1e1] py-1' 
+                    : 'mt-10 mb-8 max-w-7xl mx-auto px-4'
+                }`}
+                style={{ top: 'var(--header-height, 80px)' }}
+            >
+                <div 
+                    className={`transition-all duration-300 ${
+                        isStuck 
+                        ? 'max-w-7xl mx-auto px-4 md:px-6' 
+                        : 'bg-white/90 backdrop-blur-md border border-[#eee1e1] rounded-3xl shadow-sm shadow-black/20 p-2 sm:p-4'
+                    }`}
+                >
+                    <div className="flex items-center justify-between gap-1 sm:gap-2 overflow-x-auto no-scrollbar py-2">
                         {sortedIndices.map((index) => {
                             const isActive = activeLetter === index;
                             return (
                                 <a 
                                     key={index} 
                                     href={`#group-${index}`}
+                                    onClick={() => setActiveLetter(index)}
                                     aria-label={isAr ? `انتقال إلى الحرف ${index}` : `Jump to letter ${index}`}
-                                    className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all font-bold text-sm border ${
+                                    className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl transition-all font-bold text-xs sm:text-sm border ${
                                         isActive 
                                         ? 'bg-primary text-white shadow-lg shadow-primary/30 border-primary' 
                                         : 'hover:bg-primary/5 text-muted-foreground border-transparent hover:text-primary'
@@ -98,11 +139,12 @@ export default function BrandsClient() {
                         })}
                     </div>
                 </div>
+            </div>
 
-                {/* Content Section */}
-                <div className="space-y-16">
+            <div className="max-w-7xl mx-auto px-4 relative z-10">
+                <div className="space-y-16 mt-8">
                     {sortedIndices.map((index) => (
-                                <section key={index} id={`group-${index}`} className="scroll-mt-40">
+                                <section key={index} id={`group-${index}`} className="scroll-mt-[calc(var(--header-height)+120px)] sm:scroll-mt-[calc(var(--header-height)+160px)]">
                                     <div className="flex items-center gap-6 mb-8">
                                         <span className="text-4xl font-black text-primary drop-shadow-md">{index}</span>
                                         <div className="h-px flex-1 bg-gradient-to-r from-[#eee1e1] to-transparent" />
