@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, User, Bell, Search as SearchIcon, Loader2 } from "lucide-react";
+import { Menu, X, LogOut, Bell, Loader2, User2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -65,36 +65,65 @@ export default function Header() {
                 </Button>
 
                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="relative h-8 w-8 sm:h-9 sm:w-9 rounded-full p-0 overflow-hidden border border-primary/10 hover:border-primary/20">
-                            <Avatar className="h-full w-full">
-                                <AvatarImage src={user?.user_metadata?.avatar_url} alt="Admin" />
-                                <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                                    <User className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <DropdownMenuTrigger className='!p-0' asChild>
+                        <Button 
+                            variant="ghost" 
+                            className="relative h-9 w-9 sm:h-10 sm:w-10 rounded-full p-0 overflow-hidden border border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                        >
+                            <Avatar className="h-full w-full px-0">
+                                <AvatarImage 
+                                    src={user?.user_metadata?.avatar_url} 
+                                    alt={user?.email || "Admin"} 
+                                    className="object-cover"
+                                />
+                                <AvatarFallback className="bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-bold">
+                                    <User2 className="h-4 w-4 sm:h-5 sm:w-5" />
                                 </AvatarFallback>
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-[78vw] max-w-[280px] sm:w-56 mt-2 border-primary/10 p-2 overflow-hidden animate-in fade-in zoom-in duration-200">
-                        <DropdownMenuLabel className="font-normal px-2 py-3">
-                            <div className="flex flex-col space-y-1">
-                                <p className="text-sm font-bold leading-none">{user?.email?.split('@')[0] || 'Admin'}</p>
-                                <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                    
+                    <DropdownMenuContent 
+                        align="end" 
+                        className="w-[85vw] max-w-[300px] sm:w-64 mt-2 border-primary/10 p-2 overflow-hidden shadow-2xl"
+                    >
+                        <DropdownMenuLabel className="font-normal px-3 py-4">
+                            <div className="flex flex-col space-y-2">
+                                <div className="flex items-center gap-3">
+                                    <Avatar className="h-10 w-10 border border-primary/10">
+                                        <AvatarImage src={user?.user_metadata?.avatar_url} alt={user?.email || "Admin"} />
+                                        <AvatarFallback className="bg-primary/5 text-primary text-xs">
+                                            {user?.email?.[0].toUpperCase() || "A"}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex flex-col min-w-0">
+                                        <p className="text-sm font-bold leading-none truncate text-foreground/90">
+                                            {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Admin'}
+                                        </p>
+                                        <p className="text-[11px] leading-tight text-muted-foreground truncate mt-1">
+                                            {user?.email}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator className="bg-primary/5" />
-                        <DropdownMenuItem
-                            onClick={handleLogout}
-                            disabled={isLoading}
-                            className="focus:bg-destructive bg-destructive/10 text-destructive cursor-pointer rounded-md disabled:opacity-50"
-                        >
-                            {isLoading ? (
-                                <Loader2 className="me-2 h-4 w-4 animate-spin" />
-                            ) : (
-                                <LogOut className="me-2 h-4 w-4" />
-                            )}
-                            <span>{t("Logout")}</span>
-                        </DropdownMenuItem>
+                        
+                        <DropdownMenuSeparator className="bg-primary/10 mx-1 my-2" />
+                        
+                        <div className="p-1">
+                            <DropdownMenuItem
+                                onClick={handleLogout}
+                                disabled={isLoading}
+                                className="focus:bg-destructive focus:text-destructive-foreground bg-destructive/5 text-destructive cursor-pointer rounded-lg p-2.5 transition-all duration-200 group"
+                            >
+                                {isLoading ? (
+                                    <Loader2 className="me-3 h-4 w-4 animate-spin" />
+                                ) : (
+                                    <LogOut className="me-3 h-4 w-4 transition-transform group-hover:-translate-x-1 rtl:group-hover:translate-x-1" />
+                                )}
+                                <span className="font-medium">{t("Logout")}</span>
+                            </DropdownMenuItem>
+                        </div>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

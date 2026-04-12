@@ -86,13 +86,13 @@ export default function Sidebar() {
             {/* Mobile Overlay */}
             {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden transition-opacity duration-300"
+                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[45] lg:hidden transition-opacity duration-300"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             <aside className={cn(
-                "fixed lg:sticky top-0 h-screen bg-background border-e border-primary/5 flex flex-col transition-all duration-500 z-40",
+                "fixed lg:sticky top-0 h-screen bg-background border-e border-primary/5 flex flex-col transition-all duration-500 z-[50]",
                 isSidebarOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full lg:w-0 lg:translate-x-0 opacity-0 overflow-hidden",
                 isAr && !isSidebarOpen ? "translate-x-full" : ""
             )}>
