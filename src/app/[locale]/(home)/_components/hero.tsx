@@ -30,7 +30,7 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
-          <div className="lg:col-span-3 flex flex-col gap-6 order-2 lg:order-1">
+          <div className="lg:col-span-3 md:flex flex-col gap-6 order-2 lg:order-1 hidden">
             <div className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all">
               <Image
                 src={require('@/assets/banner-1.svg')}
@@ -127,7 +127,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all">
+          <div className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block">
             <Image
               src={require('@/assets/banner-3.svg')}
               alt="Card Printers"
