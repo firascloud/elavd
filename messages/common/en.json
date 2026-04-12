@@ -4,8 +4,8 @@
     "Cancel": "Cancel",
     "Location": "Jabr Bin Rashid, Al Murabba, Riyadh 12628, Kingdom of Saudi Arabia",
     "Home": "Home",
-    "HomeTitle": "Dubai Network IT EST | Technology Solutions",
-    "HomeDescription": "Leading IT establishment offering technology solutions, services and products.",
+    "HomeTitle": "Elavd Office Equipment Establishment | Card & Barcode Printers and Security Systems in Saudi Arabia",
+    "HomeDescription": "Elavd Office Equipment Establishment specializes in card and barcode printers, safes, money counting machines, surveillance cameras, communication systems, biometric devices, POS systems, office supplies, and card printer accessories in Saudi Arabia.",
     "Show": "Show",
     "in": "in",
     "Hot": "HOT",
@@ -33,7 +33,7 @@
     "EmailLabel": "Email",
     "LocationLabel": "Location",
     "Address": "Jabr Bin Rashid, Al Murabba, Riyadh 12628, Kingdom of Saudi Arabia",
-    "CompanyTitle": "Dubai Network IT Establishment",
+    "CompanyTitle": "Elavd Office Equipment & Communication Technologies Establishment",
     "TaxNumber": "Tax Registration Number",
     "SpecialOffers": "Special Offers",
     "BrowseCategories": "Categories",
@@ -205,7 +205,7 @@
     "EmailLabel": "Email",
     "LocationLabel": "Location",
     "Address": "Jabr bin Rashid, Al-Murabba, Riyadh",
-   "CompanyTitle": "Elavd Office Equipment & Communication Technology Establishment",
+    "CompanyTitle": "Elavd Office Equipment & Communication Technology Establishment",
     "TaxNumber": "Tax Registration Number",
     "TaxId": "310079237600003",
     "AboutUs": "About Us",
@@ -221,21 +221,21 @@
     "Copyright": "All rights reserved © Elavd Office Equipment Est. 2026"
   },
   "info": {
-     "Partnerships": {
-        "Title": "Partnerships",
-        "Content": "Elavd has arrived and is quickly becoming the destination for all office machines e-commerce in the KSA. As the only office machines - focused online retailer in the region, we are the perfect venue to showcase top brands to the local market.\n\nJoin us by becoming a Elavd supplier partner! Please email us at sales@elavd.com with your application, including:\n\n• Your brand profile\n• Product range and pricing (including sample images)\n• Target market\n\nWe look forward to hearing from you!\n\nElavd Team"
-     },
-     "RefundPolicy": {
-        "Title": "Refund Policy",
-        "Content": "All products are sold “as is”. The customer assumes the responsibility for the purchase, and no refunds will be issued. You may contact us if you wish to exchange your purchase for a product of equal or lesser value within 120 days from the purchase date. If an item of lesser value is chosen there will be no refund for the additional amount."
-     },
-     "PrivacyPolicy": {
-        "Title": "Privacy Policy",
-        "Content": "This policy covers how we use your personal information. We take your privacy seriously and will take all measures to protect your personal information. Any personal information received will only be used to fulfill your order, and may be used for internal analytical purposes. We will not sell or redistribute your information to anyone."
-     },
-     "DeliveryInformation": {
-        "Title": "Delivery Information",
-        "Content": "We offer delivery across the major metropolitan areas of Saudi Arabia.\n\nPer Item Shipping Rate 50 SAR.\n\nIn general customers should expect to receive their shipments within 2 to 4 working days depending on their location."
-     }
+    "Partnerships": {
+      "Title": "Partnerships",
+      "Content": "Elavd has arrived and is quickly becoming the destination for all office machines e-commerce in the KSA. As the only office machines - focused online retailer in the region, we are the perfect venue to showcase top brands to the local market.\n\nJoin us by becoming a Elavd supplier partner! Please email us at sales@elavd.com with your application, including:\n\n• Your brand profile\n• Product range and pricing (including sample images)\n• Target market\n\nWe look forward to hearing from you!\n\nElavd Team"
+    },
+    "RefundPolicy": {
+      "Title": "Refund Policy",
+      "Content": "All products are sold “as is”. The customer assumes the responsibility for the purchase, and no refunds will be issued. You may contact us if you wish to exchange your purchase for a product of equal or lesser value within 120 days from the purchase date. If an item of lesser value is chosen there will be no refund for the additional amount."
+    },
+    "PrivacyPolicy": {
+      "Title": "Privacy Policy",
+      "Content": "This policy covers how we use your personal information. We take your privacy seriously and will take all measures to protect your personal information. Any personal information received will only be used to fulfill your order, and may be used for internal analytical purposes. We will not sell or redistribute your information to anyone."
+    },
+    "DeliveryInformation": {
+      "Title": "Delivery Information",
+      "Content": "We offer delivery across the major metropolitan areas of Saudi Arabia.\n\nPer Item Shipping Rate 50 SAR.\n\nIn general customers should expect to receive their shipments within 2 to 4 working days depending on their location."
+    }
   }
 }
