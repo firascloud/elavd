@@ -115,16 +115,6 @@ export function Footer() {
                   <span>{t('Specials')}</span>
                 </Link>
               </li>
-              <li>
-                <Link href="/site-map" className="flex items-center gap-2 hover:text-primary transition group">
-                  {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                  ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  )}
-                  <span>{t('SiteMap')}</span>
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -139,7 +129,11 @@ export function Footer() {
                 </div>
                 <div className="flex flex-col  gap-1.5">
                   <span className="font-bold opacity-70">{t('PhoneLabel')}</span>
-                  <a href="tel:0553202091" className="hover:text-primary transition font-bold">0553202091</a>
+                  <div className="flex items-center gap-2">
+                    <a href="tel:0553202091" className="hover:text-primary transition font-bold">0553202091</a>
+                    <span className="text-gray-300">-</span>
+                    <a href="tel:0556482799" className="hover:text-primary transition font-bold">0556482799</a>
+                  </div>
                 </div>
               </li>
 

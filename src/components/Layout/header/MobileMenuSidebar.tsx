@@ -63,18 +63,18 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
       />
 
       <div className="relative w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col overflow-y-auto">
-        <div className="bg-foreground px-4 py-4 flex items-center justify-between shrink-0">
+        <div className="bg-white px-4 py-4 flex items-center justify-between shrink-0">
           <Image
             src={Logo}
             alt="Logo"
             width={120}
             height={120}
-            className="w-24 h-auto brightness-0 invert"
+            className="w-24 h-auto"
           />
           <button
             ref={closeButtonRef}
             onClick={() => setMenuOpen(false)}
-            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+            className="p-1.5 rounded-lg bg-black/10 hover:bg-black/20 text-black transition"
             aria-label={t('Close') || 'Close menu'}
           >
             <X className="w-5 h-5" />
@@ -149,12 +149,14 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
             <div className="p-2 rounded-full bg-primary/10">
               <Phone className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-sm font-bold tracking-tight" dir="ltr">00966551628281</span>
+            <a href="tel:0553202091" className="text-sm font-bold tracking-tight hover:text-primary transition-colors" dir="ltr">0553202091</a>
+            <span>-</span>
+            <a href="tel:0556482799" className="text-sm font-bold tracking-tight hover:text-primary transition-colors" dir="ltr">0556482799</a>
           </div>
-          <div className="flex items-center gap-3 text-slate-500 text-sm">
+          <a href="mailto:sales@elavd.com" className="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors text-sm">
             <Icon icon="mdi:email" className="w-4 h-4 text-primary" />
             <span>sales@elavd.com</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>

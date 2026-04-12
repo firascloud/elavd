@@ -53,7 +53,7 @@ export default function AboutClient() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24 lg:mb-32" aria-labelledby="story-title">
           <div className="relative h-[400px] lg:h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl group border border-border">
             <Image
-              src={require('@/assets/banner-1.png')}
+              src={require('@/assets/banner-1.svg')}
               alt={locale === 'ar' ? 'فريق عمل مؤسسة رائدة في تقنية المعلومات' : 'DUBAI NETWORK IT EST Team working'}
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"

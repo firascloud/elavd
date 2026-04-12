@@ -108,13 +108,13 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
         <div className="hidden lg:flex flex-1 max-w-2xl w-full relative">
           <form
             onSubmit={handleSearchRedirect}
-            className="flex h-11 border-2 border-primary rounded-lg group focus-within:ring-2 focus-within:ring-primary/20 transition-all w-full relative"
+            className="flex h-11 border-2 border-primary rounded-lg group transition-all w-full relative"
           >
             {/* Category Select */}
             <div className="relative z-[120]" ref={catMenuRef}>
               <div
                 onClick={() => setShowCatMenu(!showCatMenu)}
-                className="bg-primary px-4 h-full flex items-center text-white cursor-pointer hover:bg-primary/95 transition border-r border-primary/20 gap-3 min-w-[130px] justify-center rounded-s-[6px]"
+                className="bg-primary px-4 h-full flex items-center text-white cursor-pointer hover:bg-primary/95 transition border-e border-primary/20 gap-3 min-w-[130px] justify-center rounded-s-[6px]"
               >
                 <span className="text-sm font-bold truncate max-w-[100px]">
                   {selectedCategory ? (locale === 'ar' ? selectedCategory.name_ar : selectedCategory.name_en) : t('All')}
@@ -128,7 +128,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute top-full left-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 z-[110] py-2 overflow-hidden"
+                    className="absolute top-full start-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 z-[110] py-2 overflow-hidden"
                   >
                     <button
                       type="button"
@@ -173,7 +173,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={t('Search')}
-              className="flex-1 px-4 text-sm outline-none placeholder:text-muted-foreground/60"
+              className="flex-1 px-4 text-sm outline-none focus:outline-none focus:ring-0 focus:shadow-none placeholder:text-muted-foreground/60"
             />
 
             <button
@@ -197,7 +197,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[100]"
+                className="absolute top-full start-0 end-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[100]"
               >
                 {loading ? (
                   <div className="p-8 flex flex-col items-center justify-center gap-3">
@@ -249,7 +249,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                               )}
                             </div>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
+                          <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors rtl:rotate-180" />
                         </Link>
                       ))}
                     </div>
@@ -258,7 +258,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                       className="w-full mt-2 py-3 bg-slate-50 text-slate-600 text-xs font-bold hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2 rounded-xl"
                     >
                       {t('ShowAllResultsFor')} "{searchTerm}"
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-4 h-4 rtl:rotate-180" />
                     </button>
                   </div>
                 ) : (

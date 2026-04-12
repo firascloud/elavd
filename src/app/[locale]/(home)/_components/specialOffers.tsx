@@ -22,6 +22,7 @@ export default function SpecialOffers({ position }: { position: number }) {
     const cardAlts = locale === 'ar'
         ? ["شرائط وطابعات بطاقات ملحقات", "بطاقات بلاستيكية مغناطيسية عالية الجودة", "طابعة بطاقات بلاستيكية بريماسي لافا"]
         : ["card printer ribbon accessories", "magnetic plastic cards high quality", "plastic card printer primacy lava"];
+    const cardLinks = ["/product-category/accessories", "/product-category/accessories", "/product-category/card-printer"];
 
     const [offers, setOffers] = useState<Offer[]>([]);
     const [loading, setLoading] = useState(true);
@@ -55,8 +56,8 @@ export default function SpecialOffers({ position }: { position: number }) {
                                     key={offer.id}  
                                     className="relative flex-[0_0_100%] sm:flex-[0_0_48%] lg:flex-[0_0_32%] min-w-0 aspect-[16/9] md:aspect-[4/3]  overflow-hidden "
                                 >
-                                    {offer.link ? (
-                                        <Link href={offer.link as any} className="block w-full h-full relative">
+                                    {offer.link || true ? (
+                                        <Link href={cardLinks[index % 3]} className="block w-full h-full relative">
                                             <Image
                                                 src={cardImages[index % 3]}
                                                 alt={cardAlts[index % 3]}
@@ -90,8 +91,8 @@ export default function SpecialOffers({ position }: { position: number }) {
                     <section key={offer.id} className="w-full mt-10 pb-12 bg-background">
                         <div className="max-w-8xl mx-auto px-4">
                             <div className="relative w-full aspect-[21/9] md:aspect-[25/7] lg:aspect-[30/7]  overflow-hidden">
-                                {offer.link ? (
-                                    <Link href={offer.link as any} className="block relative w-full h-full">
+                                {offer.link || true ? (
+                                    <Link href="/product-category/steel-safe" className="block relative w-full h-full">
                                          <Image
                                             src={Logo}
                                             alt={altText}

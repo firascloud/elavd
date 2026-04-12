@@ -88,6 +88,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  :focus-visible {
+    outline: 2px solid #f05a5b;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(240, 90, 91, 0.2);
+  }
 }
 
 * {
@@ -161,11 +167,3 @@
     scrollbar-width: none;
   }
 }
-
-/* Enhanced Accessibility: Global Focus Ring */
-:focus-visible {
-  outline: 2px solid #f05a5b !important;
-  outline-offset: 2px !important;
-  box-shadow: 0 0 0 4px rgba(240, 90, 91, 0.2) !important;
-}
-

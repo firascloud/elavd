@@ -78,6 +78,17 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
   }, [searchOpen, setSearchOpen])
 
   // Close category menu on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (catMenuRef.current && !catMenuRef.current.contains(event.target as Node)) {
+        setShowCatMenu(false)
+      }
+    }
+    if (showCatMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showCatMenu])
 
   const handleSearchRedirect = (e?: React.FormEvent) => {
     e?.preventDefault()
@@ -134,13 +145,13 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
             <div className="relative">
               <form 
                 onSubmit={handleSearchRedirect}
-                className="flex h-[52px] border-2 border-slate-200 focus-within:border-primary rounded-xl focus-within:ring-4 focus-within:ring-primary/10 transition-all relative"
+                className="flex h-[52px] border-2 border-slate-200 rounded-xl transition-all relative"
               > 
                 <div className="relative z-[120]" ref={catMenuRef}>
                   <button 
                     type="button"
                     onClick={() => setShowCatMenu(!showCatMenu)}
-                    className="bg-slate-50 h-full px-4 flex items-center gap-2 text-slate-600 cursor-pointer hover:bg-slate-100 transition-colors border-r border-slate-200 min-w-[120px] justify-center rounded-s-[9px] outline-none"
+                    className="bg-slate-50 h-full px-3 sm:px-4 flex items-center gap-2 text-slate-600 cursor-pointer hover:bg-slate-100 transition-colors border-e border-slate-200 min-w-[100px] sm:min-w-[120px] justify-center rounded-s-[9px] outline-none"
                   >
                     <span className="text-sm font-semibold truncate max-w-[110px]">
                       {selectedCategory ? (locale === 'ar' ? selectedCategory.name_ar : selectedCategory.name_en) : t('All')}
@@ -154,7 +165,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                        className="absolute top-full left-0 mt-2 w-72 bg-white rounded-md shadow-md border border-slate-100 z-[110] py-2 overflow-hidden"
+                        className="absolute top-full start-0 mt-2 w-72 max-w-[85vw] bg-white rounded-md shadow-md border border-slate-100 z-[110] py-2 overflow-hidden"
                       >
                         <button
                           type="button"
@@ -202,13 +213,13 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder={t('SearchPlaceholder') || "What are you looking for?"}
-                  className="flex-1 px-4 text-base outline-none placeholder:text-slate-400 bg-white font-medium"
+                  className="flex-1 px-4 text-base outline-none focus:outline-none focus:ring-0 focus:shadow-none placeholder:text-slate-400 bg-white font-medium"
                 />
                 
                 <button 
                   type="submit"
                   disabled={loading}
-                  className="bg-primary cursor-pointer px-6 flex items-center justify-center text-white hover:bg-primary/90 transition-all disabled:opacity-80 active:scale-95 rounded-e-[9px]"
+                  className="bg-primary cursor-pointer px-0 md:px-6 flex items-center justify-center text-white hover:bg-primary/90 transition-all disabled:opacity-80 active:scale-95 rounded-e-[9px]"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -225,7 +236,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[100]"
+                    className="absolute top-full start-0 end-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[100]"
                   >
                     {loading ? (
                       <div className="p-8 flex flex-col items-center justify-center gap-3">
@@ -280,7 +291,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                                   )}
                                 </div>
                               </div>
-                              <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
+                              <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors rtl:rotate-180" />
                             </Link>
                           ))}
                         </div>
@@ -289,7 +300,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                           className="w-full cursor-pointer mt-2 py-3 bg-slate-50 text-slate-600 text-xs font-bold hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2 rounded-xl"
                         >
                           {t('ShowAllResultsFor')} "{searchTerm}"
-                          <ChevronRight className="w-4 h-4" />
+                          <ChevronRight className="w-4 h-4 rtl:rotate-180" />
                         </button>
                       </div>
                     ) : searchTerm.length >= 2 ? (

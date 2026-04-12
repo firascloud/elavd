@@ -4,7 +4,7 @@ import React, { useMemo } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
-import { ChevronRight, ArrowLeft, ArrowRight, CheckCircle2, Zap } from 'lucide-react'
+import { ChevronRight, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
@@ -20,9 +20,9 @@ export default function Hero() {
   }, [autoplay])
 
   const slides = [
-    { id: '1', image: require('@/assets/bannner-3.png') },
-    { id: '2', image: require('@/assets/banner-1.png') },
-    { id: '3', image: require('@/assets/banner-2.png') },
+    { id: '1', image: require('@/assets/banner-3.svg') },
+    { id: '2', image: require('@/assets/banner-1.svg') },
+    { id: '3', image: require('@/assets/banner-2.svg') },
   ]
 
   return (
@@ -33,7 +33,7 @@ export default function Hero() {
           <div className="lg:col-span-3 flex flex-col gap-6 order-2 lg:order-1">
             <div className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all">
               <Image
-                src={require('@/assets/banner-1.png')}
+                src={require('@/assets/banner-1.svg')}
                 alt="Hotel Safes"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -50,7 +50,7 @@ export default function Hero() {
 
             <div className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all">
               <Image
-                src={require('@/assets/banner-2.png')}
+                src={require('@/assets/banner-2.svg')}
                 alt="Deposit Safes"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -129,7 +129,7 @@ export default function Hero() {
 
           <div className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all">
             <Image
-              src={require('@/assets/bannner-3.png')}
+              src={require('@/assets/banner-3.svg')}
               alt="Card Printers"
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-1000"

@@ -35,8 +35,8 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
                     href={link.href}
                     className={cn(
                       "px-3 py-2 text-[13px] font-bold transition-all rounded-full whitespace-nowrap",
-                      isActive 
-                        ? " text-primary scale-105" 
+                      isActive
+                        ? " text-primary scale-105"
                         : "text-[#1a1a1a] hover:text-primary"
                     )}
                   >
@@ -44,7 +44,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
                   </Link>
                 )
               })}
-              
+
               {/* Separator if both exist */}
               {navLinks.length > 0 && categories.length > 0 && (
                 <div className="h-4 w-px bg-gray-200 mx-2 shrink-0" />
@@ -59,8 +59,8 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
                     href={categoryPath}
                     className={cn(
                       "px-4 py-2 text-[13px] font-bold transition-all rounded-full whitespace-nowrap",
-                      isActive 
-                        ? " text-primary" 
+                      isActive
+                        ? " text-primary"
                         : "text-[#1a1a1a] hover:text-primary"
                     )}
                   >
@@ -79,7 +79,9 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
           <div className="p-2 rounded-full bg-primary/20 group-hover:bg-primary transition-colors">
             <Phone className="w-4 h-4 text-primary group-hover:text-white" />
           </div>
-          <span className="text-[14px] tracking-tight">00966551628281</span>
+          <a href="tel:0553202091" className="text-[14px] tracking-tight hover:text-primary transition-colors">0553202091</a>
+          <span className="text-gray-300">-</span>
+          <a href="tel:0556482799" className="text-[14px] tracking-tight hover:text-primary transition-colors">0556482799</a>
         </div>
       </div>
     </div>
