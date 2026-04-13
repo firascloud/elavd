@@ -4,19 +4,38 @@ import { buildMetadata } from "./utils";
 
 export async function cartMetadata(locale: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "common" });
+  const isAr = locale === "ar";
+
   return buildMetadata({
     locale,
     path: "/cart",
-    title: t("Cart"),
-    description: locale === "ar"
-      ? "راجع المنتجات التي أضفتها إلى السلة وأرسل طلب عرض سعر لأنظمة الأمن وتقنية الاتصالات. فريق إيلافد جاهز للرد على استفساراتك."
-      : "Review the security systems and IT products in your cart and submit a quote request. The Elavd team will respond with pricing details promptly.",
-    keywords:
-      locale === "ar"
-        ? ["سلة", "طلب عرض سعر", "منتجات", "شركة إيلافد للأنظمة الأمنية وتقنية الاتصالات"]
-        : ["cart", "request quote", "products", "Dubai Network IT EST"],
-    
+    title: isAr
+      ? "سلة التسوق | مؤسسة إيلافد"
+      : "Shopping Cart | Elavd",
+    description: isAr
+      ? "راجع المنتجات التي أضفتها إلى السلة وأرسل طلبك بسهولة من مؤسسة إيلافد، بما يشمل أجهزة البصمة والحضور والانصراف، الخزن الحديدية، مكائن عد النقود، وطابعات الكروت والبطاقات."
+      : "Review the products added to your cart and submit your request easily with Elavd, including attendance devices, safes, money counting machines, and card printers.",
+    keywords: isAr
+      ? [
+          "سلة التسوق",
+          "سلة",
+          "طلب عرض سعر",
+          "متجر إيلافد",
+          "أجهزة البصمة",
+          "الخزن الحديدية",
+          "مكائن عد النقود",
+          "طابعات الكروت",
+        ]
+      : [
+          "shopping cart",
+          "cart",
+          "request quote",
+          "Elavd store",
+          "attendance devices",
+          "safes",
+          "money counting machines",
+          "card printers",
+        ],
     noindex: true,
   });
 }
-

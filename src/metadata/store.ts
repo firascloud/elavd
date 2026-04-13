@@ -1,30 +1,86 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { buildMetadata, buildMetadataSmart } from "./utils";
+import { buildMetadataSmart } from "./utils";
 
 export async function storeMetadata(locale: string, query?: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "common" });
+  const isAr = locale === "ar";
 
-  const title = query ? `${query} | ${t("Store")}` : `${t("Store")} | DUBAI NETWORK IT`;
+  const title = query
+    ? isAr
+      ? `${query} | متجر مؤسسة إيلافد`
+      : `${query} | Elavd Store`
+    : isAr
+      ? `متجر مؤسسة إيلافد | مكائن عد النقود والخزن الحديدية وأجهزة البصمة وطابعات الكروت`
+      : `Elavd Store | Money Counting Machines, Safes, Attendance Devices & Card Printers`;
+
   const description = query
-    ? (locale === "ar"
-        ? `نتائج البحث عن "${query}" — تصفح أنظمة الأمن والمراقبة وحلول تقنية الاتصالات من أبرز العلامات التجارية العالمية.`
-        : `Search results for "${query}" — browse security systems, surveillance equipment and IT communication solutions.`)
-    : (locale === "ar"
-        ? "تصفح متجر إيلافد واستكشف مجموعة واسعة من أنظمة الأمن والمراقبة وشبكات الاتصالات وحلول تقنية المعلومات من علامات تجارية عالمية موثوقة."
-        : "Browse the Elavd store and discover a wide range of security systems, surveillance cameras, networking equipment and IT solutions from trusted global brands.");
+    ? isAr
+      ? `نتائج البحث عن "${query}" في متجر مؤسسة إيلافد. تصفح مجموعة من مكائن عد النقود، الخزن الحديدية، أجهزة البصمة، أجهزة الحضور والانصراف، وطابعات الكروت والباركود في السعودية.`
+      : `Search results for "${query}" in the Elavd store. Browse money counting machines, safes, attendance devices, time attendance systems, and card and barcode printers in Saudi Arabia.`
+    : isAr
+      ? "تصفح متجر مؤسسة إيلافد للأجهزة المكتبية وتقنيات الاتصالات واستكشف مجموعة متخصصة من مكائن عد النقود، الخزن الحديدية، الخزنات الإلكترونية، أجهزة البصمة، أجهزة الحضور والانصراف، وطابعات الكروت والبطاقات والباركود في السعودية."
+      : "Browse Elavd Office Equipment & Communication Technology store and discover a specialized range of money counting machines, safes, electronic safes, attendance devices, time attendance systems, and card and barcode printers in Saudi Arabia.";
 
-  // For the base /store page use buildMetadataSmart (reads real path from headers).
-  // When a search query is active the path is still /store, so smart is fine too.
   return buildMetadataSmart({
     locale,
     path: "/store",
     title,
     description,
-    keywords:
-      locale === "ar"
-        ? ["المتجر", "منتجات", "أنظمة أمنية", "اتصالات", "حلول تقنية"]
-        : ["store", "products", "security systems", "communications", "IT solutions"],
+    keywords: isAr
+      ? [
+          "متجر إيلافد",
+          "مؤسسة إيلافد",
+          "متجر أجهزة مكتبية",
+          "مكائن عد النقود",
+          "ماكينة عد نقود",
+          "جهاز عد فلوس",
+          "الخزن الحديدية",
+          "خزنات حديدية",
+          "خزنة حديد",
+          "خزنة إلكترونية",
+          "أجهزة البصمة",
+          "جهاز بصمة",
+          "أجهزة حضور وانصراف",
+          "نظام حضور وانصراف",
+          "جهاز بصمة حضور وانصراف",
+          "طابعات الكروت",
+          "طابعة كروت",
+          "طابعة بطاقات",
+          "طابعات البطاقات",
+          "طابعات باركود",
+          "طابعة باركود",
+          "ملحقات طابعات الكروت",
+          "الأجهزة المكتبية في السعودية",
+          "السعودية",
+          "الرياض",
+          "جدة",
+          "الدمام",
+        ]
+      : [
+          "Elavd store",
+          "Elavd",
+          "office equipment store",
+          "money counting machines",
+          "cash counting machine",
+          "money counter",
+          "safes",
+          "safe box",
+          "electronic safes",
+          "attendance devices",
+          "fingerprint device",
+          "time attendance system",
+          "card printers",
+          "card printer",
+          "ID card printer",
+          "barcode printers",
+          "barcode printer",
+          "card printer accessories",
+          "office equipment Saudi Arabia",
+          "Saudi Arabia",
+          "Riyadh",
+          "Jeddah",
+          "Dammam",
+        ],
   });
 }
-

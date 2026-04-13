@@ -9,7 +9,8 @@ import {
 } from "@/seo/canonical";
 
 export const BASE_URL = "https://elavd.com";
-export const SITE_NAME = "Dubai Network IT EST";
+export const SITE_NAME = "مؤسسة إيلافد";
+export const SITE_NAME_EN = "Elavd Office Equipment & Communication Technology Establishment";
 export const DEFAULT_LOCALES = ["en", "ar"] as const;
 
 export type SeoImage = {
@@ -44,13 +45,11 @@ export function buildLanguageAlternates(path: string, locale = "en") {
   const hreflangList = generateHreflangUrls({ baseUrl: BASE_URL, currentPath, locale });
   const xDefault = generateXDefaultUrl(BASE_URL, currentPath, locale);
 
-  // Validate in dev — warnings only, never throw
   if (process.env.NODE_ENV !== "production") {
     validateCanonicalUrl(canonical);
     if (hreflangList.length) validateHreflangUrls(hreflangList);
   }
 
-  // Build the Record<locale, url> that Next.js Metadata expects
   const languages: Record<string, string> = {};
   for (const { locale: loc, url } of hreflangList) {
     languages[loc] = url;
@@ -62,15 +61,14 @@ export function buildLanguageAlternates(path: string, locale = "en") {
 
 export function buildOpenGraphImages(images?: SeoImage[]) {
   if (!images?.length) return undefined;
+
   return images.map((img) => ({
     url: toAbsoluteUrl(img.url),
-    width: img.width,
-    height: img.height,
+    width: img.width ?? 1200,
+    height: img.height ?? 630,
     alt: img.alt,
   }));
 }
-
-// ─── Shared opts type ────────────────────────────────────────────────────────
 
 interface BuildMetadataOpts {
   locale: string;
@@ -84,15 +82,28 @@ interface BuildMetadataOpts {
   type?: "website" | "article";
 }
 
+function getLocalizedSiteName(locale: string) {
+  return locale === "ar" ? SITE_NAME : SITE_NAME_EN;
+}
+
 function buildMetadataBase(
   opts: BuildMetadataOpts,
   canonical: string,
   languages: Record<string, string>
 ): Metadata {
+  const localizedSiteName = getLocalizedSiteName(opts.locale);
+
   const ogImages = buildOpenGraphImages(
     opts.images?.length
       ? opts.images
-      : [{ url: "/placeholder-logo.svg", width: 1200, height: 630, alt: SITE_NAME }]
+      : [
+          {
+            url: "/placeholder-logo.svg",
+            width: 1200,
+            height: 630,
+            alt: localizedSiteName,
+          },
+        ]
   );
 
   return {
@@ -100,23 +111,34 @@ function buildMetadataBase(
     title: opts.title,
     description: opts.description,
 
-    alternates: { canonical, languages },
+    alternates: {
+      canonical,
+      languages,
+    },
 
     robots: opts.noindex
-      ? { index: false, follow: false, googleBot: { index: false, follow: false } }
-      : { index: true, follow: true, googleBot: { index: true, follow: true } },
+      ? {
+          index: false,
+          follow: false,
+          googleBot: { index: false, follow: false },
+        }
+      : {
+          index: true,
+          follow: true,
+          googleBot: { index: true, follow: true },
+        },
 
-    applicationName: SITE_NAME,
+    applicationName: localizedSiteName,
     referrer: "origin-when-cross-origin",
-    creator: SITE_NAME,
-    publisher: SITE_NAME,
+    creator: localizedSiteName,
+    publisher: localizedSiteName,
     keywords: opts.keywords,
 
     openGraph: {
       title: opts.title,
       description: opts.description,
       url: canonical,
-      siteName: SITE_NAME,
+      siteName: localizedSiteName,
       locale: opts.locale,
       type: opts.type ?? "website",
       images: ogImages,
@@ -143,47 +165,46 @@ export function buildMetadata(opts: BuildMetadataOpts): Metadata {
 /**
  * Async metadata builder — reads the current path from the
  * middleware-injected `x-pathname` header via getPageSeoData().
- *
- * Use this in generateMetadata() functions where you want the canonical /
- * hreflang URLs derived from the *actual* incoming request pathname,
- * rather than a statically known path.
- *
- * For pages with dynamic slugs (product/[slug], store/[slug]) prefer
- * buildMetadata() and pass the path explicitly.
- *
- * @example
- * export async function generateMetadata({ params }) {
- *   const { locale } = await params;
- *   return buildMetadataSmart({ locale, path: "/store", title: "…", description: "…" });
- * }
  */
 export async function buildMetadataSmart(opts: BuildMetadataOpts): Promise<Metadata> {
   const seoData = await getPageSeoData(opts.locale);
 
   const canonical = seoData.canonicalUrl;
   const languages: Record<string, string> = {};
+
   for (const { locale: loc, url } of seoData.hreflangUrls) {
     languages[loc] = url;
   }
-  if (seoData.xDefaultUrl) languages["x-default"] = seoData.xDefaultUrl;
+
+  if (seoData.xDefaultUrl) {
+    languages["x-default"] = seoData.xDefaultUrl;
+  }
 
   return buildMetadataBase(opts, canonical, languages);
 }
 
 export function normalizeKeywords(value: unknown): string[] | undefined {
   if (!value) return undefined;
-  if (Array.isArray(value)) return value.filter(Boolean).map(String);
+
+  if (Array.isArray(value)) {
+    return value.filter(Boolean).map(String);
+  }
+
   if (typeof value === "string") {
     try {
       const parsed = JSON.parse(value);
-      if (Array.isArray(parsed)) return parsed.filter(Boolean).map(String);
+      if (Array.isArray(parsed)) {
+        return parsed.filter(Boolean).map(String);
+      }
     } catch {
-      // fallthrough
+      // ignore JSON parse errors and fallback to comma-separated parsing
     }
+
     return value
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
   }
+
   return undefined;
 }
