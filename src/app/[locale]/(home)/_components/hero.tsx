@@ -23,6 +23,7 @@ export default function Hero() {
     { id: '1', image: require('@/assets/banner-3.svg') },
     { id: '2', image: require('@/assets/banner-1.svg') },
     { id: '3', image: require('@/assets/banner-2.svg') },
+    { id: '4', image: require('@/assets/banner-4.svg') },
   ]
 
   return (

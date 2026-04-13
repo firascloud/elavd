@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Link } from '@/i18n/routing'
-import { Phone } from 'lucide-react'
+import { Phone, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
 import type { Category } from '@/services/categoryService'
@@ -20,13 +20,85 @@ interface DesktopNavbarProps {
 
 export default function DesktopNavbar({ navLinks, categories, activePathname }: DesktopNavbarProps) {
   const locale = useLocale()
+  const isRtl = locale === 'ar'
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(false)
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+      
+      if (isRtl) {
+        // In RTL (modern browsers), scrollLeft is 0 at start (right) and goes negative
+        // But some browsers/versions might vary, so we handle both or use a safer check
+        const isAtStart = scrollLeft >= -5
+        const isAtEnd = Math.abs(scrollLeft) + clientWidth >= scrollWidth - 5
+        
+        setShowLeftArrow(!isAtEnd)   // Forward in RTL
+        setShowRightArrow(!isAtStart) // Back in RTL
+      } else {
+        // LTR: scrollLeft is 0 at start (left) and goes positive
+        const isAtStart = scrollLeft <= 5
+        const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5
+        
+        setShowLeftArrow(!isAtStart) // Back in LTR
+        setShowRightArrow(!isAtEnd)  // Forward in LTR
+      }
+    }
+  }
+
+  useEffect(() => {
+    checkScroll()
+    window.addEventListener('resize', checkScroll)
+    const currentRef = scrollRef.current
+    if (currentRef) {
+      currentRef.addEventListener('scroll', checkScroll)
+    }
+    return () => {
+      window.removeEventListener('resize', checkScroll)
+      if (currentRef) {
+        currentRef.removeEventListener('scroll', checkScroll)
+      }
+    }
+  }, [navLinks, categories, isRtl])
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 300
+      const amount = direction === 'left' ? -scrollAmount : scrollAmount
+      
+      scrollRef.current.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+      })
+    }
+  }
 
   return (
     <div className="bg-white px-4 shadow-md border-t border-white/5 h-[50px] flex items-center overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
-        <div className="flex-1 overflow-hidden relative group">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1">
-            <nav className="flex items-center gap-1 flex-nowrap">
+        <div className="flex-1 overflow-hidden relative group navbar-scroll-container">
+          
+          {/* Left Arrow */}
+          {showLeftArrow && (
+            <button 
+              onClick={() => scroll('left')}
+              className={cn(
+                "absolute z-10 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white shadow-lg border border-gray-100 rounded-full text-gray-600 hover:text-primary transition-all active:scale-90",
+                isRtl ? "right-1" : "left-1"
+              )}
+            >
+              {isRtl ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+            </button>
+          )}
+
+          <div 
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1"
+          >
+            <nav className="flex items-center gap-1 flex-nowrap min-w-full">
               {navLinks.map(link => {
                 const isActive = activePathname === link.href
                 return (
@@ -70,8 +142,31 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
               })}
             </nav>
           </div>
-          {/* Subtle fade indicator */}
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          {/* Right Arrow */}
+          {showRightArrow && (
+            <button 
+              onClick={() => scroll('right')}
+              className={cn(
+                "absolute z-10 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white shadow-lg border border-gray-100 rounded-full text-gray-600 hover:text-primary transition-all active:scale-90",
+                isRtl ? "left-1" : "right-1"
+              )}
+            >
+              {isRtl ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+            </button>
+          )}
+
+          {/* Fade indicators for smoother transition */}
+          <div className={cn(
+            "absolute top-0 bottom-0 w-16 pointer-events-none transition-opacity duration-300",
+            isRtl ? "right-0 bg-gradient-to-l from-white to-transparent" : "left-0 bg-gradient-to-r from-white to-transparent",
+            showLeftArrow ? "opacity-100" : "opacity-0"
+          )} />
+          <div className={cn(
+            "absolute top-0 bottom-0 w-16 pointer-events-none transition-opacity duration-300",
+            isRtl ? "left-0 bg-gradient-to-r from-white to-transparent" : "right-0 bg-gradient-to-l from-white to-transparent",
+            showRightArrow ? "opacity-100" : "opacity-0"
+          )} />
         </div>
 
         {/* Phone: lg+ only */}
