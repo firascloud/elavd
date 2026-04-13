@@ -131,7 +131,9 @@
     "description": "We provide integrated solutions in surveillance and security systems using the latest technologies to ensure the highest level of protection for your home or business.",
     "discoverMore": "Discover More",
     "phoneLabel": "Mobile",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "phoneLabel1": "Mobile 1",
+    "phoneLabel2": "Mobile 2"
   },
   "about": {
     "title": "About Us",

@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const isRtl = locale === "ar";
   const t = await getTranslations("common");
 
-  const phone = "+966556482799";
+  const phone = "+0553202091";
 
   const [product, brand] = await Promise.all([
     getProductBySlug(slug),
@@ -74,20 +74,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Inline JSON-LD — rendered in initial HTML so Googlebot sees it immediately */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(getProductJsonLd(locale, {
-          id: product.id,
-          slug: (product as any).slug ?? "",
-          name_ar: product.name_ar ?? undefined,
-          name_en: product.name_en ?? undefined,
-          short_desc_ar: product.short_desc_ar ?? undefined,
-          short_desc_en: product.short_desc_en ?? undefined,
-          main_image: product.main_image ?? undefined,
-          sku: (product as any).sku ?? String(product.id),
-          price: (product as any).price ?? null,
-          discount_price: (product as any).discount_price ?? null,
-          rating: (product as any).rating ?? null,
-          images: Array.isArray((product as any).images) ? (product as any).images : undefined
-        }, { categoryName: categoryName ?? undefined })) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getProductJsonLd(locale, {
+            id: product.id,
+            slug: (product as any).slug ?? "",
+            name_ar: product.name_ar ?? undefined,
+            name_en: product.name_en ?? undefined,
+            short_desc_ar: product.short_desc_ar ?? undefined,
+            short_desc_en: product.short_desc_en ?? undefined,
+            main_image: product.main_image ?? undefined,
+            sku: (product as any).sku ?? String(product.id),
+            price: (product as any).price ?? null,
+            discount_price: (product as any).discount_price ?? null,
+            rating: (product as any).rating ?? null,
+            images: Array.isArray((product as any).images) ? (product as any).images : undefined
+          }, { categoryName: categoryName ?? undefined }))
+        }}
       />
       <PageHeader
         title={name || t("Products")}
