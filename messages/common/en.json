@@ -16,6 +16,7 @@
     "CountryKorea": "Korea",
     "AboutUs": "About Us",
     "ContactUs": "Contact Us",
+    "Brands": "Brands",
     "Login": "Login",
     "Products": "Products",
     "Offers": "Offers",
@@ -70,6 +71,7 @@
     "ShippingFees": "Shipping Fees",
     "Free": "Free",
     "RequestQuote": "Request a Quote",
+    "WhatsApp": "WhatsApp",
     "QuoteRequest": "Quote Request",
     "CustomerName": "Name",
     "CustomerEmail": "Email",
@@ -189,6 +191,15 @@
         "Bullet2": "Remote Accessibility",
         "Bullet3": "Instant AI Alerts",
         "Bullet4": "Expert Installation"
+      },
+      "4": {
+        "Tag": "Ultimate Protection",
+        "Title": "Premium Metal Safes",
+        "Desc": "Heavy-duty fireproof safes designed for maximum security and durability.",
+        "Bullet1": "Double-Wall Construction",
+        "Bullet2": "Fire Resistant Design",
+        "Bullet3": "Smart Digital Keypad",
+        "Bullet4": "Heavy-Duty Steel Bolts"
       }
     },
     "HotelSafes": "Hotel Safes",

@@ -43,8 +43,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const isRtl = locale === "ar";
   const t = await getTranslations("common");
 
-  const phone = "+0553202091";
-
   const [product, brand] = await Promise.all([
     getProductBySlug(slug),
     getBrandBySlug(slug)
@@ -56,18 +54,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   if (!product) notFound();
 
-  const [categories, featuredProducts, relatedProducts] = await Promise.all([
-    getCategories(10),
-    getFeaturedProducts(4),
-    getRelatedProducts(product, 4),
-  ]);
-
   const name = isRtl ? product.name_ar : product.name_en;
+  const whatsappUrl = `https://wa.me/966556482799?text=${encodeURIComponent(
+    isRtl 
+      ? `طلب استفسار عن منتج: ${name}` 
+      : `Product Inquiry: ${name}`
+  )}`;
   const categoryName = product.category
     ? (isRtl ? product.category.name_ar : product.category.name_en)
     : t("Store");
   const categorySlug = product.category?.slug || "";
   const categoryHref = product.category ? `/store/${categorySlug}` : "/store";
+
+  const [categories, featuredProducts, relatedProducts] = await Promise.all([
+    getCategories(10),
+    getFeaturedProducts(4),
+    getRelatedProducts(product, 4),
+  ]);
 
   return (
     <article className="min-h-screen bg-muted/30 pb-20" dir={isRtl ? "rtl" : "ltr"}>
@@ -101,7 +104,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="container mx-auto xl:px-16 lg:px-10 px-4 mt-12 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
           <div className="lg:col-span-9 space-y-8 order-1 lg:order-2">
-            <ProductHero product={product} phone={phone} />
+            <ProductHero product={product} whatsappUrl={whatsappUrl} />
             <ProductTabs product={product} />
 
           </div>

@@ -31,7 +31,7 @@ export async function getCategoryBySlug(slug: string) {
         .from('categories')
         .select('*, sub_categories(*)')
         .or(`slug_en.eq.${slug},slug_ar.eq.${slug}`)
-        .single();
+        .maybeSingle();
 
     return data as Category | null;
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Info, Mail, Home } from 'lucide-react'
+import { Info, Mail, Home, Tag } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { usePathname } from '@/i18n/routing'
 import { getCategories, type Category } from '@/services/categoryService'
@@ -91,6 +91,7 @@ export function Header() {
 
   const navLinks = [
     { href: '/', label: t('Home'), icon: <Home className="w-5 h-5" /> },
+    { href: '/brands', label: t('Brands'), icon: <Tag className="w-5 h-5" /> },
     { href: '/about-us', label: t('AboutUs'), icon: <Info className="w-5 h-5" /> },
     { href: '/contact-us', label: t('ContactUs'), icon: <Mail className="w-5 h-5" /> },
   ]
