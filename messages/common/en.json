@@ -175,22 +175,22 @@
         "Bullet4": "Full Technical Support"
       },
       "2": {
-        "Tag": "Security First",
-        "Title": "Electronic Safes",
-        "Desc": "Protect your assets with our premium selection of certified electronic and deposit safes.",
-        "Bullet1": "European Certified",
-        "Bullet2": "Fire Resistant",
-        "Bullet3": "Smart Digital Locks",
-        "Bullet4": "Multiple Sizes"
+        "Tag": "ID Solutions",
+        "Title": "PVC Card Printers",
+        "Desc": "High-performance printing solutions for secure ID cards, badges, and smart cards with professional finish.",
+        "Bullet1": "Edge-to-Edge Printing",
+        "Bullet2": "High Resolution Output",
+        "Bullet3": "Fast Printing Speed",
+        "Bullet4": "Supports Smart Encoding"
       },
       "3": {
-        "Tag": "Smart Tech",
-        "Title": "Security Solutions",
-        "Desc": "Integrated surveillance and access control systems using state-of-the-art AI technology.",
-        "Bullet1": "4K Smart Cameras",
-        "Bullet2": "Remote Accessibility",
-        "Bullet3": "Instant AI Alerts",
-        "Bullet4": "Expert Installation"
+        "Tag": "Smart Attendance",
+        "Title": "Biometric Solutions",
+        "Desc": "Advanced fingerprint and facial recognition systems for secure access and efficient attendance tracking.",
+        "Bullet1": "Face & Fingerprint Verification",
+        "Bullet2": "Real-time Data Sync",
+        "Bullet3": "High Precision Sensors",
+        "Bullet4": "Cloud Based Integration"
       },
       "4": {
         "Tag": "Ultimate Protection",
@@ -205,9 +205,11 @@
     "HotelSafes": "Hotel Safes",
     "DepositSafes": "Deposit Safes",
     "MoreDetails": "View Details",
-    "CardPrinters": "Card Printers",
-    "CardPrintersSubtitle": "High-resolution badges, ribbons, and smart personalization.",
-    "Explore": "Explore"
+    "CardPrinters": "ID Accessories",
+    "CardPrintersSubtitle": "Ribbons, Blank Cards, and Cleaning Kits",
+    "Explore": "Explore",
+    "CardPrintersLabel": "PVC Card Printers",
+    "BiometricLabel": "Biometric Systems"
   },
   "footer": {
     "Description": "Elavd Office Equipment & Communication Technology Establishment specializes in providing integrated solutions for office equipment and security systems in Saudi Arabia, including card and barcode printers, safes, money counting machines, surveillance systems, biometric devices, POS systems, and office supplies, with guaranteed quality and reliable service for individuals and businesses.",

@@ -3,6 +3,7 @@
 import React, { useMemo } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
+import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
@@ -20,10 +21,10 @@ export default function Hero() {
   }, [autoplay])
 
   const slides = [
-    { id: '1', image: require('@/assets/banner-3.svg') },
-    { id: '2', image: require('@/assets/banner-1.svg') },
-    { id: '3', image: require('@/assets/banner-2.svg') },
-    { id: '4', image: require('@/assets/banner-4.svg') },
+    { id: '1', image: require('@/assets/banner-3.svg'), href: '/product-category/ribbons-and-film' },
+    { id: '2', image: require('@/assets/banner-1.svg'), href: '/product-category/plastic-card-printers' },
+    { id: '3', image: require('@/assets/banner-2.svg'), href: '/product-category/biometric-attendance-systems' },
+    { id: '4', image: require('@/assets/banner-4.svg'), href: '/product-category/metal-safes' },
   ]
 
   return (
@@ -32,10 +33,13 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
           <div className="lg:col-span-3 md:flex flex-col gap-6 order-2 lg:order-1 hidden">
-            <div className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all">
+            <Link 
+              href="/product-category/plastic-card-printers"
+              className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all"
+            >
               <Image
                 src={require('@/assets/banner-1.svg')}
-                alt="Hotel Safes"
+                alt="PVC Card Printers"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
                 priority
@@ -43,16 +47,19 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-5 px-5">
                 <span className="bg-background/90 text-foreground text-[11px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl inline-flex items-center gap-2 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-xl backdrop-blur">
-                  {t('HotelSafes')}
+                  {t('CardPrintersLabel')}
                   <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''} group-hover:translate-x-1 transition-transform`} />
                 </span>
               </div>
-            </div>
+            </Link>
 
-            <div className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all">
+            <Link 
+              href="/product-category/biometric-attendance-systems"
+              className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all"
+            >
               <Image
                 src={require('@/assets/banner-2.svg')}
-                alt="Deposit Safes"
+                alt="Biometric Systems"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
                 priority
@@ -60,11 +67,11 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-5 px-5">
                 <span className="bg-background/90 text-foreground text-[11px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl inline-flex items-center gap-2 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-xl backdrop-blur">
-                  {t('DepositSafes')}
+                  {t('BiometricLabel')}
                   <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''} group-hover:translate-x-1 transition-transform`} />
                 </span>
               </div>
-            </div>
+            </Link>
           </div>
 
           <div className="lg:col-span-6 overflow-hidden rounded-lg bg-foreground shadow-2xl border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
@@ -111,14 +118,16 @@ export default function Hero() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-5 mt-auto sm:mt-0">
-                      <Button className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground border-none group px-8 rounded-2xl transition-all shadow-2xl shadow-foreground/50 active:scale-95">
-                        <span className="font-black text-[12px] tracking-wider uppercase">{t('MoreDetails')}</span>
-                        {isRtl ? (
-                          <ArrowLeft className="w-4 h-4 me-3 group-hover:-translate-x-1 transition-transform" />
-                        ) : (
-                          <ArrowRight className="w-4 h-4 ms-3 group-hover:translate-x-1 transition-transform" />
-                        )}
-                      </Button>
+                      <Link href={slide.href}>
+                        <Button className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground border-none group px-8 rounded-2xl transition-all shadow-2xl shadow-foreground/50 active:scale-95">
+                          <span className="font-black text-[12px] tracking-wider uppercase">{t('MoreDetails')}</span>
+                          {isRtl ? (
+                            <ArrowLeft className="w-4 h-4 me-3 group-hover:-translate-x-1 transition-transform" />
+                          ) : (
+                            <ArrowRight className="w-4 h-4 ms-3 group-hover:translate-x-1 transition-transform" />
+                          )}
+                        </Button>
+                      </Link>
                     </div>
                   </div>
 
@@ -128,10 +137,13 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block">
+          <Link 
+            href="/product-category/ribbons-and-film"
+            className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block"
+          >
             <Image
               src={require('@/assets/banner-3.svg')}
-              alt="Card Printers"
+              alt="ID Accessories"
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-1000"
               priority
@@ -147,9 +159,9 @@ export default function Hero() {
                 <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
               </span>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </section>
   )
-}
+}
