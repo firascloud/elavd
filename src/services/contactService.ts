@@ -22,5 +22,27 @@ export const contactService = {
 
     if (error) throw error;
     return message;
+  },
+
+  async getContacts() {
+    const { data, error } = await supabaseBrowser
+      .from('contacts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateContactStatus(id: string, status: string) {
+    const { data, error } = await supabaseBrowser
+      .from('contacts')
+      .update({ status })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   }
 };

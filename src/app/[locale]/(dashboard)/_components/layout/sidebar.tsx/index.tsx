@@ -21,7 +21,8 @@ import {
     ArrowLeft,
     ArrowRight,
     Layers,
-    Award
+    Award,
+    Mail
 } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
@@ -41,6 +42,7 @@ const nav = [
     { href: '/admin/brands', label: { en: 'Brands', ar: 'العلامات التجارية' }, icon: Award },
     { href: '/admin/orders', label: { en: 'Orders', ar: 'الطلبات' }, icon: ShoppingCart },
     { href: '/admin/offers', label: { en: 'Offers', ar: 'العروض' }, icon: Tag },
+    { href: '/admin/contacts', label: { en: 'Contacts', ar: 'الرسائل' }, icon: Mail },
 ];
 
 export default function Sidebar() {

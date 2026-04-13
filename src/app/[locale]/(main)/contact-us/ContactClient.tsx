@@ -32,6 +32,18 @@ export default function ContactClient() {
   const onSubmit = async (data: any) => {
     try {
       await contactService.sendMessage(data);
+      
+      // Send email notifications
+      try {
+        await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+      }
+
       toast.success(isRtl ? 'تم إرسال رسالتك بنجاح' : 'Your message has been sent successfully');
       reset();
     } catch (error) {

@@ -112,6 +112,28 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
       }
 
       await orderService.createOrder(orderData, orderItems)
+      
+      // Send email notifications
+      try {
+        await fetch('/api/send-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: `${formData.countryCode}${formData.phone}`,
+            message: formData.message,
+            total: totalPrice,
+            items: orderItems,
+            productName: product ? (locale === 'ar' ? product.name_ar : product.name_en) : (locale === 'ar' ? 'سلة التسوق' : 'Cart items'),
+            quantity: formData.quantity
+          }),
+        });
+      } catch (emailError) {
+        // Log error but don't break the flow as per requirements
+        console.error('Email notification failed:', emailError);
+      }
+
       toast.success(t('QuoteSuccess'))
       setFormData({ name: '', email: '', phone: '', countryCode: '+966', quantity: 1, message: '' })
       onClose()
