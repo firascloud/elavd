@@ -54,7 +54,11 @@ export default function AboutClient() {
           <div className="relative h-[400px] lg:h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl group border border-border">
             <Image
               src={require('@/assets/banner-1.svg')}
-              alt={locale === 'ar' ? 'فريق عمل مؤسسة رائدة في تقنية المعلومات' : 'DUBAI NETWORK IT EST Team working'}
+              alt={
+                locale === 'ar'
+                  ? 'فريق عمل مؤسسة إيلافد للأجهزة المكتبية والأنظمة الأمنية في السعودية'
+                  : 'Elavd team for office equipment and security systems in Saudi Arabia'
+              }
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />

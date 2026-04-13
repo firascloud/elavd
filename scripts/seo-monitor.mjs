@@ -276,7 +276,7 @@ async function checkPage({ path, acceptLang = "en", expectIndex, expectJsonLd })
   } else {
     const title = titleMatch[1].trim();
     // Avoid double site-name false positive: strip it before checking length
-    const titleCore = title.replace(/\s*\|\s*Dubai Network IT EST\s*/gi, "").trim();
+    const titleCore = title.replace(/\s*\|\s*Elavd\s*/gi, "").trim();
     if (titleCore.length < 3) {
       record("WARN", cat, "Title tag quality", `Core title too short or empty: "${titleCore}"`);
     } else if (title.length > 70) {

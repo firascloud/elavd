@@ -21,7 +21,7 @@ export function Footer() {
             <div className="mb-6 relative w-56 h-16 md:w-64 md:h-20 lg:w-72 lg:h-24">
               <Image
                 src={Logo}
-                alt="DUBAI NETWORK IT EST"
+                alt="Elavd Logo"
                 width={600}
                 height={400}
                 className="object-contain rtl:object-right ltr:object-left drop-shadow-sm"

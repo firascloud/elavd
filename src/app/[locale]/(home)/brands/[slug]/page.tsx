@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     return {
-        title: `${brand.name_en} | Brands | DUBAI NETWORK IT EST`,
+        title: `${brand.name_en} | Brands | Elavd`,
         description: `Explore premium products from ${brand.name_en}.`,
     };
 }
