@@ -21,7 +21,20 @@ import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import { Eye, RefreshCw, Mail, Phone, Calendar, Clock, CheckCircle2, Trash2 } from "lucide-react";
+import { 
+    Eye, 
+    RefreshCw, 
+    Mail, 
+    Phone, 
+    Calendar, 
+    Clock, 
+    CheckCircle2, 
+    Trash2, 
+    Check, 
+    MessageSquare, 
+    Archive,
+    RotateCcw
+} from "lucide-react";
 import { toast } from "sonner";
 import { contactService } from "@/services/contactService";
 
@@ -92,8 +105,10 @@ export default function ContactList() {
         try {
             await contactService.updateContactStatus(id, status);
             setContacts(prev => prev.map(c => c.id === id ? { ...c, status } : c));
+            toast.success(isAr ? "تم تحديث الحالة بنجاح" : "Status updated successfully");
         } catch (error) {
             console.error("Error updating status:", error);
+            toast.error(isAr ? "فشل تحديث الحالة" : "Failed to update status");
         }
     };
 
@@ -112,8 +127,9 @@ export default function ContactList() {
     const getStatusStyle = (status: string) => {
         switch (status) {
             case 'new': return 'bg-blue-500/10 text-blue-600 border-blue-200';
-            case 'read': return 'bg-gray-500/10 text-gray-600 border-gray-200';
+            case 'read': return 'bg-amber-500/10 text-amber-600 border-amber-200';
             case 'replied': return 'bg-green-500/10 text-green-600 border-green-200';
+            case 'archived': return 'bg-slate-500/10 text-slate-600 border-slate-200';
             default: return 'bg-muted/30 text-muted-foreground border-transparent';
         }
     };
@@ -122,6 +138,7 @@ export default function ContactList() {
         if (status === 'new') return t("New");
         if (status === 'read') return t("Read");
         if (status === 'replied') return t("Replied");
+        if (status === 'archived') return isAr ? "مؤرشف" : "Archived";
         return status;
     };
 
@@ -156,6 +173,7 @@ export default function ContactList() {
                             { label: t("New"), value: "new" },
                             { label: t("Read"), value: "read" },
                             { label: t("Replied"), value: "replied" },
+                            { label: isAr ? "المؤرشف" : "Archived", value: "archived" },
                         ]}
                         placeholder={t("Filter")}
                         className="w-full sm:w-[180px]"
@@ -207,6 +225,7 @@ export default function ContactList() {
                                 {contact.status === 'new' && <Clock className="h-3 w-3" />}
                                 {contact.status === 'read' && <Eye className="h-3 w-3" />}
                                 {contact.status === 'replied' && <CheckCircle2 className="h-3 w-3" />}
+                                {contact.status === 'archived' && <Archive className="h-3 w-3" />}
                                 {getStatusLabel(contact.status)}
                             </div>
                         </DashboardTableCell>
@@ -222,15 +241,52 @@ export default function ContactList() {
                                     variant="ghost" 
                                     size="icon" 
                                     onClick={() => handleViewDetails(contact)} 
-                                    className="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary transition-all"
+                                    className="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary transition-all shadow-sm border border-border/40"
+                                    title={isAr ? "عرض التفاصيل" : "View Details"}
                                 >
                                     <Eye className="h-4 w-4" />
                                 </Button>
+
+                                {contact.status !== 'replied' && contact.status !== 'archived' && (
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon" 
+                                        onClick={() => updateStatus(contact.id, 'replied')} 
+                                        className="h-9 w-9 rounded-full hover:bg-green-500/10 hover:text-green-600 transition-all text-muted-foreground shadow-sm border border-border/40"
+                                        title={isAr ? "تم الرد" : "Mark as Replied"}
+                                    >
+                                        <Check className="h-4 w-4" />
+                                    </Button>
+                                )}
+
+                                {contact.status !== 'archived' ? (
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon" 
+                                        onClick={() => updateStatus(contact.id, 'archived')} 
+                                        className="h-9 w-9 rounded-full hover:bg-slate-500/10 hover:text-slate-600 transition-all text-muted-foreground shadow-sm border border-border/40"
+                                        title={isAr ? "أرشفة" : "Archive"}
+                                    >
+                                        <Archive className="h-4 w-4" />
+                                    </Button>
+                                ) : (
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon" 
+                                        onClick={() => updateStatus(contact.id, 'read')} 
+                                        className="h-9 w-9 rounded-full hover:bg-blue-500/10 hover:text-blue-600 transition-all text-muted-foreground shadow-sm border border-border/40"
+                                        title={isAr ? "إعادة تفعيل" : "Restore"}
+                                    >
+                                        <RotateCcw className="h-4 w-4" />
+                                    </Button>
+                                )}
+
                                 <Button 
                                     variant="ghost" 
                                     size="icon" 
                                     onClick={() => handleDelete(contact.id)} 
-                                    className="h-9 w-9 rounded-full hover:bg-destructive/10 hover:text-destructive transition-all text-destructive"
+                                    className="h-9 w-9 rounded-full hover:bg-destructive/10 hover:text-destructive transition-all text-muted-foreground shadow-sm border border-border/40"
+                                    title={isAr ? "حذف" : "Delete"}
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </Button>
@@ -258,6 +314,31 @@ export default function ContactList() {
             >
                 {selectedContact && (
                     <div className="space-y-6 pt-4" dir={isAr ? 'rtl' : 'ltr'}>
+                        <div className="flex items-center justify-between mb-2">
+                             <div className={cn(
+                                "flex items-center gap-2 px-4 py-1.5 rounded-full border text-[11px] font-black uppercase w-fit",
+                                getStatusStyle(selectedContact.status)
+                            )}>
+                                {getStatusLabel(selectedContact.status)}
+                            </div>
+                            <div className="flex gap-2">
+                                {selectedContact.status !== 'replied' && (
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm" 
+                                        onClick={() => {
+                                            updateStatus(selectedContact.id, 'replied');
+                                            setSelectedContact({...selectedContact, status: 'replied'});
+                                        }}
+                                        className="h-9 rounded-xl border-green-200 text-green-600 hover:bg-green-50"
+                                    >
+                                        <Check className="h-4 w-4 mr-2" />
+                                        {isAr ? "تحديد كتم الرد" : "Mark as Replied"}
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+
                         <div className="grid grid-cols-2 gap-4">
                             <div className="p-4 rounded-2xl bg-muted/30 border border-border/50">
                                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
@@ -275,23 +356,36 @@ export default function ContactList() {
                                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
                                     {t("Email")}
                                 </p>
-                                <p className="font-bold text-foreground">{selectedContact.email}</p>
+                                <p className="font-bold text-foreground tracking-tight">{selectedContact.email}</p>
                             </div>
                         </div>
 
-                        <div className="p-6 rounded-2xl bg-primary/[0.03] border border-primary/10">
-                            <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-3">
+                        <div className="p-6 rounded-2xl bg-primary/[0.03] border border-primary/10 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <MessageSquare className="h-12 w-12" />
+                            </div>
+                            <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-3 relative z-10">
                                 {t("MessageContent")}
                             </p>
-                            <p className="text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap">{selectedContact.message}</p>
+                            <p className="text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap relative z-10">{selectedContact.message}</p>
                         </div>
 
-                        <div className="flex justify-end pt-4">
+                        <div className="flex justify-end gap-3 pt-4 border-top border-border/40">
                             <Button 
+                                variant="outline"
                                 onClick={() => setIsDetailsOpen(false)}
-                                className="rounded-xl font-bold px-12 bg-primary text-primary-foreground hover:bg-primary/90"
+                                className="rounded-xl font-bold px-8 border-border/60"
                             >
                                 {isAr ? "إغلاق" : "Close"}
+                            </Button>
+                            <Button 
+                                asChild
+                                className="rounded-xl font-bold px-8 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
+                            >
+                                <a href={`mailto:${selectedContact.email}`}>
+                                    <Mail className="h-4 w-4 mr-2" />
+                                    {isAr ? "رد عبر البريد" : "Reply via Email"}
+                                </a>
                             </Button>
                         </div>
                     </div>
