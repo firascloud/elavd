@@ -33,7 +33,7 @@ export async function getBrandBySlug(slug: string) {
         .from('brands')
         .select('*')
         .or(`slug_en.eq.${slug},slug_ar.eq.${slug}`)
-        .single();
+        .maybeSingle();
 
     if (error) {
         console.error('Error fetching brand by slug:', error);

@@ -11,10 +11,10 @@ import { Link } from "@/i18n/routing";
 
 interface ProductHeroProps {
   product: Product;
-  phone: string;
+  whatsappUrl: string;
 }
 
-export default function ProductHero({ product, phone }: ProductHeroProps) {
+export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) {
   const locale = useLocale();
   const isAr = locale === "ar";
   const t = useTranslations("common");
@@ -137,14 +137,24 @@ export default function ProductHero({ product, phone }: ProductHeroProps) {
               product={product} 
             />
 
-            <div className="h-12 px-5 rounded-xl border border-border bg-background flex items-center justify-center gap-1 text-muted-foreground font-semibold">
+            <a 
+              href={whatsappUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="h-12 px-5 rounded-xl border border-border bg-background flex items-center justify-center gap-2 text-muted-foreground font-semibold hover:text-primary transition-colors group cursor-pointer"
+            >
+              <div className="relative size-5 group-hover:scale-110 transition-transform">
+                <Image 
+                  src={require('@/assets/whatsapp.png')} 
+                  alt="WhatsApp"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <span className="text-xs text-muted-foreground/50 font-black uppercase">
-                {t("CallUs")} :
+                {t("WhatsApp")}
               </span>
-              <a href={`tel:${phone}`} className="hover:text-primary text-[15px] transition-colors">
-                {phone}
-              </a>
-            </div>
+            </a>
           </div>
 
           <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground/50">
