@@ -4,8 +4,8 @@
     "Cancel": "Cancel",
     "Location": "Jabr Bin Rashid, Al Murabba, Riyadh 12628, Kingdom of Saudi Arabia",
     "Home": "Home",
-    "HomeTitle": "Elavd Office Equipment Establishment | Card & Barcode Printers and Security Systems in Saudi Arabia",
-    "HomeDescription": "Elavd Office Equipment Establishment specializes in card and barcode printers, safes, money counting machines, surveillance cameras, communication systems, biometric devices, POS systems, office supplies, and card printer accessories in Saudi Arabia.",
+    "HomeTitle": "Elavd Office Equipment & Communication Technology Establishment | Card & Barcode Printers and Security Systems in Saudi Arabia",
+    "HomeDescription": "Elavd Office Equipment & Communication Technology Establishment in Saudi Arabia provides card and barcode printers, safes, money counting machines, surveillance systems, biometric devices, POS systems, and office equipment with high quality, competitive prices, and professional service.",
     "Show": "Show",
     "in": "in",
     "Hot": "HOT",
@@ -119,44 +119,44 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "Leave your message and we will get back to you shortly.",
-    "email": "Email address",
-    "phone": "Phone Number",
+    "subtitle": "Leave your message and we will get back to you as soon as possible",
+    "email": "Email",
+    "phone": "Mobile Number",
     "address": "Location",
     "name": "Name",
     "message": "Your Message *",
-    "placeholder": "Tell us briefly about your needs",
+    "placeholder": "Briefly tell us about your requirements",
     "send": "Send",
-    "speedSecurity": "Speed and Security",
-    "description": "We provide the best modern surveillance and protection solutions to ensure the security of your home and organization using the latest global technologies and innovations.",
+    "speedSecurity": "Speed & Security",
+    "description": "We provide integrated solutions in surveillance and security systems using the latest technologies to ensure the highest level of protection for your home or business.",
     "discoverMore": "Discover More",
-    "phoneLabel": "Phone",
+    "phoneLabel": "Mobile",
     "emailLabel": "Email"
   },
   "about": {
     "title": "About Us",
-    "subtitle": "Your Trusted Partner in Tech & Security Solutions",
-    "desc1": "Dubai Network IT Establishment is your trusted partner in the world of technology and security. We are proud of our extensive experience in providing innovative, high-quality solutions.",
-    "desc2": "We always strive to provide the latest global technologies in security systems and smart card printers, with a full focus on service quality and customer satisfaction.",
+    "subtitle": "A specialized establishment in office equipment, security systems, and communication technologies in Saudi Arabia",
+    "desc1": "Elavd Office Equipment & Communication Technology Establishment is specialized in providing integrated solutions in office equipment, security systems, and communication technologies across Saudi Arabia. We strive to meet the needs of individuals and businesses by delivering reliable products and professional services that combine quality and efficiency.",
+    "desc2": "We offer a wide range of solutions including card and barcode printers, safes, money counting machines, surveillance systems, biometric devices, POS systems, and office equipment, with a continuous commitment to delivering the latest technologies and reliable service that meets our customers' expectations.",
     "mission": "Our Mission",
-    "missionDesc": "Empowering our clients by providing them with the best global technologies that ensure security and efficiency.",
+    "missionDesc": "To provide high-quality office, technical, and security solutions that help our clients improve operational efficiency while enhancing safety and reliability in their work environments.",
     "vision": "Our Vision",
-    "visionDesc": "To be the first choice in Saudi Arabia for integrated technical and security solutions.",
+    "visionDesc": "To become one of the leading establishments in Saudi Arabia in delivering integrated office, security, and technology solutions.",
     "stats": {
-      "projects": "Projects Finished",
-      "clients": "Happy Clients",
-      "awards": "Awards Won",
-      "experience": "Years Exp."
+      "projects": "Completed Projects",
+      "clients": "Clients",
+      "awards": "Trusted Partnerships",
+      "experience": "Years of Experience"
     },
     "whyChooseUs": {
-      "title": "Why Choose Us?",
-      "subtitle": "We combine technical expertise with high quality to ensure the best results for our clients.",
+      "title": "Why Choose Elavd?",
+      "subtitle": "We provide integrated solutions in office equipment, security systems, and communication technologies, focusing on quality and efficiency to meet the needs of our clients across Saudi Arabia.",
       "item1Title": "Integrated Solutions",
-      "item1Desc": "We provide comprehensive technical and security solutions tailored to meet your unique business needs.",
-      "item2Title": "Expert Support",
-      "item2Desc": "Our professional technical team is always available to provide necessary assistance and support at any time.",
-      "item3Title": "Latest Technologies",
-      "item3Desc": "We use the latest global technologies in security and communications to ensure efficiency and safety."
+      "item1Desc": "We offer a comprehensive range of solutions including office equipment, security systems, and communication technologies to serve various business sectors.",
+      "item2Title": "Reliable Technical Support",
+      "item2Desc": "Our specialized team is always ready to provide technical support and after-sales services to ensure smooth and efficient operations.",
+      "item3Title": "Advanced Technologies",
+      "item3Desc": "We deliver the latest technologies in surveillance systems, biometric devices, and card & barcode printing to ensure performance and security."
     }
   },
   "hero": {
@@ -197,16 +197,16 @@
     "Explore": "Explore"
   },
   "footer": {
-    "Description": "Elavd Office Equipment Est. specializes in office equipment, security systems, and communication technologies in Saudi Arabia, offering card and barcode printers, safes, cash counting machines, surveillance cameras, biometric devices, POS systems, and office supplies, with high-quality products and reliable service for individuals and businesses.",
+    "Description": "Elavd Office Equipment & Communication Technology Establishment specializes in providing integrated solutions for office equipment and security systems in Saudi Arabia, including card and barcode printers, safes, money counting machines, surveillance systems, biometric devices, POS systems, and office supplies, with guaranteed quality and reliable service for individuals and businesses.",
     "MenuTitle": "Menu",
     "Store": "Store",
     "ContactTitle": "Contact Us",
-    "PhoneLabel": "Phone Number",
+    "PhoneLabel": "Phone",
     "EmailLabel": "Email",
     "LocationLabel": "Location",
-    "Address": "Jabr bin Rashid, Al-Murabba, Riyadh",
+    "Address": "Jabr Bin Rashid St., Al Murabba District, Riyadh, Saudi Arabia",
     "CompanyTitle": "Elavd Office Equipment & Communication Technology Establishment",
-    "TaxNumber": "Tax Registration Number",
+    "TaxNumber": "Tax Number",
     "TaxId": "310079237600003",
     "AboutUs": "About Us",
     "Information": "Information",
@@ -216,26 +216,26 @@
     "Partnerships": "Partnerships",
     "Extras": "Extras",
     "Brands": "Brands",
-    "Specials": "Specials",
+    "Specials": "Special Offers",
     "SiteMap": "Site Map",
-    "Copyright": "All rights reserved © Elavd Office Equipment Est. 2026"
+    "Copyright": "All rights reserved © Elavd Office Equipment & Communication Technology Establishment 2026"
   },
   "info": {
     "Partnerships": {
       "Title": "Partnerships",
-      "Content": "Elavd has arrived and is quickly becoming the destination for all office machines e-commerce in the KSA. As the only office machines - focused online retailer in the region, we are the perfect venue to showcase top brands to the local market.\n\nJoin us by becoming a Elavd supplier partner! Please email us at sales@elavd.com with your application, including:\n\n• Your brand profile\n• Product range and pricing (including sample images)\n• Target market\n\nWe look forward to hearing from you!\n\nElavd Team"
+      "Content": "Elavd Office Equipment & Communication Technology Establishment continues to grow as one of the trusted providers in the field of office equipment and technology solutions in Saudi Arabia.\n\nWith a strong focus on quality and product diversity, we aim to build strategic partnerships with leading suppliers and brands to deliver the best solutions to our customers in the local market.\n\nWe invite you to join Elavd as a supplier partner and contribute to expanding your business within a growing and promising market.\n\nTo apply, please contact us via email at sales@elavd.com and provide the following information:\n\n• Your company or brand profile\n• Product list and pricing (including images or catalog)\n• Target market details\n\nWe look forward to building a successful and sustainable partnership with you.\n\nElavd Team"
     },
     "RefundPolicy": {
       "Title": "Refund Policy",
-      "Content": "All products are sold “as is”. The customer assumes the responsibility for the purchase, and no refunds will be issued. You may contact us if you wish to exchange your purchase for a product of equal or lesser value within 120 days from the purchase date. If an item of lesser value is chosen there will be no refund for the additional amount."
+      "Content": "At Elavd Office Equipment & Communication Technology Establishment, we are committed to providing high-quality products that meet our customers' needs.\n\nAll products are sold as is, and the customer is responsible for selecting the appropriate product before completing the purchase. Therefore, refunds are not provided once the order has been completed.\n\nHowever, customers may request to exchange their product for another item within the same category or of equal or lesser value within up to 120 days from the date of purchase, provided that the product remains in its original condition and has not been used or damaged.\n\nIf a replacement product of lower value is selected, the price difference will not be refunded.\n\nWe recommend contacting our customer support team before making a purchase to ensure the right product selection. You may also contact us for any inquiries or exchange requests."
     },
     "PrivacyPolicy": {
       "Title": "Privacy Policy",
-      "Content": "This policy covers how we use your personal information. We take your privacy seriously and will take all measures to protect your personal information. Any personal information received will only be used to fulfill your order, and may be used for internal analytical purposes. We will not sell or redistribute your information to anyone."
+      "Content": "Elavd Office Equipment & Communication Technology Establishment is committed to protecting the privacy of its customers' information. We handle all personal data with strict confidentiality and in accordance with the highest security standards.\n\nThis policy explains how we collect and use personal information provided to us when using our website or placing orders. Such information is used solely to process orders, improve service quality, and communicate with customers when necessary.\n\nSome data may be used for internal analysis and service improvement purposes without disclosing any personally identifiable information.\n\nWe confirm that we do not sell, rent, or share customer information with any third party, except where required by applicable laws or official authorities.\n\nWe are committed to implementing all necessary technical and organizational measures to protect user data from unauthorized access or misuse.\n\nBy using this website, you agree to our Privacy Policy."
     },
     "DeliveryInformation": {
       "Title": "Delivery Information",
-      "Content": "We offer delivery across the major metropolitan areas of Saudi Arabia.\n\nPer Item Shipping Rate 50 SAR.\n\nIn general customers should expect to receive their shipments within 2 to 4 working days depending on their location."
+      "Content": "We provide delivery services to most cities and regions across Saudi Arabia, with a strong focus on speed and service quality.\n\nThe shipping cost is 50 SAR per item and is calculated based on the number of products in the order.\n\nOrders are processed and shipped within 2 to 4 business days, depending on the customer's location and the nature of the product.\n\nFor items that require special preparation or pre-order, customers may be notified of a different delivery timeframe.\n\nFor any inquiries regarding order status or shipping details, you can contact our customer support team or reach us via WhatsApp."
     }
   }
 }
