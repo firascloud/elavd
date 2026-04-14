@@ -10,7 +10,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { BASE_URL, SITE_NAME } from "@/metadata/utils";
 import { Analytics } from "@vercel/analytics/next"
 import Script from "next/script";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const elMessiri = El_Messiri({
   variable: "--font-el-messiri",
   subsets: ["arabic"],
@@ -112,6 +112,7 @@ export default async function RootLayout({
               <SidebarProvider>
                 <MainLayoutWrapper>
                   <Analytics />
+                  <SpeedInsights/>
                   {children}
                 </MainLayoutWrapper>
               </SidebarProvider>
