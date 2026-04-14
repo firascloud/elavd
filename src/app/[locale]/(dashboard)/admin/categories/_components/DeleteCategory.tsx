@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { DashboardModal } from "@/app/[locale]/(dashboard)/_components/common/Modal";
-import { Button } from "@/components/ui/button";
-import { Trash2, AlertTriangle, RefreshCw } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { DeleteConfirmModal } from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { useTranslations, useLocale } from "next-intl";
 
 interface DeleteCategoryProps {
     isOpen: boolean;
@@ -17,6 +15,8 @@ interface DeleteCategoryProps {
 
 export default function DeleteCategory({ isOpen, onClose, onSuccess, category }: DeleteCategoryProps) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
+    const isAr = locale === "ar";
     const [loading, setLoading] = useState(false);
 
     const handleDelete = async () => {
@@ -31,6 +31,7 @@ export default function DeleteCategory({ isOpen, onClose, onSuccess, category }:
             if (error) throw error;
             toast.success(t("DeleteCategorySuccess"));
             onSuccess();
+            onClose();
         } catch (error: any) {
             console.error("Error deleting category:", error);
             toast.error(t("DeleteCategoryFailed"));
@@ -40,32 +41,12 @@ export default function DeleteCategory({ isOpen, onClose, onSuccess, category }:
     };
 
     return (
-        <DashboardModal
+        <DeleteConfirmModal 
             isOpen={isOpen}
             onClose={onClose}
-            title={t("DeleteConfirm")}
-            description={t("DeleteDesc")}
-            footer={
-                <div className="flex items-center gap-2">
-                    <Button variant="outline" onClick={onClose}>
-                        {t("Cancel")}
-                    </Button>
-                    <Button variant="default" onClick={handleDelete} disabled={loading}>
-                        {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                        <span className="ms-2">{t("Delete")}</span>
-                    </Button>
-                </div>
-            }
-        >
-            <div className="flex flex-col items-center gap-6 py-8">
-                <div className="h-16 w-16 rounded-full bg-destructive/10 flex items-center justify-center text-destructive">
-                    <AlertTriangle className="h-8 w-8 stroke-[1.75]" />
-                </div>
-
-                <div className="text-center px-4">
-                    <p className="text-sm font-semibold text-foreground mb-1">{category?.name_en}</p>
-                </div>
-            </div>
-        </DashboardModal>
+            onConfirm={handleDelete}
+            isLoading={loading}
+            itemName={isAr ? category?.name_ar : category?.name_en}
+        />
     );
-}
+}

@@ -20,6 +20,8 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
@@ -34,6 +36,8 @@
   --primary: #f05a5b;    /* Bold Orange */
   --primary-foreground: oklch(1 0 0);
   --secondary:#40b396;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
   --accent: #3c3c3d;     /* Dark Gray */
   --accent-foreground: oklch(1 0 0);
   --muted: oklch(0.96 0 0);
@@ -41,6 +45,7 @@
   --border: oklch(0.92 0 0);
   --input: oklch(0.92 0 0);
   --ring: #f05a5b;
+
   
   --font-el-messiri: "El Messiri", Arial, Helvetica, sans-serif;
   --font-inter: "Inter", sans-serif;

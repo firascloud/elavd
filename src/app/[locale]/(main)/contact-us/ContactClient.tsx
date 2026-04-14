@@ -9,7 +9,8 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
-import { contactService } from '@/services/contactService';
+import { sendMessage } from '@/services/contactService';
+
 
 export default function ContactClient() {
   const t = useTranslations('contact');
@@ -31,7 +32,8 @@ export default function ContactClient() {
 
   const onSubmit = async (data: any) => {
     try {
-      await contactService.sendMessage(data);
+      await sendMessage(data);
+
       
       // Send email notifications
       try {

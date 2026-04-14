@@ -128,7 +128,7 @@ export default function CompareClient() {
                                         {locale === 'ar' ? 'الوصف المختصر' : 'Short Description'}
                                     </th>
                                     {compareItems.map((item) => (
-                                        <td key={item.id} className="p-6 border-b border-border text-center italic text-muted-foreground leading-relaxed font-cairo">
+                                        <td key={item.id} className="p-6 border-b border-border text-center  text-muted-foreground leading-relaxed font-cairo">
                                             {locale === 'ar' ? item.short_desc_ar : item.short_desc_en}
                                         </td>
                                     ))}

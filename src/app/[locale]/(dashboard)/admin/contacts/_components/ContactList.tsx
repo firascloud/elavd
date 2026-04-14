@@ -17,9 +17,12 @@ import {
 import {
     DashboardHeader
 } from "@/app/[locale]/(dashboard)/_components/common/DashboardHeader";
+import { 
+    DeleteConfirmModal 
+} from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
 import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale } from "next-intl";
-import { supabaseBrowser } from "@/lib/supabase/client";
+
 import { cn } from "@/lib/utils";
 import { 
     Eye, 
@@ -36,7 +39,8 @@ import {
     RotateCcw
 } from "lucide-react";
 import { toast } from "sonner";
-import { contactService } from "@/services/contactService";
+import { getContacts, updateContactStatus, deleteContact } from "@/services/contactService";
+
 
 export default function ContactList() {
     const t = useTranslations("dashboard");
@@ -52,38 +56,31 @@ export default function ContactList() {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [statusFilter, setStatusFilter] = useState<string>("all");
     const [totalCount, setTotalCount] = useState<number>(0);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deletingContact, setDeletingContact] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
 
     const fetchContacts = async () => {
         setLoading(true);
-        let query = supabaseBrowser
-            .from('contacts')
-            .select('*', { count: 'exact' });
+        try {
+            const pageSize = 10;
+            const { data, count } = await getContacts({
+                search,
+                status: statusFilter,
+                page,
+                pageSize
+            });
 
-        if (search) {
-            query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%`);
-        }
 
-        if (statusFilter !== "all") {
-            query = query.eq('status', statusFilter);
-        }
-
-        const pageSize = 10;
-        const from = (page - 1) * pageSize;
-        const to = from + pageSize - 1;
-
-        const { data, count, error } = await query
-            .order('created_at', { ascending: false })
-            .range(from, to);
-
-        if (error) {
-            console.error("Error fetching contacts:", error);
-            toast.error(isAr ? "فشل تحميل الرسائل" : "Failed to load contacts");
-        } else {
             setContacts(data || []);
-            if (count) {
+            if (count !== null) {
                 setTotalPages(Math.ceil(count / pageSize));
                 setTotalCount(count);
             }
+        } catch (error) {
+            console.error("Error fetching contacts:", error);
+            toast.error(isAr ? "فشل تحميل الرسائل" : "Failed to load contacts");
         }
         setLoading(false);
     };
@@ -103,8 +100,9 @@ export default function ContactList() {
 
     const updateStatus = async (id: string, status: string) => {
         try {
-            await contactService.updateContactStatus(id, status);
+            await updateContactStatus(id, status);
             setContacts(prev => prev.map(c => c.id === id ? { ...c, status } : c));
+
             toast.success(isAr ? "تم تحديث الحالة بنجاح" : "Status updated successfully");
         } catch (error) {
             console.error("Error updating status:", error);
@@ -112,17 +110,29 @@ export default function ContactList() {
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm(isAr ? "هل أنت متأكد من حذف هذه الرسالة؟" : "Are you sure you want to delete this message?")) return;
+    const handleDelete = (id: string) => {
+        setDeletingContact(id);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deletingContact) return;
         
-        const { error } = await supabaseBrowser.from('contacts').delete().eq('id', id);
-        if (error) {
-            toast.error(t("FailedDeleteMessage"));
-        } else {
+        setIsDeleting(true);
+        try {
+            await deleteContact(deletingContact);
             toast.success(t("MessageDeleted"));
             fetchContacts();
+            setIsDeleteModalOpen(false);
+        } catch (error) {
+            console.error("Error deleting contact:", error);
+            toast.error(t("FailedDeleteMessage"));
+        } finally {
+            setIsDeleting(false);
+            setDeletingContact(null);
         }
     };
+
 
     const getStatusStyle = (status: string) => {
         switch (status) {
@@ -391,6 +401,13 @@ export default function ContactList() {
                     </div>
                 )}
             </DashboardModal>
+            <DeleteConfirmModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={handleConfirmDelete}
+                isLoading={isDeleting}
+            />
         </div>
     );
 }
+

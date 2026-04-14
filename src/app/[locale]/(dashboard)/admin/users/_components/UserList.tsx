@@ -197,7 +197,7 @@ export default function UserList() {
                             placeholder={tDashboard("PasswordPlaceholder")}
                             className="bg-background border-border/60 rounded-xl"
                         />
-                        <p className="text-[10px] text-muted-foreground italic">{tDashboard("PasswordHint")}</p>
+                        <p className="text-[10px] text-muted-foreground ">{tDashboard("PasswordHint")}</p>
                     </div>
 
                     <div className="flex justify-end gap-3 pt-6 border-t border-primary/5">

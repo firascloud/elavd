@@ -188,7 +188,7 @@ export default function CategoryList() {
                                     </span>
                                 )}
                                 {(!category.sub_categories || category.sub_categories.length === 0) && (
-                                    <span className="text-[10px] font-medium text-muted-foreground italic">
+                                    <span className="text-[10px] font-medium text-muted-foreground ">
                                         {t("None")}
                                     </span>
                                 )}

@@ -173,11 +173,11 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                 name="category_id"
                                 control={control}
                                 render={({ field }) => (
-                                    <Select 
-                                        onValueChange={(val) => { 
-                                            field.onChange(val); 
-                                            setValue("sub_category_id", ""); 
-                                        }} 
+                                    <Select
+                                        onValueChange={(val) => {
+                                            field.onChange(val);
+                                            setValue("sub_category_id", "");
+                                        }}
                                         value={field.value}
                                     >
                                         <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm text-start">
@@ -203,8 +203,8 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                 name="sub_category_id"
                                 control={control}
                                 render={({ field }) => (
-                                    <Select 
-                                        onValueChange={field.onChange} 
+                                    <Select
+                                        onValueChange={field.onChange}
                                         value={field.value}
                                         disabled={!selectedCategoryId}
                                     >
@@ -234,15 +234,15 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                 name="brand_id"
                                 control={control}
                                 render={({ field }) => (
-                                    <Select 
-                                        onValueChange={field.onChange} 
+                                    <Select
+                                        onValueChange={field.onChange}
                                         value={field.value}
                                     >
                                         <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm text-start">
                                             <SelectValue placeholder={t("Brand")} />
                                         </SelectTrigger>
                                         <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
-                                            <SelectItem value="none" className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm italic opacity-70">
+                                            <SelectItem value="none" className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm  opacity-70">
                                                 {t("None")}
                                             </SelectItem>
                                             {brands.map((brand) => (

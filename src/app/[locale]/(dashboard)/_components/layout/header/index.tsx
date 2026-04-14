@@ -17,6 +17,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LanguageSwitcher from '@/components/Layout/header/LanguageSwitcher';
 import useAppStore from "@/store/store";
+import NotificationDropdown from './NotificationDropdown';
+
 
 
 export default function Header() {
@@ -59,10 +61,8 @@ export default function Header() {
 
             <div className="flex items-center gap-2 sm:gap-4">
                 <LanguageSwitcher />
-                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary relative h-8 w-8 sm:h-9 sm:w-9">
-                    <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-                    <span className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 w-2 h-2 bg-primary rounded-full border-2 border-background" />
-                </Button>
+                <NotificationDropdown />
+
 
                 <DropdownMenu>
                     <DropdownMenuTrigger className='!p-0' asChild>
