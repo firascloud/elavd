@@ -55,7 +55,9 @@ export default async function RootLayout({
           <meta name="robots" content="index, follow" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#f05a5b" />
+          <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
           <link rel="dns-prefetch" href="https://connect.facebook.net" />
           <link rel="dns-prefetch" href="https://script.hotjar.com" /> 
           <Script id="defer-third-party" strategy="afterInteractive">
@@ -107,5 +109,9 @@ export async function generateMetadata({
       follow: true,
       googleBot: { index: true, follow: true },
     },
+    verification: {
+      google: "ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE",
+    },
   };
 }
+

@@ -1,8 +1,16 @@
+# *
 User-agent: *
-Disallow: /
-Disallow: /api/
-Disallow: /admin/
+Allow: /
 
-Sitemap: https://elavd.com/sitemap.xml
+# *
+User-agent: *
+Disallow: /admin
+Disallow: /*/admin
+Disallow: /api
+Disallow: /*/api
+
+# Host
 Host: https://elavd.com
 
+# Sitemaps
+Sitemap: https://elavd.com/sitemap.xml
