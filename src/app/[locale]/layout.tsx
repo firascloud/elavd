@@ -30,6 +30,8 @@ export async function generateStaticParams() {
 }
 
 import MainLayoutWrapper from "@/components/MainLayoutWrapper";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import { WebVitals } from "@/components/analytics/WebVitals";
 
 export default async function RootLayout({
   children,
@@ -57,15 +59,42 @@ export default async function RootLayout({
           <meta name="theme-color" content="#f05a5b" />
           <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-
           <link rel="dns-prefetch" href="https://connect.facebook.net" />
           <link rel="dns-prefetch" href="https://script.hotjar.com" /> 
-          <Script id="defer-third-party" strategy="afterInteractive">
-            {`/* place deferred third-party loaders here if required */`}
-          </Script>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": locale === "ar" ? "مؤسسة إيلافد" : "Elavd",
+                "url": "https://elavd.com",
+                "logo": "https://elavd.com/logo.svg",
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "telephone": "+966-55-320-2091",
+                  "contactType": "customer service",
+                  "areaServed": "SA",
+                  "availableLanguage": ["Arabic", "English"]
+                },
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "Jabr Bin Rashid Al Murabba",
+                  "addressLocality": "Riyadh",
+                  "postalCode": "12628",
+                  "addressCountry": "SA"
+                }
+              })
+            }}
+          />
         </head>
+
         <body className="antialiased font-sans">
+          <GoogleAnalytics />
+          <WebVitals />
           <a
+
+
             href="#main-content"
             className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[1000] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none transition-all"
           >

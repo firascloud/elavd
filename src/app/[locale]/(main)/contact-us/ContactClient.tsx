@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
 import { sendMessage } from '@/services/contactService';
-
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 export default function ContactClient() {
   const t = useTranslations('contact');
@@ -18,6 +18,7 @@ export default function ContactClient() {
   const locale = useLocale();
   const isRtl = locale === 'ar';
   const formRef = useRef<HTMLDivElement>(null);
+  const { event, conversion } = useAnalytics();
 
   const schema = yup.object().shape({
     name: yup.string().required(isRtl ? 'الاسم مطلوب' : 'Name is required').min(3, isRtl ? 'يجب أن يكون الاسم 3 أحرف على الأقل' : 'Name must be at least 3 characters'),
@@ -33,8 +34,18 @@ export default function ContactClient() {
   const onSubmit = async (data: any) => {
     try {
       await sendMessage(data);
-
       
+      // Trigger analytics ONLY on successful DB insert / submission
+      event({
+        action: 'generate_lead',
+        category: 'Contact',
+        label: 'Contact Us Form'
+      });
+      
+      // Fallback conversion ID if not set in .env
+      const conversionId = process.env.NEXT_PUBLIC_GADS_CONTACT_CONVERSION || 'AW-DEFAULT/CONTACT';
+      conversion(conversionId, 1.0);
+
       // Send email notifications
       try {
         await fetch('/api/contact', {
