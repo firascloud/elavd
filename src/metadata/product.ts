@@ -86,3 +86,4 @@ export function productMetadata(opts: {
     type: "article",
   });
 }
+ 
