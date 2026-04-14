@@ -9,6 +9,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { BASE_URL, SITE_NAME } from "@/metadata/utils";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import Script from "next/script";
 
 const elMessiri = El_Messiri({
@@ -112,6 +113,7 @@ export default async function RootLayout({
               <SidebarProvider>
                 <MainLayoutWrapper>
                   <Analytics />
+                  <SpeedInsights />
                   {children}
                 </MainLayoutWrapper>
               </SidebarProvider>
@@ -145,4 +147,3 @@ export async function generateMetadata({
     },
   };
 }
-
