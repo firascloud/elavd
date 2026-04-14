@@ -37,6 +37,7 @@ export default function Hero() {
               href="/product-category/plastic-card-printers"
               className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all"
             >
+              
               <Image
                 src={require('@/assets/banner-1.svg')}
                 alt="PVC Card Printers"
@@ -164,4 +165,4 @@ export default function Hero() {
       </div>
     </section>
   )
-}
+}
