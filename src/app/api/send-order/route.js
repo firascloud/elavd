@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { name, email, phone, message, total, items, productName, quantity } = body;
+    const { name, email, phone, city, message, total, items, productName, quantity } = body;
 
     // Basic validation
     if (!name || !email || !phone) {
@@ -20,8 +20,8 @@ export async function POST(req) {
     const adminEmail = await resend.emails.send({
       from: 'Elavd Orders <onboarding@resend.dev>', // Update this with a verified domain in production
       to: 'mm246344@gmail.com',
-      subject: 'New Order Received',
-      html: adminOrderTemplate({ name, email, phone, message, total, items, productName, quantity }),
+      subject: 'New Quote Request Received',
+      html: adminOrderTemplate({ name, email, phone, city, message, total, items, productName, quantity }),
     });
 
     // 2. Send confirmation email to the user

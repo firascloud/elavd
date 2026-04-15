@@ -102,7 +102,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
                             <div className="absolute bottom-6 left-6 flex gap-2">
                                 {product.is_featured && (
-                                    <div className="px-3 py-1.5 bg-background/90 backdrop-blur-sm border border-primary/10 text-primary text-[9px] font-black rounded-lg shadow-sm tracking-widest flex items-center gap-1.5 uppercase">
+                                    <div className="px-3 py-1.5 bg-background/90 backdrop-blur-sm border border-primary/10 text-primary text-[9px] font-black rounded-lg shadow-sm ltr:tracking-widest flex items-center gap-1.5 uppercase">
                                         <div className="size-1.5 bg-primary rounded-full animate-pulse" />
                                         {t('Featured')}
                                     </div>
@@ -116,19 +116,19 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                 <motion.div
                                     initial={{ opacity: 0, x: -5 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    className="text-primary text-[10px] font-black tracking-[0.2em] mb-3 flex items-center justify-center md:justify-start gap-2 uppercase"
+                                    className="text-primary text-[10px] font-black ltr:tracking-[0.2em] mb-3 flex items-center justify-center md:justify-start gap-2 uppercase"
                                 >
                                     <Layers className="size-3.5" />
                                     {t('Products')}
                                 </motion.div>
-                                <h2 className="text-2xl lg:text-3xl font-black text-foreground mb-2 font-cairo tracking-tight">
+                                <h2 className="text-2xl lg:text-3xl font-black text-foreground mb-2 font-cairo ltr:tracking-tight">
                                     {name}
                                 </h2>
                             </div>
 
                             <div className="space-y-6 flex-1">
                                 <div className="space-y-4">
-                                    <h4 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest border-l-3 border-primary ps-2 rtl:border-l-0 rtl:border-r-3 rtl:pe-2">
+                                    <h4 className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-widest border-l-3 border-primary ps-2 rtl:border-l-0 rtl:border-r-3 rtl:pe-2">
                                         {t('DescriptionTab')}
                                     </h4>
                                     <div className="text-muted-foreground text-sm leading-7 font-medium line-clamp-6">
@@ -146,9 +146,9 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
                             <div className="mt-8 pt-8 border-t border-border/50 flex flex-col space-y-5">
                                 <div className="flex flex-col sm:flex-row gap-3">
-{/* <button
+                                    {/* <button
                                         onClick={handleAddToCart}
-                                        className="flex-[2] h-12 bg-foreground text-primary-foreground font-black text-sm rounded-xl cursor-pointer hover:bg-foreground/90 transition-all flex items-center justify-center gap-3 shadow-lg shadow-foreground/20 active:scale-95 group uppercase tracking-widest"
+                                        className="flex-[2] h-12 bg-foreground text-primary-foreground font-black text-sm rounded-xl cursor-pointer hover:bg-foreground/90 transition-all flex items-center justify-center gap-3 shadow-lg shadow-foreground/20 active:scale-95 group uppercase ltr:tracking-widest"
                                     >
                                         <ShoppingCart size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                                         <span>{t('addToCart')}</span>
@@ -172,11 +172,11 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                 </div>
 
                                 <div className="flex items-center justify-between px-1">
-                                    <div className="flex items-center gap-2 text-[9px] text-muted-foreground font-black uppercase tracking-[0.1em]">
+                                    <div className="flex items-center gap-2 text-[9px] text-muted-foreground font-black uppercase ltr:tracking-[0.1em]">
                                         <div className="size-1.5 bg-green-500 rounded-full" />
                                         {t('FastShipping')}
                                     </div>
-                                    <div className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.1em] flex items-center gap-2">
+                                    <div className="text-[9px] text-muted-foreground font-black uppercase ltr:tracking-[0.1em] flex items-center gap-2">
                                         <Info size={12} />
                                         {t('TermsConditions')}
                                     </div>

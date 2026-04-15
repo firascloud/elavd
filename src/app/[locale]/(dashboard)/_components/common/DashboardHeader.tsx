@@ -27,7 +27,7 @@ export function DashboardHeader({
       {/* Title and Global Actions Row */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between items-start gap-4 sm:gap-6">
         <div className="space-y-1 sm:space-y-1.5 flex-1">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-[900] tracking-tight text-foreground leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-[900] ltr:tracking-tight text-foreground leading-tight">
             {title}
           </h1>
           {description && (

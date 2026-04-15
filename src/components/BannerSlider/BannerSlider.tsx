@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 
 type PropType = {
   banners: { id: string; image: string; image_responsive: string; link: string }[];

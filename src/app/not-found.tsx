@@ -9,15 +9,15 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <body style={{ fontFamily: "sans-serif", textAlign: "center", padding: "4rem 1rem" }}>
         <h1 style={{ fontSize: "6rem", margin: 0, color: "#f05a5b" }}>404</h1>
-        <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Page Not Found</h2>
+        <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>الصفحة غير موجودة</h2>
         <p style={{ color: "#666", marginBottom: "2rem" }}>
-          The page you are looking for does not exist or has been moved.
+          الصفحة التي تبحث عنها غير موجودة أو تم نقلها.
         </p>
         <Link
-          href="/en"
+          href="/"
           style={{
             display: "inline-block",
             backgroundColor: "#f05a5b",
@@ -28,7 +28,7 @@ export default function NotFound() {
             fontWeight: 600,
           }}
         >
-          Go Home
+          العودة للرئيسية
         </Link>
       </body>
     </html>

@@ -26,8 +26,8 @@ export function StatsCard({ title, value, change, isIncrease, icon: Icon, color 
 
       <div className="flex items-start justify-between relative z-10">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/80 mb-1">{title}</p>
-          <h3 className="text-3xl font-bold tracking-tight text-foreground">{value}</h3>
+          <p className="text-[11px] font-semibold uppercase ltr:tracking-wide text-muted-foreground/80 mb-1">{title}</p>
+          <h3 className="text-3xl font-bold ltr:tracking-tight text-foreground">{value}</h3>
 
           {change && (
             <div className="flex items-center gap-1.5 mt-2">
@@ -58,7 +58,7 @@ export function DashboardCard({ title, subtitle, children, className, action }: 
     <div className={cn("rounded-2xl bg-background/60 backdrop-blur border border-border/60 p-6 shadow-sm", className)}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold tracking-tight text-foreground">{title}</h2>
+          <h2 className="text-lg font-bold ltr:tracking-tight text-foreground">{title}</h2>
           {subtitle && <p className="text-sm font-medium text-muted-foreground/80 mt-1">{subtitle}</p>}
         </div>
         {action}

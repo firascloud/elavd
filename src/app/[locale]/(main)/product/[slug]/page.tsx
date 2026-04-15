@@ -16,7 +16,7 @@ import {
   getRelatedProducts,
 } from "@/services/home";
 import { getBrandBySlug } from "@/services/brandService";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
 
 interface ProductPageProps {
   params: Promise<{
@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ]);
 
   if (!product && brand) {
-    redirect(`/${locale}/store/${slug}`);
+    redirect({ href: `/store/${slug}`, locale });
   }
 
   if (!product) notFound();

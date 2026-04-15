@@ -1,5 +1,8 @@
 {
   "dashboard": {
+    "Pagination": "Pagination",
+    "Page": "Page",
+    "of": "of",
     "clearing": "clearing...",
     "Users": "Users",
     "Email": "Email",
@@ -232,6 +235,8 @@
     "BrandIndexEn": "Brand Index (EN)",
     "BrandIndexAr": "Brand Index (AR)",
     "Inquiries": "Inquiries",
+    "City": "City",
+    "YourMessage": "Customer Question",
     "InquiriesDescription": "View and manage messages from your website visitors.",
     "SearchContacts": "Search by name, email or phone...",
     "AllMessages": "All Messages",

@@ -17,24 +17,24 @@ import {
 import {
     DashboardHeader
 } from "@/app/[locale]/(dashboard)/_components/common/DashboardHeader";
-import { 
-    DeleteConfirmModal 
+import {
+    DeleteConfirmModal
 } from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
 import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale } from "next-intl";
 
 import { cn } from "@/lib/utils";
-import { 
-    Eye, 
-    RefreshCw, 
-    Mail, 
-    Phone, 
-    Calendar, 
-    Clock, 
-    CheckCircle2, 
-    Trash2, 
-    Check, 
-    MessageSquare, 
+import {
+    Eye,
+    RefreshCw,
+    Mail,
+    Phone,
+    Calendar,
+    Clock,
+    CheckCircle2,
+    Trash2,
+    Check,
+    MessageSquare,
     Archive,
     RotateCcw
 } from "lucide-react";
@@ -92,7 +92,7 @@ export default function ContactList() {
     const handleViewDetails = (contact: any) => {
         setSelectedContact(contact);
         setIsDetailsOpen(true);
-        
+
         if (contact.status === 'new') {
             updateStatus(contact.id, 'read');
         }
@@ -117,7 +117,7 @@ export default function ContactList() {
 
     const handleConfirmDelete = async () => {
         if (!deletingContact) return;
-        
+
         setIsDeleting(true);
         try {
             await deleteContact(deletingContact);
@@ -206,8 +206,8 @@ export default function ContactList() {
                     <DashboardTableRow key={contact.id}>
                         <DashboardTableCell>
                             <div className="flex flex-col">
-                                <span className="font-bold text-sm tracking-tight">{contact.name}</span>
-                                <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">#{contact.id.slice(0, 8)}</span>
+                                <span className="font-bold text-sm ltr:tracking-tight">{contact.name}</span>
+                                <span className="text-[10px] text-muted-foreground font-medium uppercase ltr:tracking-wider">#{contact.id.slice(0, 8)}</span>
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
@@ -247,10 +247,10 @@ export default function ContactList() {
                         </DashboardTableCell>
                         <DashboardTableCell>
                             <div className="flex items-center gap-2">
-                                <Button 
-                                    variant="ghost" 
-                                    size="icon" 
-                                    onClick={() => handleViewDetails(contact)} 
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => handleViewDetails(contact)}
                                     className="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary transition-all shadow-sm border border-border/40"
                                     title={isAr ? "عرض التفاصيل" : "View Details"}
                                 >
@@ -258,10 +258,10 @@ export default function ContactList() {
                                 </Button>
 
                                 {contact.status !== 'replied' && contact.status !== 'archived' && (
-                                    <Button 
-                                        variant="ghost" 
-                                        size="icon" 
-                                        onClick={() => updateStatus(contact.id, 'replied')} 
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => updateStatus(contact.id, 'replied')}
                                         className="h-9 w-9 rounded-full hover:bg-green-500/10 hover:text-green-600 transition-all text-muted-foreground shadow-sm border border-border/40"
                                         title={isAr ? "تم الرد" : "Mark as Replied"}
                                     >
@@ -270,20 +270,20 @@ export default function ContactList() {
                                 )}
 
                                 {contact.status !== 'archived' ? (
-                                    <Button 
-                                        variant="ghost" 
-                                        size="icon" 
-                                        onClick={() => updateStatus(contact.id, 'archived')} 
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => updateStatus(contact.id, 'archived')}
                                         className="h-9 w-9 rounded-full hover:bg-slate-500/10 hover:text-slate-600 transition-all text-muted-foreground shadow-sm border border-border/40"
                                         title={isAr ? "أرشفة" : "Archive"}
                                     >
                                         <Archive className="h-4 w-4" />
                                     </Button>
                                 ) : (
-                                    <Button 
-                                        variant="ghost" 
-                                        size="icon" 
-                                        onClick={() => updateStatus(contact.id, 'read')} 
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => updateStatus(contact.id, 'read')}
                                         className="h-9 w-9 rounded-full hover:bg-blue-500/10 hover:text-blue-600 transition-all text-muted-foreground shadow-sm border border-border/40"
                                         title={isAr ? "إعادة تفعيل" : "Restore"}
                                     >
@@ -291,10 +291,10 @@ export default function ContactList() {
                                     </Button>
                                 )}
 
-                                <Button 
-                                    variant="ghost" 
-                                    size="icon" 
-                                    onClick={() => handleDelete(contact.id)} 
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => handleDelete(contact.id)}
                                     className="h-9 w-9 rounded-full hover:bg-destructive/10 hover:text-destructive transition-all text-muted-foreground shadow-sm border border-border/40"
                                     title={isAr ? "حذف" : "Delete"}
                                 >
@@ -325,7 +325,7 @@ export default function ContactList() {
                 {selectedContact && (
                     <div className="space-y-6 pt-4" dir={isAr ? 'rtl' : 'ltr'}>
                         <div className="flex items-center justify-between mb-2">
-                             <div className={cn(
+                            <div className={cn(
                                 "flex items-center gap-2 px-4 py-1.5 rounded-full border text-[11px] font-black uppercase w-fit",
                                 getStatusStyle(selectedContact.status)
                             )}>
@@ -333,12 +333,12 @@ export default function ContactList() {
                             </div>
                             <div className="flex gap-2">
                                 {selectedContact.status !== 'replied' && (
-                                    <Button 
-                                        variant="outline" 
-                                        size="sm" 
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
                                         onClick={() => {
                                             updateStatus(selectedContact.id, 'replied');
-                                            setSelectedContact({...selectedContact, status: 'replied'});
+                                            setSelectedContact({ ...selectedContact, status: 'replied' });
                                         }}
                                         className="h-9 rounded-xl border-green-200 text-green-600 hover:bg-green-50"
                                     >
@@ -351,22 +351,22 @@ export default function ContactList() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="p-4 rounded-2xl bg-muted/30 border border-border/50">
-                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-widest mb-1">
                                     {t("From")}
                                 </p>
                                 <p className="font-bold text-foreground">{selectedContact.name}</p>
                             </div>
                             <div className="p-4 rounded-2xl bg-muted/30 border border-border/50">
-                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-widest mb-1">
                                     {t("Phone")}
                                 </p>
                                 <p className="font-bold text-foreground">{selectedContact.phone}</p>
                             </div>
                             <div className="p-4 rounded-2xl bg-muted/30 border border-border/50 col-span-2">
-                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-widest mb-1">
                                     {t("Email")}
                                 </p>
-                                <p className="font-bold text-foreground tracking-tight">{selectedContact.email}</p>
+                                <p className="font-bold text-foreground ltr:tracking-tight">{selectedContact.email}</p>
                             </div>
                         </div>
 
@@ -374,21 +374,21 @@ export default function ContactList() {
                             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <MessageSquare className="h-12 w-12" />
                             </div>
-                            <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-3 relative z-10">
+                            <p className="text-[10px] font-black text-primary uppercase ltr:tracking-widest mb-3 relative z-10">
                                 {t("MessageContent")}
                             </p>
                             <p className="text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap relative z-10">{selectedContact.message}</p>
                         </div>
 
                         <div className="flex justify-end gap-3 pt-4 border-top border-border/40">
-                            <Button 
+                            <Button
                                 variant="outline"
                                 onClick={() => setIsDetailsOpen(false)}
                                 className="rounded-xl font-bold px-8 border-border/60"
                             >
                                 {isAr ? "إغلاق" : "Close"}
                             </Button>
-                            <Button 
+                            <Button
                                 asChild
                                 className="rounded-xl font-bold px-8 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
                             >
@@ -401,7 +401,7 @@ export default function ContactList() {
                     </div>
                 )}
             </DashboardModal>
-            <DeleteConfirmModal 
+            <DeleteConfirmModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleConfirmDelete}

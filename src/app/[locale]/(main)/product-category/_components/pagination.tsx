@@ -94,7 +94,7 @@ export default function Pagination({ currentPage, totalPages, totalItems }: Pagi
         {/* Per Page Limit Dropdown */}
         <div className="hidden md:flex items-center gap-2 ltr:ms-2 rtl:me-2">
           <div className="relative group">
-            <button className="flex cursor-pointer items-center gap-2 bg-muted/50 hover:bg-muted px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-muted-foreground transition-all">
+            <button className="flex cursor-pointer items-center gap-2 bg-muted/50 hover:bg-muted px-4 py-2 rounded-full text-[10px] font-black uppercase ltr:tracking-widest text-muted-foreground transition-all">
               {searchParams.get('limit') || '12'} / {t('PerPage') || 'Page'}
               <ChevronDown size={12} className="group-hover:rotate-180 transition-transform" />
             </button>

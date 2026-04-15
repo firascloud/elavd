@@ -6,6 +6,7 @@ import { Search, ChevronDown, Menu, Loader2, Star, Tag, ChevronRight } from 'luc
 import { Link, useRouter } from '@/i18n/routing'
 import { useTranslations, useLocale } from 'next-intl'
 import Logo from '@/assets/logo.svg'
+import LogoWebp from '@/assets/logo.svg'
 import LanguageSwitcher from './LanguageSwitcher'
 import HeaderActions from './HeaderActions'
 import { getCategories, type Category } from '@/services/categoryService'
@@ -101,7 +102,28 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
     <div className="bg-white h-[106px] flex items-center px-4 border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 lg:gap-6 w-full">
         <Link href="/" className="shrink-0">
-          <Image src={Logo} alt="Logo" width={200} height={200} className="w-32 lg:w-48 h-auto" />
+          {/* WebP for Mobile/Tablet (< 1024px) */}
+          <div className="lg:hidden">
+            <Image
+              src={LogoWebp}
+              alt="Logo"
+              width={140}
+              height={60}
+              priority
+              className="w-28 h-auto max-h-[70px] object-contain"
+            />
+          </div>
+          {/* SVG for Desktop (>= 1024px) */}
+          <div className="hidden lg:block">
+            <Image
+              src={Logo}
+              alt="Logo"
+              width={200}
+              height={200}
+              priority
+              className="lg:w-48 h-auto max-h-[80px] object-contain"
+            />
+          </div>
         </Link>
 
         {/* Desktop Search */}
@@ -206,7 +228,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                   </div>
                 ) : results.length > 0 ? (
                   <div className="p-2">
-                    <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                    <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase ltr:tracking-wider flex justify-between items-center">
                       <span>{t('TopResults')} ({results.length})</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">

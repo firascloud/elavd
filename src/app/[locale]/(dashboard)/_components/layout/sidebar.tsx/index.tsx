@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Link } from '@/i18n/routing';
+import { Link, useRouter, usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
 import {
     Home,
     Users,
@@ -28,7 +27,6 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 import logo from '@/assets/logo.svg';
-import { useRouter } from 'next/navigation';
 import useAppStore from '@/store/store';
 import { useEffect } from 'react';
 

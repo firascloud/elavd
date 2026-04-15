@@ -19,14 +19,14 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
   const t = useTranslations('common')
   const locale = useLocale()
   const router = useRouter()
-  
+
   const [searchTerm, setSearchTerm] = useState('')
   const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const [results, setResults] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const [showCatMenu, setShowCatMenu] = useState(false)
-  
+
   const catMenuRef = useRef<HTMLDivElement>(null)
 
   // Initial category fetch
@@ -93,7 +93,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
   const handleSearchRedirect = (e?: React.FormEvent) => {
     e?.preventDefault()
     if (!searchTerm.trim()) return
- 
+
     const categoryParam = selectedCategory ? `?product_cat=${selectedCategory.id}` : ''
     router.push(`/store/${encodeURIComponent(searchTerm)}${categoryParam}`)
     setSearchOpen(false)
@@ -106,7 +106,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
   return (
     <AnimatePresence>
       {searchOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -122,7 +122,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
             className="absolute inset-0 bg-black/60 backdrop-blur-md"
             onClick={() => setSearchOpen(false)}
           />
-          <motion.div 
+          <motion.div
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
@@ -143,12 +143,12 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
             </div>
 
             <div className="relative">
-              <form 
+              <form
                 onSubmit={handleSearchRedirect}
                 className="flex h-[52px] border-2 border-slate-200 rounded-xl transition-all relative"
-              > 
+              >
                 <div className="relative z-[120]" ref={catMenuRef}>
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setShowCatMenu(!showCatMenu)}
                     className="bg-slate-50 h-full px-3 sm:px-4 flex items-center gap-2 text-slate-600 cursor-pointer hover:bg-slate-100 transition-colors border-e border-slate-200 min-w-[100px] sm:min-w-[120px] justify-center rounded-s-[9px] outline-none"
@@ -161,7 +161,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
 
                   <AnimatePresence>
                     {showCatMenu && (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -215,8 +215,8 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                   placeholder={t('SearchPlaceholder') || "What are you looking for?"}
                   className="flex-1 px-4 text-base outline-none focus:outline-none focus:ring-0 focus:shadow-none placeholder:text-slate-400 bg-white font-medium"
                 />
-                
-                <button 
+
+                <button
                   type="submit"
                   disabled={loading}
                   className="bg-primary cursor-pointer px-0 md:px-6 flex items-center justify-center text-white hover:bg-primary/90 transition-all disabled:opacity-80 active:scale-95 rounded-e-[9px]"
@@ -232,7 +232,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
               {/* Search Results Menu */}
               <AnimatePresence>
                 {searchTerm.length >= 2 && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
@@ -245,7 +245,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                       </div>
                     ) : results.length > 0 ? (
                       <div className="p-2">
-                        <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                        <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase ltr:tracking-wider flex justify-between items-center">
                           <span>{t('TopResults')} ({results.length})</span>
                           <Link href={`/store/${searchTerm}`} className="text-primary hover:underline" onClick={() => setSearchOpen(false)}>
                             {t('ViewAll')}
@@ -261,10 +261,10 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                             >
                               <div className="relative w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                                 {product.main_image ? (
-                                  <Image 
-                                    src={product.main_image} 
-                                    alt={getProductName(product)} 
-                                    fill 
+                                  <Image
+                                    src={product.main_image}
+                                    alt={getProductName(product)}
+                                    fill
                                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                                   />
                                 ) : (

@@ -77,20 +77,20 @@ export default function SearchResults({ query, categoryId }: SearchResultsProps)
 
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{isRtl ? 'عرض:' : 'Show:'}</span>
+              <span className="text-sm font-bold text-muted-foreground uppercase ltr:tracking-wider">{isRtl ? 'عرض:' : 'Show:'}</span>
               {[9, 12, 18, 24].map((num) => (
                 <button key={num} className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">{num}</button>
               ))}
             </div>
             <div className="h-4 w-px bg-border" />
             <div className="flex items-center gap-2">
-              <button 
+              <button
                 onClick={() => setViewType('grid')}
                 className={`p-1.5 rounded transition-colors ${viewType === 'grid' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted/50'}`}
               >
                 <LayoutGrid className="w-5 h-5" />
               </button>
-              <button 
+              <button
                 onClick={() => setViewType('list')}
                 className={`p-1.5 rounded transition-colors ${viewType === 'list' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted/50'}`}
               >
@@ -100,7 +100,7 @@ export default function SearchResults({ query, categoryId }: SearchResultsProps)
             <div className="h-4 w-px bg-border" />
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
-              <select 
+              <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="text-sm font-bold text-foreground bg-transparent border-none focus:ring-0 cursor-pointer"
@@ -149,8 +149,8 @@ export default function SearchResults({ query, categoryId }: SearchResultsProps)
               </div>
               <div className="p-2">
                 {categories.map((cat) => (
-                  <Link 
-                    key={cat.id} 
+                  <Link
+                    key={cat.id}
                     href={`/?s=${query}&product_cat=${cat.id}`}
                     className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all group ${categoryId === cat.id ? 'bg-primary/5 text-primary' : 'hover:bg-muted/30 text-foreground'}`}
                   >
@@ -168,18 +168,18 @@ export default function SearchResults({ query, categoryId }: SearchResultsProps)
               </div>
               <div className="p-4 space-y-4">
                 {featuredProducts.map((prod) => (
-                  <Link 
-                    key={prod.id} 
+                  <Link
+                    key={prod.id}
                     href={`/products/${(isRtl ? prod.slug_ar : prod.slug_en) || prod.id}`}
                     className="flex gap-4 group p-2 rounded-xl hover:bg-muted/30 transition-all border border-transparent hover:border-border"
                   >
                     <div className="relative w-20 h-20 bg-muted/30 rounded-lg overflow-hidden shrink-0">
                       {prod.main_image ? (
-                        <Image 
-                          src={prod.main_image} 
-                          alt={getProductName(prod)} 
-                          fill 
-                          className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                        <Image
+                          src={prod.main_image}
+                          alt={getProductName(prod)}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">

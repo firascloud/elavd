@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import EnFlag from "@/assets/en-flag.svg";
 import ArFlag from "@/assets/ar-flag.svg";

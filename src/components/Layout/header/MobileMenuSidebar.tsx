@@ -6,6 +6,7 @@ import { Link } from '@/i18n/routing'
 import { X, ChevronRight, Tag, Heart, Repeat, ShoppingCart, User, Phone } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useTranslations, useLocale } from 'next-intl'
+import { cn } from '@/lib/utils'
 import Logo from '@/assets/logo.svg'
 import type { Category } from '@/services/categoryService'
 
@@ -25,6 +26,7 @@ interface MobileMenuSidebarProps {
 export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, categories }: MobileMenuSidebarProps) {
   const t = useTranslations('common')
   const locale = useLocale()
+  const isAr = locale === 'ar'
   const closeButtonRef = React.useRef<HTMLButtonElement>(null)
   const lastActiveElement = React.useRef<HTMLElement | null>(null)
 
@@ -48,21 +50,30 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
     }
   }, [menuOpen, setMenuOpen])
 
-  if (!menuOpen) return null
-
   return (
     <div 
-      className="fixed inset-0 z-50 flex lg:hidden"
+      className={cn(
+        "fixed inset-0 z-[100] flex lg:hidden transition-all duration-500",
+        menuOpen ? "visible" : "invisible"
+      )}
       role="dialog"
       aria-modal="true"
       aria-label={t('MenuTitle')}
     >
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className={cn(
+          "absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-500",
+          menuOpen ? "opacity-100" : "opacity-0"
+        )}
         onClick={() => setMenuOpen(false)}
       />
 
-      <div className="relative w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col overflow-y-auto">
+      <div className={cn(
+        "relative w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col overflow-y-auto transition-all duration-500 ease-in-out",
+        menuOpen 
+          ? "translate-x-0 opacity-100" 
+          : (isAr ? "translate-x-full opacity-0" : "-translate-x-full opacity-0")
+      )}>
         <div className="bg-white px-4 py-4 flex items-center justify-between shrink-0">
           <Image
             src={Logo}
@@ -82,13 +93,14 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
         </div>
 
         <nav className="flex flex-col py-2">
-          <p className="px-4 pt-3 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+          <p className="px-4 pt-3 pb-1 text-[11px] font-bold text-slate-400 uppercase ltr:tracking-widest">
             {t('MenuTitle')}
           </p>
           {navLinks.map(link => (
             <Link
               key={link.href}
               href={link.href}
+              onClick={() => setMenuOpen(false)}
               className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors group"
             >
               <span className="text-primary">{link.icon}</span>
@@ -97,13 +109,14 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
             </Link>
           ))}
 
-          <p className="px-4 pt-3 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2">
+          <p className="px-4 pt-3 pb-1 text-[11px] font-bold text-slate-400 uppercase ltr:tracking-widest mt-2">
             {t('BrowseCategories')}
           </p>
           {categories.map(cat => (
             <Link
               key={cat.id}
               href={`/store/${cat.slug_en}`}
+              onClick={() => setMenuOpen(false)}
               className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors group"
             >
               <Tag className="w-5 h-5 text-primary" />
@@ -115,43 +128,14 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
 
         <div className="border-t border-slate-100" />
 
-        {/* Account actions */}
-        <div className="flex flex-col py-2">
-          <p className="px-4 pt-3 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-            {t('MyAccount') ?? 'My Account'}
-          </p>
-
-          <button className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors w-full text-start">
-            <Heart className="w-5 h-5 text-primary" />
-            {t('Wishlist') ?? 'Wishlist'}
-          </button>
-
-          <button className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors w-full text-start">
-            <Repeat className="w-5 h-5 text-primary" />
-            {t('Compare') ?? 'Compare'}
-          </button>
-
-          {/* <button className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors w-full text-start">
-            <ShoppingCart className="w-5 h-5 text-primary" />
-            {t('Cart') ?? 'Cart'}
-          </button> */}
-
-          <button className="flex items-center gap-3 px-4 py-3 text-[14px] font-semibold text-slate-700 hover:bg-primary/5 hover:text-primary transition-colors w-full text-start">
-            <User className="w-5 h-5 text-primary" />
-            {t('Account') ?? 'Account'}
-          </button>
-        </div>
-
-        <div className="border-t border-slate-100" />
-
         <div className="px-4 py-4 space-y-3">
           <div className="flex items-center gap-3 text-slate-700">
             <div className="p-2 rounded-full bg-primary/10">
               <Phone className="w-4 h-4 text-primary" />
             </div>
-            <a href="tel:0553202091" className="text-sm font-bold tracking-tight hover:text-primary transition-colors" dir="ltr">0553202091</a>
+            <a href="tel:0553202091" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0553202091</a>
             <span>-</span>
-            <a href="tel:0556482799" className="text-sm font-bold tracking-tight hover:text-primary transition-colors" dir="ltr">0556482799</a>
+            <a href="tel:0556482799" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0556482799</a>
           </div>
           <a href="mailto:sales@elavd.com" className="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors text-sm">
             <Icon icon="mdi:email" className="w-4 h-4 text-primary" />

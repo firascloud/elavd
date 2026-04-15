@@ -28,20 +28,20 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-      
+
       if (isRtl) {
         // In RTL (modern browsers), scrollLeft is 0 at start (right) and goes negative
         // But some browsers/versions might vary, so we handle both or use a safer check
         const isAtStart = scrollLeft >= -5
         const isAtEnd = Math.abs(scrollLeft) + clientWidth >= scrollWidth - 5
-        
+
         setShowLeftArrow(!isAtEnd)   // Forward in RTL
         setShowRightArrow(!isAtStart) // Back in RTL
       } else {
         // LTR: scrollLeft is 0 at start (left) and goes positive
         const isAtStart = scrollLeft <= 5
         const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5
-        
+
         setShowLeftArrow(!isAtStart) // Back in LTR
         setShowRightArrow(!isAtEnd)  // Forward in LTR
       }
@@ -67,7 +67,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
     if (scrollRef.current) {
       const scrollAmount = 300
       const amount = direction === 'left' ? -scrollAmount : scrollAmount
-      
+
       scrollRef.current.scrollBy({
         left: amount,
         behavior: 'smooth'
@@ -79,10 +79,10 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
     <div className="bg-white px-4 shadow-md border-t border-white/5 h-[50px] flex items-center overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
         <div className="flex-1 overflow-hidden relative group navbar-scroll-container">
-          
+
           {/* Left Arrow */}
           {showLeftArrow && (
-            <button 
+            <button
               onClick={() => scroll('left')}
               className={cn(
                 "absolute z-10 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white shadow-lg border border-gray-100 rounded-full text-gray-600 hover:text-primary transition-all active:scale-90",
@@ -93,7 +93,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
             </button>
           )}
 
-          <div 
+          <div
             ref={scrollRef}
             onScroll={checkScroll}
             className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1"
@@ -145,7 +145,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
 
           {/* Right Arrow */}
           {showRightArrow && (
-            <button 
+            <button
               onClick={() => scroll('right')}
               className={cn(
                 "absolute z-10 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white shadow-lg border border-gray-100 rounded-full text-gray-600 hover:text-primary transition-all active:scale-90",
@@ -174,9 +174,9 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
           <div className="p-2 rounded-full bg-primary/20 group-hover:bg-primary transition-colors">
             <Phone className="w-4 h-4 text-primary group-hover:text-white" />
           </div>
-          <a href="tel:0553202091" className="text-[14px] tracking-tight hover:text-primary transition-colors">0553202091</a>
+          <a href="tel:0553202091" className="text-[14px] ltr:tracking-tight hover:text-primary transition-colors">0553202091</a>
           <span className="text-gray-300">-</span>
-          <a href="tel:0556482799" className="text-[14px] tracking-tight hover:text-primary transition-colors">0556482799</a>
+          <a href="tel:0556482799" className="text-[14px] ltr:tracking-tight hover:text-primary transition-colors">0556482799</a>
         </div>
       </div>
     </div>

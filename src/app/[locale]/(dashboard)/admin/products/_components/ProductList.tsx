@@ -128,7 +128,7 @@ export default function ProductList() {
                         </Button>
                         <Button
                             onClick={() => { setSelectedProduct(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
                         >
                             <Plus className="h-5 w-5 stroke-[3]" />
                             <span>{t("AddProduct")}</span>
@@ -187,7 +187,7 @@ export default function ProductList() {
                         </DashboardTableCell>
                         <DashboardTableCell>
                             <div className="flex flex-col gap-1">
-                                <span className="font-semibold tracking-tight">{isAr ? product.name_ar : product.name_en}</span>
+                                <span className="font-semibold ltr:tracking-tight">{isAr ? product.name_ar : product.name_en}</span>
                                 <span className="text-[10px] uppercase font-medium text-secondary bg-secondary/5 px-2 py-0.5 rounded-full self-start border border-secondary/20">
                                     {product.slug_en}
                                 </span>

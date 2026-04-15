@@ -49,7 +49,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                             <MapPin className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("DeliveryPoint")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("DeliveryPoint")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("FinalDestination")}</p>
                         </div>
                     </div>
@@ -68,9 +68,9 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                 {order.customer_phone && (
                                     <div className="flex items-center gap-2 mt-1">
                                         <MessageSquare className="h-3 w-3 text-green-500" />
-                                        <a 
-                                            href={`https://wa.me/${order.customer_phone.replace(/\+/g, '')}`} 
-                                            target="_blank" 
+                                        <a
+                                            href={`https://wa.me/${order.customer_phone.replace(/\+/g, '')}`}
+                                            target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-xs text-green-600 font-bold hover:underline"
                                         >
@@ -80,11 +80,17 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                 )}
                             </div>
                         </div>
+                        <div className="space-y-2">
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("City") || (isAr ? "المدينة" : "City")}</p>
+                            <p className="text-xs leading-relaxed text-foreground font-bold">
+                                {order.address || t("CityNotProvided") || "—"}
+                            </p>
+                        </div>
                         <div className="h-px bg-border w-full" />
                         <div className="space-y-2">
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("StreetAddress")}</p>
-                            <p className="text-xs leading-relaxed text-foreground/80">
-                                {order.address || order.city || t("AddressNotDisclosed")}
+                            <p className="text-[11px] font-medium text-muted-foreground">{t("YourMessage") || (isAr ? "سؤال العميل" : "Customer Question")}</p>
+                            <p className="text-xs leading-relaxed text-foreground/80 italic">
+                                {order.notes || t("NoQuestionProvided") || "—"}
                             </p>
                         </div>
                     </div>
@@ -97,7 +103,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                             <Receipt className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("FinancialRecap")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("FinancialRecap")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("LedgerBalance")}</p>
                         </div>
                     </div>
@@ -110,7 +116,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                             { label: t("ShippingCost"), value: order.shipping_fee || 0 },
                         ].map((row, idx) => (
                             <div key={idx} className="flex justify-between items-center">
-                                <span className="text-xs font-medium text-muted-foreground tracking-tight">{row.label}</span>
+                                <span className="text-xs font-medium text-muted-foreground ltr:tracking-tight">{row.label}</span>
                                 <span className="text-sm font-semibold text-foreground font-mono"><Price amount={row.value || 0} /></span>
                             </div>
                         ))}
@@ -127,7 +133,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
             <section className="space-y-6">
                 <div className="flex items-center gap-3">
                     <Package className="h-5 w-5 text-foreground" />
-                    <h3 className="text-base font-semibold tracking-tight">{t("ManifestItems")}</h3>
+                    <h3 className="text-base font-semibold ltr:tracking-tight">{t("ManifestItems")}</h3>
                 </div>
 
                 <DashboardTable headers={[
@@ -143,7 +149,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                                     <div className="h-12 w-12 rounded-xl bg-foreground/[0.06] flex items-center justify-center text-muted-foreground text-xs font-mono">
                                         PCK
                                     </div>
-                                    <span className="font-medium text-sm tracking-tight">
+                                    <span className="font-medium text-sm ltr:tracking-tight">
                                         {isAr ? item.product_name_ar : item.product_name_en}
                                     </span>
                                 </div>

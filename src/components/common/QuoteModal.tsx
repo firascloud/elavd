@@ -4,12 +4,12 @@ import React, { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { useTranslations, useLocale } from 'next-intl'
@@ -45,19 +45,19 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
   const locale = useLocale()
   const isAr = locale === 'ar'
   const [loading, setLoading] = useState(false)
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     countryCode: '+966',
-    quantity: 1,
+    city: '',
     message: ''
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Validation
     if (formData.name.trim().length < 3) {
       toast.error(isAr ? 'الاسم يجب أن يكون 3 أحرف على الأقل' : 'Name must be at least 3 characters')
@@ -74,29 +74,34 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
       return
     }
 
+    if (formData.city.trim().length < 2) {
+      toast.error(isAr ? 'يرجى إدخال المدينة' : 'Please enter your city')
+      return
+    }
+
     if (formData.message.trim().length < 5) {
-      toast.error(isAr ? 'يرجى كتابة رسالة توضح طلبك' : 'Please write a message describing your request')
+      toast.error(isAr ? 'يرجى كتابة سؤالك بوضوح' : 'Please write your question clearly')
       return
     }
 
     setLoading(true)
 
     try {
-      const orderItems: OrderItem[] = product 
-        ? [{ 
-            product_id: product.id, 
-            name_ar: product.name_ar || '', 
-            name_en: product.name_en || '', 
-            quantity: formData.quantity, 
-            price: product.price || 0 
-          }]
+      const orderItems: OrderItem[] = product
+        ? [{
+          product_id: product.id,
+          name_ar: product.name_ar || '',
+          name_en: product.name_en || '',
+          quantity: 1, // Default to 1 as quantity field is removed from simplified form
+          price: product.price || 0
+        }]
         : items?.map(item => ({
-            product_id: item.id,
-            name_ar: item.name_ar || '',
-            name_en: item.name_en || '',
-            quantity: item.quantity,
-            price: item.price || 0
-          })) || []
+          product_id: item.id,
+          name_ar: item.name_ar || '',
+          name_en: item.name_en || '',
+          quantity: item.quantity,
+          price: item.price || 0
+        })) || []
 
       const totalPrice = orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
 
@@ -104,6 +109,7 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
         customer_name: formData.name,
         customer_email: formData.email,
         customer_phone: `${formData.countryCode}${formData.phone}`,
+        address: formData.city,
         notes: formData.message,
         total: totalPrice,
         subtotal: totalPrice,
@@ -112,7 +118,7 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
       }
 
       await orderService.createOrder(orderData, orderItems)
-      
+
       // Send email notifications
       try {
         await fetch('/api/send-order', {
@@ -122,11 +128,12 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
             name: formData.name,
             email: formData.email,
             phone: `${formData.countryCode}${formData.phone}`,
+            city: formData.city,
             message: formData.message,
             total: totalPrice,
             items: orderItems,
             productName: product ? (locale === 'ar' ? product.name_ar : product.name_en) : (locale === 'ar' ? 'سلة التسوق' : 'Cart items'),
-            quantity: formData.quantity
+            quantity: product ? 1 : orderItems.reduce((acc, item) => acc + item.quantity, 0)
           }),
         });
       } catch (emailError) {
@@ -135,7 +142,7 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
       }
 
       toast.success(t('QuoteSuccess'))
-      setFormData({ name: '', email: '', phone: '', countryCode: '+966', quantity: 1, message: '' })
+      setFormData({ name: '', email: '', phone: '', countryCode: '+966', city: '', message: '' })
       onClose()
     } catch (error) {
       console.error(error)
@@ -150,8 +157,8 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
       <DialogContent className="max-w-md p-0 overflow-hidden rounded-md border-none shadow-md max-h-[90vh] flex flex-col">
         <div className="bg-foreground px-8 py-4 lg:px-10 lg:py-6 text-primary-foreground relative overflow-hidden shrink-0">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
-          
-          <button 
+
+          <button
             onClick={onClose}
             className="absolute cursor-pointer top-6 right-6 z-20 p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors text-primary-foreground/50 hover:text-primary-foreground"
           >
@@ -159,20 +166,20 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
           </button>
 
           <DialogTitle className="text-2xl font-black font-cairo text-center relative z-10">
-            {t('QuoteRequest')}
+            {isAr ? 'طلب استشارة / عرض سعر' : 'Quote / Consultation Request'}
           </DialogTitle>
-          <p className="text-[10px] text-primary-foreground/60 text-center uppercase tracking-[0.2em] mt-2 font-black relative z-10">
-            {isAr ? 'احصل على عرض سعر مخصص الآن' : 'Get your custom quote now'}
+          <p className="text-[10px] text-primary-foreground/60 text-center uppercase ltr:tracking-[0.2em] mt-2 font-black relative z-10">
+            {isAr ? 'تواصل معنا وسيتم الرد عليك في أقرب وقت' : 'Contact us and we will reply as soon as possible'}
           </p>
         </div>
-        
+
         <div className="overflow-y-auto flex-1 custom-scrollbar">
           <form onSubmit={handleSubmit} className="p-8 lg:p-10 space-y-6 bg-background" dir={isAr ? 'rtl' : 'ltr'}>
             <div className="space-y-2">
               <label className="text-[13px] font-black uppercase text-muted-foreground block px-1">
-                {t('CustomerName')}
+                {isAr ? 'الاسم' : 'Name'}
               </label>
-              <Input 
+              <Input
                 required
                 value={formData.name}
                 onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -182,48 +189,35 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground block px-1">
-                {t('CustomerEmail')} *
+              <label className="text-[10px] font-black uppercase ltr:tracking-widest text-muted-foreground block px-1">
+                {isAr ? 'بريدك الالكتروني' : 'Your Email'} *
               </label>
-              <Input 
+              <Input
                 type="email"
                 required
                 value={formData.email}
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                 placeholder="example@mail.com"
                 className="h-12 rounded-lg bg-muted/30 border-border focus:bg-background focus:ring-0 transition-all px-6 text-sm font-bold"
-               />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground block px-1">
-                  {t('ProductName')}
-                </label>
-                <Input 
-                  disabled
-                  value={product ? (isAr ? product.name_ar : product.name_en) || '' : (isAr ? 'سلة التسوق' : 'Cart items')}
-                   className="h-12 rounded-lg bg-muted/30 border-border focus:bg-background focus:ring-0 transition-all px-6 text-sm font-bold"
               />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground block px-1">
-                  {t('Quantity')}
-                </label>
-                <Input 
-                  type="number"
-                  min="1"
-                  required
-                  value={formData.quantity}
-                  onChange={e => setFormData({ ...formData, quantity: parseInt(e.target.value) })}
-                   className="h-12 rounded-lg bg-muted/30 border-border focus:bg-background focus:ring-0 transition-all px-6 text-sm font-bold"
-              />
-              </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground block px-1">
-                {t('WhatsAppNumber')}
+              <label className="text-[10px] font-black uppercase ltr:tracking-widest text-muted-foreground block px-1">
+                {isAr ? 'المدينة' : 'City'} *
+              </label>
+              <Input
+                required
+                value={formData.city}
+                onChange={e => setFormData({ ...formData, city: e.target.value })}
+                placeholder={isAr ? 'المدينة' : 'Your city'}
+                className="h-12 rounded-lg bg-muted/30 border-border focus:bg-background focus:ring-0 transition-all px-6 text-sm font-bold"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase ltr:tracking-widest text-muted-foreground block px-1">
+                {isAr ? 'هاتف' : 'Phone'}
               </label>
               <div className="flex gap-2">
                 <Select
@@ -240,56 +234,56 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
                   </SelectTrigger>
                   <SelectContent className="bg-background cursor-pointer rounded-xl border-border shadow-xl overflow-hidden min-w-[140px]">
                     {countries.map((country) => (
-                      <SelectItem 
-                        key={country.code} 
+                      <SelectItem
+                        key={country.code}
                         value={country.code}
                         className="py-3 px-4 focus:bg-primary/5 transition-colors cursor-pointer"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg">{country.flag}</span>
                           <span className="font-bold text-sm text-muted-foreground">{country.code}</span>
-                          <span className="text-[10px] text-muted-foreground/50 font-medium uppercase tracking-wider">{country.name}</span>
+                          <span className="text-[10px] text-muted-foreground/50 font-medium uppercase ltr:tracking-wider">{country.name}</span>
                         </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
 
-                 <Input 
-                   placeholder="5xxxxxxxx"
-                   required
-                   value={formData.phone}
-                   onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                <Input
+                  placeholder="5xxxxxxxx"
+                  required
+                  value={formData.phone}
+                  onChange={e => setFormData({ ...formData, phone: e.target.value })}
                   className="h-12 rounded-lg bg-muted/30 border-border focus:bg-background focus:ring-0 transition-all px-6 text-sm font-bold flex-1"
-               />
+                />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground block px-1">
-                {t('YourMessage')} *
+              <label className="text-[10px] font-black uppercase ltr:tracking-widest text-muted-foreground block px-1">
+                {isAr ? 'سؤالك' : 'Your Question'} *
               </label>
-              <Textarea 
+              <Textarea
                 required
                 value={formData.message}
                 onChange={e => setFormData({ ...formData, message: e.target.value })}
-                className="min-h-[120px] rounded-2xl bg-muted/30 border-border focus:bg-background focus:ring-4 focus:ring-primary/5 transition-all p-6 text-sm font-bold resize-none"
-                placeholder={isAr ? 'أخبرنا بمزيد من التفاصيل...' : 'Tell us more details...'}
+                className="min-h-[120px] rounded-lg bg-muted/30 border-border focus:bg-background focus:ring-0 transition-all p-6 text-sm font-bold resize-none"
+                placeholder={isAr ? 'كيف يمكننا مساعدتك؟' : 'How can we help you?'}
               />
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <Button 
+              <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="flex-1 h-16 rounded-2xl border-border font-black uppercase tracking-[0.2em] text-[10px] hover:bg-destructive hover:text-destructive-foreground transition-all active:scale-95"
+                className="flex-1 h-16 rounded-2xl border-border font-black uppercase ltr:tracking-[0.2em] text-[10px] hover:bg-destructive hover:text-destructive-foreground transition-all active:scale-95"
               >
                 {t('Close')}
               </Button>
-              <Button 
+              <Button
                 disabled={loading}
-                className="flex-[2] h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl transition-all shadow-primary/20 active:scale-95 disabled:grayscale"
+                className="flex-[2] h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase ltr:tracking-[0.2em] text-[10px] rounded-2xl transition-all shadow-primary/20 active:scale-95 disabled:grayscale"
               >
                 {loading ? (isAr ? 'جاري الإرسال...' : 'Sending...') : t('SendRequest')}
               </Button>

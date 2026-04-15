@@ -106,7 +106,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <Layers className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("General")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
@@ -121,8 +121,8 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                                 control={control}
                                 rules={{ required: true }}
                                 render={({ field }) => (
-                                    <Select 
-                                        onValueChange={field.onChange} 
+                                    <Select
+                                        onValueChange={field.onChange}
                                         value={field.value}
                                         defaultValue={initialData?.category_id}
                                     >
@@ -167,7 +167,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <FileText className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Descriptions")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Descriptions")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
@@ -204,7 +204,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <ImageIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Images")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
                         </div>
                     </div>
@@ -216,7 +216,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             bucket="sub_categories"
                         />
                         <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
+                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("ImageUrl")}</p>
                             <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeCategory")}</p>
                         </div>
                     </div>
@@ -229,7 +229,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>

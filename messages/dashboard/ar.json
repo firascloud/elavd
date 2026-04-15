@@ -1,5 +1,8 @@
 {
   "dashboard": {
+    "Pagination": "ترقيم الصفحات",
+    "Page": "صفحة",
+    "of": "من",
     "clearing": "جاري حذف...",
     "Users": "المستخدمون",
     "Email": "البريد الإلكتروني",
@@ -233,6 +236,8 @@
     "BrandIndexEn": "فهرس العلامة (EN)",
     "BrandIndexAr": "فهرس العلامة (AR)",
     "Inquiries": "الاستفسارات",
+    "City": "المدينة",
+    "YourMessage": "سؤال العميل",
     "InquiriesDescription": "عرض وإدارة الرسائل الواردة من زوار موقعك.",
     "SearchContacts": "البحث بالاسم أو البريد أو الهاتف...",
     "AllMessages": "جميع الرسائل",

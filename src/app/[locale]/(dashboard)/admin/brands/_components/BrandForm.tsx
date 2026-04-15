@@ -77,7 +77,7 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
                             <Layers className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("General")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
                             <Type className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Indexing")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Indexing")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("Optional")}</p>
                         </div>
                     </div>
@@ -140,7 +140,7 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
                             <ImageIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Images")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
                             bucket="brands"
                         />
                         <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
+                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("ImageUrl")}</p>
                             <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeCategory")}</p>
                         </div>
                     </div>

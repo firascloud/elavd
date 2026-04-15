@@ -14,6 +14,7 @@ export interface OrderData {
     customer_name: string;
     customer_email?: string;
     customer_phone?: string;
+    address?: string;
     notes?: string;
     total: number;
     subtotal: number;

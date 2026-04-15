@@ -33,7 +33,7 @@ export function DashboardModal({ isOpen, onClose, title, description, children, 
         "sm:max-w-3xl p-0 z-[2000] gap-0",
         className
       )}>
-        <button 
+        <button
           onClick={onClose}
           className="absolute cursor-pointer right-6 top-6 rounded-full p-2 hover:bg-muted transition-colors z-50 text-muted-foreground hover:text-foreground outline-none"
         >
@@ -41,7 +41,7 @@ export function DashboardModal({ isOpen, onClose, title, description, children, 
         </button>
         <div className="flex flex-col h-full max-h-[90vh]">
           <DialogHeader className="p-6 pb-4">
-            <DialogTitle className="text-lg font-semibold tracking-tight text-foreground">
+            <DialogTitle className="text-lg font-semibold ltr:tracking-tight text-foreground">
               {title}
             </DialogTitle>
             {description && (
@@ -130,7 +130,7 @@ export function DashboardImageUpload({ onUpload, value, bucket = "products" }: {
             <div className="h-11 w-11 bg-primary/10 text-primary rounded-lg flex items-center justify-center mx-auto transition-transform group-hover:scale-105 group-hover:rotate-1 duration-300 ring-1 ring-primary/20">
               {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Upload className="h-6 w-6" />}
             </div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Upload Image</p>
+            <p className="text-xs font-semibold uppercase ltr:tracking-wide text-muted-foreground">Upload Image</p>
             <p className="text-[11px] font-medium text-muted-foreground/70">SVG, PNG, JPG (max 2MB)</p>
           </div>
         )}

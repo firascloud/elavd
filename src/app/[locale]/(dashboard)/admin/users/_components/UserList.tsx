@@ -162,7 +162,7 @@ export default function UserList() {
             >
                 <form onSubmit={handleSubmit(onUpdate)} className="space-y-5 pt-4">
                     <div className="space-y-2">
-                        <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <label className="text-xs font-black uppercase ltr:tracking-wider text-muted-foreground flex items-center gap-2">
                             <NameIcon className="h-3 w-3" />
                             {tDashboard("Name")}
                         </label>
@@ -174,7 +174,7 @@ export default function UserList() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <label className="text-xs font-black uppercase ltr:tracking-wider text-muted-foreground flex items-center gap-2">
                             <Mail className="h-3 w-3" />
                             {tDashboard("Email")}
                         </label>
@@ -187,7 +187,7 @@ export default function UserList() {
                     </div>
 
                     <div className="space-y-4">
-                        <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <label className="text-xs font-black uppercase ltr:tracking-wider text-muted-foreground flex items-center gap-2">
                             <Lock className="h-3 w-3" />
                             {tDashboard("Password")}
                         </label>

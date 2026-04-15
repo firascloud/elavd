@@ -29,8 +29,8 @@ export default function AdminDashboardPage() {
         setLoading(true);
         try {
             const [
-                { count: productsCount }, 
-                { count: ordersCount }, 
+                { count: productsCount },
+                { count: ordersCount },
                 { count: usersCount },
                 { count: offersCount },
                 { count: subCategoriesCount }
@@ -107,37 +107,37 @@ export default function AdminDashboardPage() {
 
             {/* Statistics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                <StatsCard 
-                    title={t('TotalProducts')} 
-                    value={loading ? '—' : stats.products} 
+                <StatsCard
+                    title={t('TotalProducts')}
+                    value={loading ? '—' : stats.products}
                     icon={Package}
                     change="12%"
                     isIncrease={true}
                 />
-                <StatsCard 
-                    title={t('TotalOrders')} 
-                    value={loading ? '—' : stats.orders} 
+                <StatsCard
+                    title={t('TotalOrders')}
+                    value={loading ? '—' : stats.orders}
                     icon={ShoppingCart}
                     change="5.4%"
                     isIncrease={true}
                 />
-                <StatsCard 
-                    title={t('TotalUsers')} 
-                    value={loading ? '—' : stats.users} 
+                <StatsCard
+                    title={t('TotalUsers')}
+                    value={loading ? '—' : stats.users}
                     icon={Users}
                     change="2.1%"
                     isIncrease={false}
                 />
-                <StatsCard 
-                    title={t('RecentRevenue')} 
-                    value={loading ? '—' : <Price amount={stats.revenue} iconClassName='w-7 h-7'/>} 
+                <StatsCard
+                    title={t('RecentRevenue')}
+                    value={loading ? '—' : <Price amount={stats.revenue} iconClassName='w-7 h-7' />}
                     icon={SaudiRiyal}
                     change="24%"
                     isIncrease={true}
                 />
-                <StatsCard 
-                    title={t('SubCategories')} 
-                    value={loading ? '—' : stats.subCategories} 
+                <StatsCard
+                    title={t('SubCategories')}
+                    value={loading ? '—' : stats.subCategories}
                     icon={Layers}
                     change="8.2%"
                     isIncrease={true}
@@ -146,16 +146,16 @@ export default function AdminDashboardPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Recent Orders List */}
-                <DashboardCard 
-                    title={t('RecentOrders')} 
+                <DashboardCard
+                    title={t('RecentOrders')}
                     subtitle={t('LatestFiveOrders')}
                     className="lg:col-span-2"
                 >
                     <DashboardTable headers={[
-                        t('OrderID'), 
-                        t('Customer'), 
+                        t('OrderID'),
+                        t('Customer'),
                         t('Status'),
-                        t('Total'), 
+                        t('Total'),
                         t('CreatedAt')
                     ]}>
                         {recentOrders.map((order) => (
@@ -171,21 +171,21 @@ export default function AdminDashboardPage() {
                                             <UserIcon className="h-4.5 w-4.5" />
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="font-bold text-sm tracking-tight">{t('CustomerHash')}{order.user_id?.slice(0, 4)}</span>
+                                            <span className="font-bold text-sm ltr:tracking-tight">{t('CustomerHash')}{order.user_id?.slice(0, 4)}</span>
                                             <span className="text-[10px] text-muted-foreground">{t('PremiumUser') || 'Premium User'}</span>
                                         </div>
                                     </div>
                                 </DashboardTableCell>
                                 <DashboardTableCell>
                                     <span className={cn(
-                                        "px-2.5 py-1 rounded-full text-[10px] font-black uppercase border tracking-tighter",
+                                        "px-2.5 py-1 rounded-full text-[10px] font-black uppercase border ltr:tracking-tighter",
                                         getStatusStyle(order.status)
                                     )}>
                                         {t(order.status.charAt(0).toUpperCase() + order.status.slice(1))}
                                     </span>
                                 </DashboardTableCell>
                                 <DashboardTableCell>
-                                    <span className="font-black font-mono text-sm tracking-tighter">
+                                    <span className="font-black font-mono text-sm ltr:tracking-tighter">
                                         <Price amount={order.total_amount || 0} />
                                     </span>
                                 </DashboardTableCell>
@@ -204,12 +204,12 @@ export default function AdminDashboardPage() {
                 <div className="space-y-6">
                     <DashboardCard title={t('QuickActivity') || 'Quick Activity'}>
                         <div className="space-y-5">
-                             {[
+                            {[
                                 { icon: ShoppingCart, label: t('TotalOrders'), val: stats.orders, color: 'text-amber-500 bg-amber-500/10' },
                                 { icon: Package, label: t('TotalProducts'), val: stats.products, color: 'text-blue-500 bg-blue-500/10' },
                                 { icon: Layers, label: t('SubCategories'), val: stats.subCategories, color: 'text-purple-500 bg-purple-500/10' },
                                 { icon: Tag, label: t('TotalOffers'), val: stats.activeOffers, color: 'text-emerald-500 bg-emerald-500/10' },
-                             ].map((item, i) => (
+                            ].map((item, i) => (
                                 <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-foreground/[0.02] border border-border/40 hover:bg-foreground/[0.04] transition-all">
                                     <div className="flex items-center gap-4">
                                         <div className={cn("h-10 w-10 rounded-xl flex items-center justify-center shadow-sm", item.color)}>
@@ -217,21 +217,21 @@ export default function AdminDashboardPage() {
                                         </div>
                                         <span className="text-sm font-bold text-muted-foreground">{item.label}</span>
                                     </div>
-                                    <span className="text-lg font-black tracking-tight">{item.val}</span>
+                                    <span className="text-lg font-black ltr:tracking-tight">{item.val}</span>
                                 </div>
-                             ))}
+                            ))}
                         </div>
                     </DashboardCard>
-                    
+
                     <div className="p-6 rounded-[2.5rem] bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-2xl relative overflow-hidden group">
-                         <div className="absolute top-0 right-0 p-8 opacity-10 scale-150 rotate-12 group-hover:scale-[1.8] transition-transform duration-700">
-                             <Tag className="h-24 w-24" />
-                         </div>
-                         <div className="relative z-10">
+                        <div className="absolute top-0 right-0 p-8 opacity-10 scale-150 rotate-12 group-hover:scale-[1.8] transition-transform duration-700">
+                            <Tag className="h-24 w-24" />
+                        </div>
+                        <div className="relative z-10">
                             <h3 className="text-xl font-black mb-1">{t('ActiveOffers')}</h3>
                             <p className="text-primary-foreground/70 text-xs font-medium mb-4">{t('OffersDescription')}</p>
                             <div className="text-4xl font-black">{stats.activeOffers}</div>
-                         </div>
+                        </div>
                     </div>
                 </div>
             </div>

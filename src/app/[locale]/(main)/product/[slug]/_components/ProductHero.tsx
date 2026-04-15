@@ -43,7 +43,7 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
   return (
     <div className="bg-background border border-border rounded-md shadow-sm overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-        <div 
+        <div
           className="relative bg-muted/30 p-8 lg:p-12 flex items-center justify-center border-b lg:border-b-0 lg:border-e lg:border-border overflow-hidden group cursor-crosshair"
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsZooming(true)}
@@ -61,8 +61,8 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
                   priority
                 />
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => setIsPreviewOpen(true)}
                 className="absolute bottom-6 right-6 p-3 rounded-full bg-background shadow-xl border border-border text-muted-foreground hover:text-primary hover:scale-110 transition-all opacity-0 group-hover:opacity-100 cursor-pointer z-20"
               >
@@ -79,16 +79,16 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
         <div className="px-8 py-6 lg:px-8 lg:py-8 flex flex-col justify-center">
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-3">
-              <div className="text-primary text-[10px] font-black tracking-[0.2em] flex items-center gap-2 uppercase">
+              <div className="text-primary text-[10px] font-black ltr:tracking-[0.2em] flex items-center gap-2 uppercase">
                 <Tag className="size-3.5" />
                 {t("Products")}
               </div>
               {product.brand && (
                 <>
                   <span className="text-muted-foreground/30 font-black">•</span>
-                  <Link 
+                  <Link
                     href={`/product/${isAr ? product.brand.slug_ar : product.brand.slug_en}`}
-                    className="text-secondary text-[10px] font-black tracking-[0.2em] flex items-center gap-2 uppercase hover:text-primary transition-colors"
+                    className="text-secondary text-[10px] font-black ltr:tracking-[0.2em] flex items-center gap-2 uppercase hover:text-primary transition-colors"
                   >
                     <Globe className="size-3.5" />
                     {isAr ? product.brand.name_ar : product.brand.name_en}
@@ -102,7 +102,7 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
             </h2>
 
             {product.country_of_origin && (
-              <div className="flex items-center gap-2 text-muted-foreground text-[10px] font-black uppercase tracking-widest bg-muted/50 w-fit px-3 py-1.5 rounded-lg border border-border">
+              <div className="flex items-center gap-2 text-muted-foreground text-[10px] font-black uppercase ltr:tracking-widest bg-muted/50 w-fit px-3 py-1.5 rounded-lg border border-border">
                 <Globe className="size-3.5 text-primary" />
                 <span>{t("Origin")} {product.country_of_origin}</span>
               </div>
@@ -125,27 +125,27 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => setIsQuoteOpen(true)}
-              className="h-12 px-6 rounded-md bg-primary text-primary-foreground font-black text-xs flex items-center justify-center gap-3 shadow-md shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 uppercase tracking-widest cursor-pointer"
+              className="h-12 px-6 rounded-md bg-primary text-primary-foreground font-black text-xs flex items-center justify-center gap-3 shadow-md shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 uppercase ltr:tracking-widest cursor-pointer"
             >
               <Phone size={18} />
               <span>{t("RequestQuote")}</span>
             </button>
- 
-            <QuoteModal 
-              isOpen={isQuoteOpen} 
-              onClose={() => setIsQuoteOpen(false)} 
-              product={product} 
+
+            <QuoteModal
+              isOpen={isQuoteOpen}
+              onClose={() => setIsQuoteOpen(false)}
+              product={product}
             />
 
-            <a 
-              href={whatsappUrl} 
-              target="_blank" 
+            <a
+              href={whatsappUrl}
+              target="_blank"
               rel="noopener noreferrer"
               className="h-12 px-5 rounded-xl border border-border bg-background flex items-center justify-center gap-2 text-muted-foreground font-semibold hover:text-primary transition-colors group cursor-pointer"
             >
               <div className="relative size-5 group-hover:scale-110 transition-transform">
-                <Image 
-                  src={require('@/assets/whatsapp.png')} 
+                <Image
+                  src={require('@/assets/whatsapp.png')}
                   alt="WhatsApp"
                   fill
                   className="object-contain"
@@ -157,7 +157,7 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
             </a>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground/50">
+          <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between text-[10px] font-black uppercase ltr:tracking-[0.15em] text-muted-foreground/50">
             <span>{t("FastShipping")}</span>
             <span className="text-muted-foreground/30">•</span>
             <span>{t("TwoYearWarranty")}</span>
@@ -169,10 +169,10 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-4xl p-0 bg-transparent border-none shadow-none flex items-center justify-center h-screen w-screen pointer-events-none">
           <DialogTitle className="sr-only">
-             {isAr ? `معاينة صورة ${name}` : `Preview image for ${name}`}
+            {isAr ? `معاينة صورة ${name}` : `Preview image for ${name}`}
           </DialogTitle>
           <div className="relative w-full h-[80vh] pointer-events-auto">
-            <button 
+            <button
               onClick={() => setIsPreviewOpen(false)}
               className="absolute -top-12 right-0 p-2 text-white hover:text-gray-300 transition-colors cursor-pointer"
             >

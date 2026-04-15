@@ -1,7 +1,8 @@
 "use client";
 
 import Script from 'next/script';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from '@/i18n/routing';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, Suspense } from 'react';
 import { GA_TRACKING_ID, GADS_TRACKING_ID, trackPageView } from '@/lib/analytics';
 

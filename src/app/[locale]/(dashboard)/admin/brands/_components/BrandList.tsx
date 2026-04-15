@@ -119,7 +119,7 @@ export default function BrandList() {
                         </Button>
                         <Button
                             onClick={() => { setSelectedBrand(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
                         >
                             <Plus className="h-5 w-5 stroke-[3]" />
                             <span>{t("AddBrand")}</span>
@@ -173,7 +173,7 @@ export default function BrandList() {
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <span className="font-semibold tracking-tight text-sm">{isAr ? brand.name_ar : brand.name_en}</span>
+                            <span className="font-semibold ltr:tracking-tight text-sm">{isAr ? brand.name_ar : brand.name_en}</span>
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden sm:table-cell">
                             <span className="text-[10px] uppercase font-medium text-muted-foreground bg-foreground/[0.05] px-3 py-1 rounded-full border border-border/60">

@@ -21,10 +21,10 @@ export default function Hero() {
   }, [autoplay])
 
   const slides = [
-    { id: '1', image: require('@/assets/banner-3.svg'), href: '/product-category/ribbons-and-film' },
-    { id: '2', image: require('@/assets/banner-1.svg'), href: '/product-category/plastic-card-printers' },
-    { id: '3', image: require('@/assets/banner-2.svg'), href: '/product-category/biometric-attendance-systems' },
-    { id: '4', image: require('@/assets/banner-4.svg'), href: '/product-category/metal-safes' },
+    { id: '1', image: require('@/assets/banner-3.svg'), href: '/store/ribbons-and-film' },
+    { id: '2', image: require('@/assets/banner-1.svg'), href: '/store/plastic-card-printers' },
+    { id: '3', image: require('@/assets/banner-2.svg'), href: '/store/biometric-attendance-systems' },
+    { id: '4', image: require('@/assets/banner-4.svg'), href: '/store/metal-safes' },
   ]
 
   return (
@@ -33,11 +33,11 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
           <div className="lg:col-span-3 md:flex flex-col gap-6 order-2 lg:order-1 hidden">
-            <Link 
-              href="/product-category/plastic-card-printers"
+            <Link
+              href="/store/plastic-card-printers"
               className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all"
             >
-              
+
               <Image
                 src={require('@/assets/banner-1.svg')}
                 alt="PVC Card Printers"
@@ -47,15 +47,15 @@ export default function Hero() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-5 px-5">
-                <span className="bg-background/90 text-foreground text-[11px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl inline-flex items-center gap-2 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-xl backdrop-blur">
+                <span className="bg-background/90 text-foreground text-[11px] font-black uppercase ltr:tracking-widest px-4 py-2.5 rounded-xl inline-flex items-center gap-2 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-xl backdrop-blur">
                   {t('CardPrintersLabel')}
                   <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''} group-hover:translate-x-1 transition-transform`} />
                 </span>
               </div>
             </Link>
 
-            <Link 
-              href="/product-category/biometric-attendance-systems"
+            <Link
+              href="/store/biometric-attendance-systems"
               className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all"
             >
               <Image
@@ -67,7 +67,7 @@ export default function Hero() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-5 px-5">
-                <span className="bg-background/90 text-foreground text-[11px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl inline-flex items-center gap-2 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-xl backdrop-blur">
+                <span className="bg-background/90 text-foreground text-[11px] font-black uppercase ltr:tracking-widest px-4 py-2.5 rounded-xl inline-flex items-center gap-2 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-xl backdrop-blur">
                   {t('BiometricLabel')}
                   <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''} group-hover:translate-x-1 transition-transform`} />
                 </span>
@@ -75,12 +75,12 @@ export default function Hero() {
             </Link>
           </div>
 
-          <div className="lg:col-span-6 overflow-hidden rounded-lg bg-foreground shadow-2xl border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
+          <div className="lg:col-span-6 overflow-hidden rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
             <div className="flex h-full">
               {slides.map((slide) => (
                 <div key={slide.id} className="relative flex-[0_0_100%] min-w-0 h-full min-h-[300px] lg:min-h-[460px] overflow-hidden group">
 
-                    <Image
+                  <Image
                     src={slide.image}
                     alt="Banner Background"
                     fill
@@ -92,12 +92,12 @@ export default function Hero() {
                   <div className="relative z-20 h-full p-8 md:p-12 lg:p-14 flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="h-px w-8 bg-secondary" />
-                      <span className="text-secondary text-[10px] font-black tracking-[0.2em] uppercase">
+                      <span className="text-secondary text-[10px] font-black ltr:tracking-[0.2em] uppercase">
                         {t(`Slides.${slide.id}.Tag`)}
                       </span>
                     </div>
 
-                    <h1 className="text-[30px] md:text-[38px] lg:text-[46px] leading-[1.05] font-black text-primary-foreground mb-4 tracking-tight font-cairo max-w-2xl">
+                    <h1 className="text-[30px] md:text-[38px] lg:text-[46px] leading-[1.05] font-black text-primary-foreground mb-4 ltr:tracking-tight font-cairo max-w-2xl">
                       {t(`Slides.${slide.id}.Title`)}
                     </h1>
 
@@ -119,16 +119,16 @@ export default function Hero() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-5 mt-auto sm:mt-0">
-                      <Link href={slide.href}>
-                        <Button className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground border-none group px-8 rounded-2xl transition-all shadow-2xl shadow-foreground/50 active:scale-95">
-                          <span className="font-black text-[12px] tracking-wider uppercase">{t('MoreDetails')}</span>
+                      <Button asChild className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground border-none group px-8 rounded-2xl transition-all shadow-foreground/50 active:scale-95">
+                        <Link href={slide.href}>
+                          <span className="font-black text-[12px] ltr:tracking-wider uppercase">{t('MoreDetails')}</span>
                           {isRtl ? (
                             <ArrowLeft className="w-4 h-4 me-3 group-hover:-translate-x-1 transition-transform" />
                           ) : (
                             <ArrowRight className="w-4 h-4 ms-3 group-hover:translate-x-1 transition-transform" />
                           )}
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                     </div>
                   </div>
 
@@ -138,8 +138,8 @@ export default function Hero() {
             </div>
           </div>
 
-          <Link 
-            href="/product-category/ribbons-and-film"
+          <Link
+            href="/store/ribbons-and-film"
             className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block"
           >
             <Image
@@ -152,10 +152,10 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-4">
               <div className="space-y-1">
-                <h3 className="text-primary-foreground text-lg font-black tracking-tight font-cairo">{t('CardPrinters')}</h3>
-                <p className="text-primary-foreground/70 text-[10px] leading-relaxed font-bold uppercase tracking-wide">{t('CardPrintersSubtitle')}</p>
+                <h3 className="text-primary-foreground text-lg font-black ltr:tracking-tight font-cairo">{t('CardPrinters')}</h3>
+                <p className="text-primary-foreground/70 text-[10px] leading-relaxed font-bold uppercase ltr:tracking-wide">{t('CardPrintersSubtitle')}</p>
               </div>
-              <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-xl inline-flex items-center justify-center gap-3 hover:bg-primary/90 transition-all duration-300 shadow-xl">
+              <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase ltr:tracking-widest px-6 py-3 rounded-xl inline-flex items-center justify-center gap-3 hover:bg-primary/90 transition-all duration-300 shadow-xl">
                 {t('Explore')}
                 <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
               </span>

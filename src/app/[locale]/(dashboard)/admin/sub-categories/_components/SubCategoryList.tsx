@@ -119,7 +119,7 @@ export default function SubCategoryList() {
                         </Button>
                         <Button
                             onClick={() => { setSelectedSubCategory(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
                         >
                             <Plus className="h-5 w-5 stroke-[3]" />
                             <span>{t("AddSubCategory")}</span>
@@ -174,7 +174,7 @@ export default function SubCategoryList() {
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <span className="font-semibold tracking-tight text-sm">{isAr ? subCat.name_ar : subCat.name_en}</span>
+                            <span className="font-semibold ltr:tracking-tight text-sm">{isAr ? subCat.name_ar : subCat.name_en}</span>
                         </DashboardTableCell>
                         <DashboardTableCell>
                             <span className="text-xs font-semibold px-3 py-1 bg-primary/5 text-primary border border-primary/20 rounded-full">

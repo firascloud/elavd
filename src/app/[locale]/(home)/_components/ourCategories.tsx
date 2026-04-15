@@ -57,7 +57,7 @@ export default function ourCategories() {
             dir={locale === 'ar' ? 'rtl' : 'ltr'}
         >
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8"> 
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-3 order-2 mt-2">
                         <div className="mb-10 flex flex-col items-start border-b border-gray-100 pb-2 relative">
                             <h2 className=" text-xl sm:text-2xl font-extrabold text-[#1a1a1a]">
@@ -75,7 +75,7 @@ export default function ourCategories() {
                                     ).map((cat: Category, idx) => (
                                         <div key={cat.id ?? idx} className="min-w-[100%] rounded-md sm:min-w-[48%] md:min-w-[30%] flex-shrink-0">
                                             <article className="h-full border border-gray-200  bg-white transition-all hover:shadow-md p-6 flex flex-col items-center">
-                                              
+
                                                 <div className="relative size-48 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden mb-6 bg-white shrink-0">
                                                     {loading ? (
                                                         <div className="min-h-[385px] w-full animate-pulse bg-gray-100 rounded-full" />
@@ -93,23 +93,23 @@ export default function ourCategories() {
                                                     )}
                                                 </div>
 
-                                              
-                                               <Link href={`/product-category/${cat.slug_en}`}>
-                                                <h3 className="text-center font-extrabold line-clamp-1 text-[#1a1a1a] text-lg mb-6 leading-tight">
-                                                    {loading ? (
-                                                        <span className="block h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" />
-                                                    ) : (
-                                                        (locale === 'ar' ? cat.name_ar : cat.name_en) || '—'
-                                                    )}
-                                                </h3>
+
+                                                <Link href={`/product-category/${cat.slug_en}`}>
+                                                    <h3 className="text-center font-extrabold line-clamp-1 text-[#1a1a1a] text-lg mb-6 leading-tight">
+                                                        {loading ? (
+                                                            <span className="block h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" />
+                                                        ) : (
+                                                            (locale === 'ar' ? cat.name_ar : cat.name_en) || '—'
+                                                        )}
+                                                    </h3>
                                                 </Link>
                                                 <Link href={`/product-category/${cat.slug_en}`} className=' py-2.5 px-3'>
-                                                 <button
-                                                    type="button"
-                                                    className="w-full py-2.5 px-3 cursor-pointer rounded-md bg-primary/90 text-white font-bold text-sm hover:bg-primary/70 transition-colors shadow-sm"
-                                                >
-                                                    {t('ViewMore')}
-                                                </button>
+                                                    <button
+                                                        type="button"
+                                                        className="w-full py-2.5 px-3 cursor-pointer rounded-md bg-primary/90 text-white font-bold text-sm hover:bg-primary/70 transition-colors shadow-sm"
+                                                    >
+                                                        {t('ViewMore')}
+                                                    </button>
                                                 </Link>
                                             </article>
                                         </div>
@@ -145,7 +145,7 @@ export default function ourCategories() {
                                             <div className=" font-bold text-[#1a1a1a]  text-sm truncate leading-tight">
                                                 {loading ? <div className="h-4 w-32 bg-gray-100  rounded  animate-pulse mx-auto" /> : (locale === 'ar' ? prod.name_ar : prod.name_en)}
                                             </div>
-                                            <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">
+                                            <div className="text-xs text-gray-400 mt-1 uppercase ltr:tracking-wider">
                                                 {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : ((locale === 'ar' ? prod.slug_ar : prod.slug_en)?.substring(0, 10).toUpperCase() || 'PROD')}
                                             </div>
                                         </div>
