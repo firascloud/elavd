@@ -32,7 +32,7 @@ export default function OurProducts() {
     }, [activeTab]);
 
     return (
-        <section className="w-full py-16 bg-background" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+        <section className="w-full py-16 px-3 md:px-0 bg-background" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
             <div className="max-w-7xl mx-auto"> 
                 <div className="flex items-center justify-start border-b border-border gap-8 mb-10 pb-1">
                     <button
