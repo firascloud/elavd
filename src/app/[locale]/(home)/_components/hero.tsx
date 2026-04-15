@@ -28,7 +28,7 @@ export default function Hero() {
   ]
 
   return (
-    <section className="bg-muted/30 py-6 px-4 font-sans overflow-hidden">
+    <section className="bg-muted/30 p-0 md:py-6 md:px-4 font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
@@ -75,7 +75,7 @@ export default function Hero() {
             </Link>
           </div>
 
-          <div className="lg:col-span-6 overflow-hidden rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
+          <div className="lg:col-span-6 overflow-hidden rounded-none md:rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
             <div className="flex h-full">
               {slides.map((slide) => (
                 <div key={slide.id} className="relative flex-[0_0_100%] min-w-0 h-full min-h-[300px] lg:min-h-[460px] overflow-hidden group">
@@ -84,7 +84,7 @@ export default function Hero() {
                     src={slide.image}
                     alt="Banner Background"
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-[4000ms] ease-out"
+                    className="object-cover group-hover:scale-100 md:group-hover:scale-105 transition-transform duration-[4000ms] ease-out"
                   />
 
                   <div className={`absolute inset-0 z-10 transition-opacity duration-1000 bg-gradient-to-b ${isRtl ? 'md:bg-gradient-to-l' : 'md:bg-gradient-to-r'} from-foreground via-foreground/85 md:via-foreground/70 to-transparent`} />

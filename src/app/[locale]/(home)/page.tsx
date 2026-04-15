@@ -23,7 +23,7 @@ export default async function Home({
   const { locale } = await params;
 
   return (
-    <main className="min-h-screen px-6 lg:px-0">
+    <main className="min-h-screen px-0">
       {/* Inline JSON-LD — rendered in initial HTML so Googlebot sees it immediately */}
       <script
         type="application/ld+json"

@@ -109,7 +109,7 @@ export default function ourCategories() {
         >
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    <div className="lg:col-span-3 order-2 mt-2">
+                    <div className="lg:col-span-3 md:order-2 order-1 mt-2">
                         <div className="mb-10 flex flex-col items-start border-b border-gray-100 pb-2 relative">
                             <h2 className=" text-xl sm:text-2xl font-extrabold text-[#1a1a1a]">
                                 {t('OurCategories')}
@@ -138,7 +138,7 @@ export default function ourCategories() {
                         </div>
                     </div>
 
-                    <aside className="lg:col-span-1 order-1">
+                    <aside className="lg:col-span-1 md:order-1 order-2">
                         <div className="border border-gray-200 overflow-hidden">
                             <div className="bg-primary/90 text-white px-6 py-3.5 font-extrabold text-lg text-center">
                                 {t('FeaturedProducts')}
