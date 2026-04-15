@@ -51,7 +51,7 @@ export default function SpecialOffers({ position }: { position: number }) {
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex gap-4 md:gap-6">
-                            {offers.map((offer, index) => (
+                            {offers.slice(0, 3).map((offer, index) => (
                                 <div 
                                     key={offer.id}  
                                     className="relative flex-[0_0_100%] sm:flex-[0_0_48%] lg:flex-[0_0_32%] min-w-0 aspect-[16/9] md:aspect-[4/3]  overflow-hidden "
