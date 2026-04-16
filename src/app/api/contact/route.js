@@ -19,7 +19,8 @@ export async function POST(req) {
     // 1. Send email to Admin
     const adminEmail = await resend.emails.send({
       from: 'Elavd Contact <onboarding@resend.dev>',
-      to: 'mm246344@gmail.com',
+      to: [process.env.EMAIL_ADDRESS],
+      replyTo: email,
       subject: 'New Contact Message',
       html: contactAdminTemplate({ name, email, phone, message }),
     });
@@ -27,7 +28,7 @@ export async function POST(req) {
     // 2. Send confirmation email to the user
     const userEmail = await resend.emails.send({
       from: 'Elavd <onboarding@resend.dev>',
-      to: email,
+      to: [email],
       subject: 'Message Received - Elavd',
       html: contactUserTemplate({ name }),
     });

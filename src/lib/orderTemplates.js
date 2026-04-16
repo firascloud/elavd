@@ -77,7 +77,19 @@ export const adminOrderTemplate = ({ name, email, phone, city, message, total, i
 
 
 
-export const userOrderTemplate = ({ name }) => {
+export const userOrderTemplate = ({ name, items, productName, quantity }) => {
+  const itemsHtml = items && items.length > 0 
+    ? items.map(item => `
+        <tr style="border-bottom: 1px solid #f1f5f9;">
+          <td style="padding: 16px 0; color: #1e293b; font-size: 14px; font-weight: 500;">${item.name_en || item.name_ar} (x${item.quantity})</td>
+        </tr>
+      `).join('')
+    : productName ? `
+        <tr style="border-bottom: 1px solid #f1f5f9;">
+          <td style="padding: 16px 0; color: #1e293b; font-size: 14px; font-weight: 500;">${productName} (x${quantity || 1})</td>
+        </tr>
+      ` : '';
+
   return `
   <div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 50px 20px;">
     <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); border: 1px solid #e2e8f0;">
@@ -86,7 +98,7 @@ export const userOrderTemplate = ({ name }) => {
       
       <div style="padding: 45px 40px;">
         <div style="text-align: center; margin-bottom: 35px;">
-           <h1 style="color: #0f172a; margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.02em;">We've received your order!</h1>
+           <h1 style="color: #0f172a; margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.02em;">We've received your request!</h1>
            <p style="color: #64748b; font-size: 15px; margin-top: 8px; font-weight: 500;">Thank you for choosing Elavd.</p>
         </div>
 
@@ -99,6 +111,17 @@ export const userOrderTemplate = ({ name }) => {
         <p style="color: #475569; font-size: 15px; line-height: 1.6; margin-bottom: 30px;">
           Your request has been successfully submitted to our team. We are currently reviewing the details and one of our specialists will contact you very soon to finalize the next steps.
         </p>
+
+        ${itemsHtml ? `
+        <div style="margin-bottom: 35px;">
+          <h2 style="font-size: 12px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 10px;">Request Summary</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tbody>
+              ${itemsHtml}
+            </tbody>
+          </table>
+        </div>
+        ` : ''}
 
         <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 24px; border-radius: 16px; margin-bottom: 35px;">
           <p style="margin: 0; color: #166534; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;">

@@ -18,18 +18,19 @@ export async function POST(req) {
 
     // 1. Send email to Admin
     const adminEmail = await resend.emails.send({
-      from: 'Elavd Orders <onboarding@resend.dev>', // Update this with a verified domain in production
-      to: 'mm246344@gmail.com',
+      from: 'Elavd Orders <onboarding@resend.dev>',
+      to: [process.env.EMAIL_ADDRESS],
+      replyTo: email,
       subject: 'New Quote Request Received',
       html: adminOrderTemplate({ name, email, phone, city, message, total, items, productName, quantity }),
     });
 
     // 2. Send confirmation email to the user
     const userEmail = await resend.emails.send({
-      from: 'Elavd <onboarding@resend.dev>', // Update this with a verified domain in production
-      to: email,
-      subject: 'Your order has been received',
-      html: userOrderTemplate({ name }),
+      from: 'Elavd <onboarding@resend.dev>',
+      to: [email], // Ensure it goes to the customer's email provided in the form
+      subject: 'Your request has been received',
+      html: userOrderTemplate({ name, items, productName, quantity }),
     });
 
     return new Response(JSON.stringify({ 
