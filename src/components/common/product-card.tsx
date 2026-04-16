@@ -125,7 +125,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             <h4 className="text-muted-foreground font-bold text-xs uppercase ltr:tracking-widest font-cairo">
                                 {t('CategoryMetalSafes')}
                             </h4>
-                            <Link href={`/product/${slug_en}`} className="text-xl md:text-2xl font-black text-foreground font-cairo leading-tight">
+                            <Link href={`/product/${localizedSlug || id}`} className="text-xl md:text-2xl font-black text-foreground font-cairo leading-tight">
                                 {name || '—'}
                             </Link>
 
@@ -211,7 +211,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 <div className="relative h-60 w-full mb-6 flex items-center justify-center bg-background overflow-hidden shrink-0">
                     {main_image ? (
                         <div className="relative size-44">
-                            <Link href={`/product/${slug_en}`} >
+                            <Link href={`/product/${localizedSlug || id}`} >
                                 <Image
                                     src={main_image}
                                     alt={name || 'Product'}
@@ -228,7 +228,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 </div>
 
                 <div className="flex flex-col items-center text-center flex-1">
-                    <Link href={`/product/${slug_en}`} >
+                    <Link href={`/product/${localizedSlug || id}`} >
                         <h3 className="text-foreground font-bold text-base line-clamp-1 mb-1 font-cairo">
                             {name || '—'}
                         </h3>
@@ -250,7 +250,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                         </div>
                     </button> */}
                     <Link
-                        href={`/product/${slug_en}`}
+                        href={`/product/${localizedSlug || id}`}
                         className="w-full h-11 bg-primary text-primary-foreground font-bold text-sm rounded-full transition-all hover:bg-primary/90 shadow-sm mt-auto transform active:scale-95 flex items-center justify-center"
                     >
                         {t('ReadMore')}
