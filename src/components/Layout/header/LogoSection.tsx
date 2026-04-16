@@ -235,7 +235,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                       {results.map((product) => (
                         <Link
                           key={product.id}
-                          href={`/product/${(locale === 'ar' ? product.slug_ar : product.slug_en) || product.id}`}
+                          href={`/product/${product.slug_en || product.id}`}
                           onClick={() => setSearchTerm('')}
                           className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all group border border-transparent hover:border-slate-100"
                         >

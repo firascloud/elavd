@@ -170,7 +170,7 @@ export default function SearchResults({ query, categoryId }: SearchResultsProps)
                 {featuredProducts.map((prod) => (
                   <Link
                     key={prod.id}
-                    href={`/product/${(isRtl ? prod.slug_ar : prod.slug_en) || prod.id}`}
+                    href={`/product/${prod.slug_en || prod.id}`}
                     className="flex gap-4 group p-2 rounded-xl hover:bg-muted/30 transition-all border border-transparent hover:border-border"
                   >
                     <div className="relative w-20 h-20 bg-muted/30 rounded-lg overflow-hidden shrink-0">

@@ -9,7 +9,6 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { BASE_URL, SITE_NAME } from "@/metadata/utils";
 import { Analytics } from "@vercel/analytics/next"
-import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 const elMessiri = El_Messiri({
   variable: "--font-el-messiri",
@@ -61,7 +60,7 @@ export default async function RootLayout({
           <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
           <link rel="dns-prefetch" href="https://connect.facebook.net" />
-          <link rel="dns-prefetch" href="https://script.hotjar.com" /> 
+          <link rel="dns-prefetch" href="https://script.hotjar.com" />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -112,7 +111,7 @@ export default async function RootLayout({
               <SidebarProvider>
                 <MainLayoutWrapper>
                   <Analytics />
-                  <SpeedInsights/>
+                  <SpeedInsights />
                   {children}
                 </MainLayoutWrapper>
               </SidebarProvider>
@@ -129,12 +128,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
- 
-   return {
+
+  return {
     metadataBase: new URL(BASE_URL),
     title: {
       default: SITE_NAME,
-       template: `%s | ${SITE_NAME}`,
+      template: `%s | ${SITE_NAME}`,
     },
     robots: {
       index: true,

@@ -83,7 +83,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
 
     const name = locale === 'ar' ? name_ar : name_en;
     const description = locale === 'ar' ? short_desc_ar : short_desc_en;
-    const localizedSlug = locale === 'ar' ? slug_ar : slug_en;
+    const localizedSlug = slug_en;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();

@@ -255,7 +255,7 @@ export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRe
                           {results.map((product) => (
                             <Link
                               key={product.id}
-                              href={`/product/${(locale === 'ar' ? product.slug_ar : product.slug_en) || product.id}`}
+                              href={`/product/${product.slug_en || product.id}`}
                               onClick={() => setSearchOpen(false)}
                               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all group border border-transparent hover:border-slate-100"
                             >

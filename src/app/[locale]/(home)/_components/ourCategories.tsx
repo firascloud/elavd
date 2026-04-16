@@ -145,7 +145,7 @@ export default function ourCategories() {
                             </div>
                             <div className="divide-y divide-gray-100 min-h-[385px]">
                                 {(loading ? Array.from({ length: 4 }) : featuredProducts).map((prod: any, i) => (
-                                    <Link href={`/product/${prod?.slug_en}`} key={prod?.id ?? i} className="flex items-center gap-4 p-5 hover:bg-gray-50 transition-colors group">
+                                    <Link href={`/product/${prod?.slug_en || prod?.id}`} key={prod?.id ?? i} className="flex items-center gap-4 p-5 hover:bg-gray-50 transition-colors group">
                                         <div className="relative h-16 w-16 bg-white overflow-hidden border border-gray-100 flex-shrink-0 group-hover:border-primary/20 transition-colors">
                                             {loading || !prod?.image_url ? (
                                                 <div className="h-full w-full grid place-items-center bg-gray-50">
@@ -166,7 +166,7 @@ export default function ourCategories() {
                                                 {loading ? <div className="h-4 w-32 bg-gray-100  rounded  animate-pulse mx-auto" /> : (locale === 'ar' ? prod.name_ar : prod.name_en)}
                                             </div>
                                             <div className="text-xs text-gray-400 mt-1 uppercase ltr:tracking-wider">
-                                                {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : ((locale === 'ar' ? prod.slug_ar : prod.slug_en)?.substring(0, 10).toUpperCase() || 'PROD')}
+                                                {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : (prod.slug_en?.substring(0, 10).toUpperCase() || 'PROD')}
                                             </div>
                                         </div>
                                     </Link>
