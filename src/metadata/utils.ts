@@ -8,7 +8,7 @@ import {
   getPageSeoData,
 } from "@/seo/canonical";
 
-export const BASE_URL = "https://elavd.com";
+export const BASE_URL = "https://www.elavd.com";
 export const SITE_NAME = "مؤسسة إيلافد";
 export const SITE_NAME_EN = "Elavd Office Equipment & Communication Technology Establishment";
 export const DEFAULT_LOCALES = ["en", "ar"] as const;
