@@ -56,8 +56,9 @@ export default async function RootLayout({
           <meta name="next-head-count" content="0" />
           <meta name="robots" content="index, follow" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="theme-color" content="#f05a5b" />
+          <meta name="theme-color" content="#d94a4b" />
           <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
           <link rel="dns-prefetch" href="https://connect.facebook.net" />
           <link rel="dns-prefetch" href="https://script.hotjar.com" />
