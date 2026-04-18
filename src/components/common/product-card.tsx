@@ -54,6 +54,7 @@ const IconButton = ({
                     e.preventDefault();
                     onClick?.();
                 }}
+                aria-label={tooltip}
                 className={`p-2.5 cursor-pointer rounded-full bg-background shadow-md transition-all ${isActive ? 'bg-secondary text-primary-foreground' : 'text-muted-foreground hover:bg-primary hover:text-primary-foreground'}`}
             >
                 <Icon size={16} fill={isActive ? "currentColor" : "none"} />
@@ -255,6 +256,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                         className="w-full h-11 bg-primary text-primary-foreground font-bold text-sm rounded-full transition-all hover:bg-primary/90 shadow-sm mt-auto transform active:scale-95 flex items-center justify-center"
                     >
                         {t('ReadMore')}
+                        <span className="sr-only"> {name}</span>
                     </Link>
                 </div>
             </motion.div>

@@ -27,7 +27,7 @@ export function Footer() {
                 className="object-contain rtl:object-right ltr:object-left drop-shadow-sm"
               />
             </div>
-            <p className="text-[14px] leading-relaxed opacity-90 rtl:text-right ltr:text-left max-w-sm">
+            <p className="text-[14px] leading-relaxed rtl:text-right ltr:text-left max-w-sm">
               {t('Description')}
             </p>
           </div>
@@ -128,7 +128,7 @@ export function Footer() {
                   <Icon icon="mdi:phone" className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col  gap-1.5">
-                  <span className="font-bold opacity-70">{t('PhoneLabel')}</span>
+                  <span className="font-bold">{t('PhoneLabel')}</span>
                   <div className="flex items-center gap-2">
                     <a href="tel:0553202091" className="hover:text-primary transition font-bold">0553202091</a>
                     <span className="text-gray-300">-</span>
@@ -142,7 +142,7 @@ export function Footer() {
                   <Icon icon="mdi:email" className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col  gap-1.5">
-                  <span className="font-bold opacity-70">{t('EmailLabel')}</span>
+                  <span className="font-bold">{t('EmailLabel')}</span>
                   <a href="mailto:sales@elavd.com" className="hover:text-primary transition">sales@elavd.com</a>
                 </div>
               </li>
@@ -151,11 +151,11 @@ export function Footer() {
                   <Icon icon="mdi:map-marker" className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col  gap-1">
-                  <span className="font-bold opacity-70">{t('LocationLabel')}</span>
+                  <span className="font-bold">{t('LocationLabel')}</span>
                   <Link href="https://maps.app.goo.gl/HNuVCYKNmeE8fpNJ6" target="_blank">
 
 
-                    <span className="opacity-90">{t('Address')}</span>
+                    <span>{t('Address')}</span>
                   </Link>
                 </div>
               </li>
@@ -167,7 +167,7 @@ export function Footer() {
 
       <div className="border-t border-[#dcd8cf] bg-[#f5f1ea]/50 py-8 px-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6">
-          <p className="text-[13px] text-gray-500 font-medium">
+          <p className="text-[13px] text-gray-700 font-medium">
             {t('Copyright')}
           </p>
         </div>

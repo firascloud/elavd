@@ -201,6 +201,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
             <button
               type="submit"
               disabled={loading}
+              aria-label={t('Search')}
               className="bg-primary px-6 flex items-center justify-center text-white hover:bg-primary/95 transition disabled:opacity-80 rounded-e-[6px]"
             >
               {loading ? (

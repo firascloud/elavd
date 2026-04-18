@@ -152,7 +152,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-4">
               <div className="space-y-1">
-                <h3 className="text-primary-foreground text-lg font-black ltr:tracking-tight font-cairo">{t('CardPrinters')}</h3>
+                <h2 className="text-primary-foreground text-lg font-black ltr:tracking-tight font-cairo">{t('CardPrinters')}</h2>
                 <p className="text-primary-foreground/70 text-[10px] leading-relaxed font-bold uppercase ltr:tracking-wide">{t('CardPrintersSubtitle')}</p>
               </div>
               <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase ltr:tracking-widest px-6 py-3 rounded-xl inline-flex items-center justify-center gap-3 hover:bg-primary/90 transition-all duration-300 shadow-xl">

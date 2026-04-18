@@ -90,6 +90,7 @@ export default function ourCategories() {
                                 className="w-full py-2 sm:py-3 px-3 sm:px-5 cursor-pointer rounded-xl sm:rounded-2xl bg-[#111] text-white font-black text-[10px] sm:text-xs uppercase tracking-widest hover:bg-primary transition-all duration-300 shadow-md shadow-black/5 active:scale-95"
                             >
                                 {t('ViewMore')}
+                                <span className="sr-only"> {(locale === 'ar' ? cat.name_ar : cat.name_en)}</span>
                             </button>
                         </Link>
                     </div>
