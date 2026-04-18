@@ -33,7 +33,7 @@
   --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: #1a1a1b; /* Near Black */
-  --primary: #f05a5b;    /* Bold Orange */
+  --primary: #d94a4b;    /* Improved contrast red-orange */
   --primary-foreground: oklch(1 0 0);
   --secondary:#40b396;
   --destructive: #ef4444;
@@ -44,7 +44,7 @@
   --muted-foreground: #3c3c3d;
   --border: oklch(0.92 0 0);
   --input: oklch(0.92 0 0);
-  --ring: #f05a5b;
+  --ring: #d94a4b;
 
   
   --font-el-messiri: "El Messiri", Arial, Helvetica, sans-serif;
