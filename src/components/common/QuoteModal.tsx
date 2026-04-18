@@ -133,11 +133,12 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
           product_name: product ? (locale === 'ar' ? product.name_ar : product.name_en) : (locale === 'ar' ? 'سلة التسوق' : 'Cart items'),
         };
 
-        // 1. Notify Admin
-        await emailService.sendOrderNotification(emailParams);
-
-        // 2. Optional: Send confirmation to customer if you have a separate template
-        // await emailService.sendCustomerConfirmation(emailParams, 'YOUR_CUSTOMER_TEMPLATE_ID');
+        // Send branded confirmation to customer (Elavd Team Branding)
+        // You can set up BCC in EmailJS if you also need to receive this email as an admin.
+        await emailService.sendCustomerConfirmation({
+          ...emailParams,
+          subject: locale === 'ar' ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
+        });
         
       } catch (emailError) {
         console.error('Email notification failed:', emailError);

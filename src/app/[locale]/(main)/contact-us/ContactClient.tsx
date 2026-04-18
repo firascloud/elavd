@@ -49,12 +49,20 @@ export default function ContactClient() {
 
       // Send email notifications via emailService
       try {
-        await emailService.sendContactEmail({
+        const emailParams = {
           name: data.name,
           email: data.email,
           phone: data.phone,
           message: data.message,
+        };
+
+        // Send branded confirmation to customer (Elavd Team Branding)
+        // You can set up BCC in EmailJS if you also need to receive this email as an admin.
+        await emailService.sendCustomerConfirmation({
+          ...emailParams,
+          subject: isRtl ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
         });
+
       } catch (emailError) {
         console.error('Email notification failed:', emailError);
       }
