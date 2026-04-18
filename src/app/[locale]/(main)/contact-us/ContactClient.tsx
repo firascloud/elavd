@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
 import { sendMessage } from '@/services/contactService';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { emailService } from '@/services/emailService';
 
 export default function ContactClient() {
   const t = useTranslations('contact');
@@ -46,12 +47,13 @@ export default function ContactClient() {
       const conversionId = process.env.NEXT_PUBLIC_GADS_CONTACT_CONVERSION || 'AW-DEFAULT/CONTACT';
       conversion(conversionId, 1.0);
 
-      // Send email notifications
+      // Send email notifications via emailService
       try {
-        await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+        await emailService.sendContactEmail({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          message: data.message,
         });
       } catch (emailError) {
         console.error('Email notification failed:', emailError);

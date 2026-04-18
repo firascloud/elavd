@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { DeleteConfirmModal } from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
-import { supabaseBrowser } from "@/lib/supabase/client";
+import { deleteRecord } from "@/app/actions/db";
 import { toast } from "sonner";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -23,12 +23,7 @@ export default function DeleteSubCategory({ isOpen, onClose, onSuccess, subCateg
         if (!subCategory) return;
         setLoading(true);
         try {
-            const { error } = await supabaseBrowser
-                .from('sub_categories')
-                .delete()
-                .eq('id', subCategory.id);
-
-            if (error) throw error;
+            await deleteRecord('sub_categories', subCategory.id);
             toast.success(t("DeleteSubCategorySuccess"));
             onSuccess();
             onClose();

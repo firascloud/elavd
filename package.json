@@ -12,6 +12,7 @@
     "seo:check:json": "node scripts/seo-monitor.mjs --url https://elavd.com --json"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@hookform/resolvers": "^5.0.1",
     "@iconify/react": "^6.0.2",
     "@radix-ui/react-accordion": "^1.2.10",
@@ -65,7 +66,6 @@
     "react-editor-js": "^2.1.0",
     "react-hook-form": "^7.56.4",
     "recharts": "^2.15.3",
-    "resend": "^6.11.0",
     "slugify": "^1.6.6",
     "sonner": "^2.0.4",
     "swiper": "^12.1.3",

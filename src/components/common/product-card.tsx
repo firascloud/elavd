@@ -233,9 +233,10 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             {name || '—'}
                         </h3>
                     </Link>
-                    <p className="text-muted-foreground text-xs font-medium mb-8 line-clamp-1 h-4">
-                        {description || '—'}
-                    </p>
+                    <div 
+                        className="text-muted-foreground text-xs font-medium mb-8 line-clamp-1 h-4"
+                        dangerouslySetInnerHTML={{ __html: description || '—' }}
+                    />
 
                     {/* <button
                         onClick={handleAddToCart}

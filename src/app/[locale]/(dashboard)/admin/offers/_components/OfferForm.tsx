@@ -9,6 +9,8 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
+import { toast } from "sonner";
 import {
     Select,
     SelectContent,
@@ -110,20 +112,14 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
             };
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('offers')
-                    .update(finalData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('offers', finalData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('offers')
-                    .insert([finalData]);
-                if (error) throw error;
+                await insertRecord('offers', finalData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving offer:", error);
+            toast.error(error.message || "Error saving offer");
         } finally {
             setLoading(false);
         }

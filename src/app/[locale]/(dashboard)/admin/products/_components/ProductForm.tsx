@@ -20,8 +20,10 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Package, FileText, ImageIcon, Globe, Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw, Package, FileText, ImageIcon, Globe } from "lucide-react";
 import TextEditor from "@/components/TextEditor";
+import { insertRecord, updateRecord } from "@/app/actions/db";
+import { toast } from "sonner";
 
 interface ProductFormProps {
     initialData?: any;
@@ -90,9 +92,9 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                 ...data,
                 price: data.price ? parseFloat(data.price) : null,
                 discount_price: data.discount_price ? parseFloat(data.discount_price) : null,
-                category_id: data.category_id || null,
-                sub_category_id: data.sub_category_id || null,
-                brand_id: data.brand_id || null,
+                category_id: (data.category_id && data.category_id !== "none") ? data.category_id : null,
+                sub_category_id: (data.sub_category_id && data.sub_category_id !== "none") ? data.sub_category_id : null,
+                brand_id: (data.brand_id && data.brand_id !== "none") ? data.brand_id : null,
                 seo_keywords_en: toKeywordsArray(data.seo_keywords_en),
                 seo_keywords_ar: toKeywordsArray(data.seo_keywords_ar),
             };
@@ -102,6 +104,9 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                 categories: _categories,
                 sub_categories: _sub_categories,
                 brands: _brands,
+                category: _category,
+                sub_category: _sub_category,
+                brand: _brand,
                 id: _id,
                 created_at: _createdAt,
                 updated_at: _updatedAt,
@@ -109,20 +114,14 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
             } = finalData as any;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('products')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('products', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('products')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('products', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving product:", error);
+            toast.error(error.message || "Error saving product");
         } finally {
             setLoading(false);
         }
@@ -212,6 +211,9 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                             <SelectValue placeholder={t("SubCategory")} />
                                         </SelectTrigger>
                                         <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
+                                            <SelectItem value="none" className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm opacity-70">
+                                                {t("None")}
+                                            </SelectItem>
                                             {filteredSubCategories.map((sub) => (
                                                 <SelectItem key={sub.id} value={sub.id} className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm">
                                                     {sub.name_en}

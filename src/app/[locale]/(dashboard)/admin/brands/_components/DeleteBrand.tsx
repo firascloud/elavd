@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { DeleteConfirmModal } from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
-import { supabaseBrowser } from "@/lib/supabase/client";
+import { deleteRecord } from "@/app/actions/db";
 import { toast } from "sonner";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -23,12 +23,7 @@ export default function DeleteBrand({ isOpen, onClose, onSuccess, brand }: Delet
         if (!brand) return;
         setLoading(true);
         try {
-            const { error } = await supabaseBrowser
-                .from('brands')
-                .delete()
-                .eq('id', brand.id);
-
-            if (error) throw error;
+            await deleteRecord('brands', brand.id);
 
             toast.success(t("DeleteBrandSuccess"));
             onSuccess();

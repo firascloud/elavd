@@ -109,7 +109,10 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
             )}
 
             {shortDesc && (
-              <p className="text-muted-foreground text-sm leading-7 font-medium">{shortDesc}</p>
+              <div 
+                className="text-muted-foreground text-sm leading-7 font-medium"
+                dangerouslySetInnerHTML={{ __html: shortDesc }}
+              />
             )}
 
             {price !== null && (

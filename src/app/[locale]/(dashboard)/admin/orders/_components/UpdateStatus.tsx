@@ -10,7 +10,7 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
-import { supabaseBrowser } from "@/lib/supabase/client";
+import { updateRecord } from "@/app/actions/db";
 import { RefreshCw, CheckCircle2, Clock, Truck, XCircle, Package } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
@@ -29,12 +29,7 @@ export default function UpdateStatus({ order, onSuccess, onCancel }: UpdateStatu
     const handleUpdate = async () => {
         setLoading(true);
         try {
-            const { error } = await supabaseBrowser
-                .from('orders')
-                .update({ status })
-                .eq('id', order.id);
-
-            if (error) throw error;
+            await updateRecord('orders', { status }, order.id);
             toast.success(t("OrderStatusUpdated"));
             onSuccess();
         } catch (error: any) {

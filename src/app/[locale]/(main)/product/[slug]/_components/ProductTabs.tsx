@@ -53,7 +53,10 @@ export default function ProductTabs({ product }: ProductTabsProps) {
       <div className="p-5 sm:p-10">
         {tab === "desc" ? (
           desc ? (
-            <div className="text-muted-foreground text-sm sm:text-base leading-relaxed sm:leading-8 font-medium whitespace-pre-line">{desc}</div>
+            <div 
+              className="text-muted-foreground text-sm sm:text-base leading-relaxed sm:leading-8 font-medium"
+              dangerouslySetInnerHTML={{ __html: desc }}
+            />
           ) : (
             <div className="text-muted-foreground text-sm font-bold p-10 text-center">{t("NoDescription")}</div>
           )

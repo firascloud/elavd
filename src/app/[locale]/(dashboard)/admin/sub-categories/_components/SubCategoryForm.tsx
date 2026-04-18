@@ -9,6 +9,7 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -76,20 +77,14 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
             const { id: _id, created_at: _createdAt, updated_at: _updatedAt, categories: _categories, ...cleanData } = finalData;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('sub_categories')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('sub_categories', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('sub_categories')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('sub_categories', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving sub-category:", error);
+            toast.error(error.message || "Error saving sub-category");
         } finally {
             setLoading(false);
         }

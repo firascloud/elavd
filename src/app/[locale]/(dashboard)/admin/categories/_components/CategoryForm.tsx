@@ -9,6 +9,8 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
+import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Package, FileText, ImageIcon, Globe, Plus, RefreshCw, Layers } from "lucide-react";
@@ -54,23 +56,17 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                 seo_keywords_ar: typeof data.seo_keywords_ar === 'string' ? data.seo_keywords_ar.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_ar,
             };
 
-            const { id: _id, created_at: _createdAt, updated_at: _updatedAt, ...cleanData } = finalData;
+            const { id: _id, created_at: _createdAt, updated_at: _updatedAt, sub_categories: _subCategories, ...cleanData } = finalData;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('categories')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('categories', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('categories')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('categories', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving category:", error);
+            toast.error(error.message || "Error saving category");
         } finally {
             setLoading(false);
         }

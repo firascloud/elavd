@@ -19,14 +19,14 @@ export type Product = {
     is_event?: boolean;
     is_active?: boolean;
     created_at?: string;
-    category_id?: string;
+    category_id?: string | null;
     category?: {
         id: string;
         name_en: string | null;
         name_ar: string | null;
         slug: string | null;
     },
-    sub_category_id?: string;
+    sub_category_id?: string | null;
     sub_category?: {
         id: string;
         name_en: string | null;

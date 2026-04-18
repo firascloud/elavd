@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useForm } from "react-hook-form";
+import { updateRecord } from "@/app/actions/db";
 
 export default function UserList() {
     const tDashboard = useTranslations("dashboard");
@@ -67,19 +68,11 @@ export default function UserList() {
         }
 
         try {
-            const { error: updateError } = await supabaseBrowser
-                .from('users')
-                .update(updates)
-                .eq('id', editUser.id);
-
-            if (updateError) {
-                toast.error(tDashboard("UpdateFailed"), { description: updateError.message });
-            } else {
-                toast.success(tDashboard("UpdateSuccess"));
-                setEditUser(null);
-                reset();
-                fetchUsers();
-            }
+            await updateRecord('users', updates, editUser.id);
+            toast.success(tDashboard("UpdateSuccess"));
+            setEditUser(null);
+            reset();
+            fetchUsers();
         } catch (err: any) {
             toast.error(tDashboard("FailedToUpdateUser"), { description: err.message });
         } finally {

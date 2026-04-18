@@ -16,6 +16,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { toast } from 'sonner'
 import { X } from 'lucide-react'
 import { orderService, OrderItem, OrderData } from '@/services/orderService'
+import { emailService } from '@/services/emailService'
 
 interface QuoteModalProps {
   isOpen: boolean
@@ -121,23 +122,24 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
 
       // Send email notifications
       try {
-        await fetch('/api/send-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: `${formData.countryCode}${formData.phone}`,
-            city: formData.city,
-            message: formData.message,
-            total: totalPrice,
-            items: orderItems,
-            productName: product ? (locale === 'ar' ? product.name_ar : product.name_en) : (locale === 'ar' ? 'سلة التسوق' : 'Cart items'),
-            quantity: product ? 1 : orderItems.reduce((acc, item) => acc + item.quantity, 0)
-          }),
-        });
+        const emailParams = {
+          name: formData.name,
+          email: formData.email,
+          phone: `${formData.countryCode}${formData.phone}`,
+          city: formData.city,
+          message: formData.message,
+          total: totalPrice,
+          items: orderItems.map(i => `${i.name_en || i.name_ar} (x${i.quantity})`).join(', '),
+          product_name: product ? (locale === 'ar' ? product.name_ar : product.name_en) : (locale === 'ar' ? 'سلة التسوق' : 'Cart items'),
+        };
+
+        // 1. Notify Admin
+        await emailService.sendOrderNotification(emailParams);
+
+        // 2. Optional: Send confirmation to customer if you have a separate template
+        // await emailService.sendCustomerConfirmation(emailParams, 'YOUR_CUSTOMER_TEMPLATE_ID');
+        
       } catch (emailError) {
-        // Log error but don't break the flow as per requirements
         console.error('Email notification failed:', emailError);
       }
 

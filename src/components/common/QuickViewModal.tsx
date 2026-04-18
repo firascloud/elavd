@@ -131,9 +131,10 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                                     <h4 className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-widest border-l-3 border-primary ps-2 rtl:border-l-0 rtl:border-r-3 rtl:pe-2">
                                         {t('DescriptionTab')}
                                     </h4>
-                                    <div className="text-muted-foreground text-sm leading-7 font-medium line-clamp-6">
-                                        {fullDesc || shortDesc}
-                                    </div>
+                                    <div 
+                                        className="text-muted-foreground text-sm leading-7 font-medium line-clamp-6"
+                                        dangerouslySetInnerHTML={{ __html: fullDesc || shortDesc || '' }}
+                                    />
                                     <Link
                                         href={`/product/${product.slug_en || product.id}`}
                                         className="text-primary font-bold text-xs flex items-center gap-1 hover:underline underline-offset-4 group transition-all"

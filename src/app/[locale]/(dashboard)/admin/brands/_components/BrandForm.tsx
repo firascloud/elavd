@@ -9,6 +9,7 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
 import { Label } from "@/components/ui/label";
 import { ImageIcon, Globe, Layers, Type } from "lucide-react";
 
@@ -47,20 +48,14 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
             if (!cleanData.brand_index_ar) delete cleanData.brand_index_ar;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('brands')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('brands', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('brands')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('brands', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving brand:", error);
+            toast.error(error.message || "Error saving brand");
         } finally {
             setLoading(false);
         }
