@@ -84,6 +84,7 @@ export default function Hero() {
                     src={slide.image}
                     alt="Banner Background"
                     fill
+                    priority={slide.id === '1'}
                     className="object-cover group-hover:scale-100 md:group-hover:scale-105 transition-transform duration-[4000ms] ease-out"
                   />
 

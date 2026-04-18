@@ -61,6 +61,7 @@ export default async function RootLayout({
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
           <link rel="dns-prefetch" href="https://connect.facebook.net" />
           <link rel="dns-prefetch" href="https://script.hotjar.com" />
+          <link rel="preconnect" href="https://api.iconify.design" crossOrigin="anonymous" />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
