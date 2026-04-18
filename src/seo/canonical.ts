@@ -11,6 +11,7 @@
  */
 
 import { headers } from "next/headers";
+import { BASE_URL } from "@/metadata/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -28,7 +29,6 @@ export interface CanonicalConfig {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const BASE_URL = "https://elavd.com";
 const LOCALES = ["en", "ar"] as const;
 const DEFAULT_LOCALE = "ar"; // matches routing.ts
 
