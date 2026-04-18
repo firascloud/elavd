@@ -43,7 +43,6 @@ export default function Hero() {
                 alt="PVC Card Printers"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
-                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-5 px-5">
@@ -63,7 +62,6 @@ export default function Hero() {
                 alt="Biometric Systems"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
-                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-5 px-5">
@@ -149,7 +147,6 @@ export default function Hero() {
               alt="ID Accessories"
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-1000"
-              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-4">
