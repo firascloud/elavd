@@ -85,6 +85,7 @@ export default function Hero() {
                     alt="Banner Background"
                     fill
                     priority={slide.id === '1'}
+                    fetchPriority={slide.id === '1' ? 'high' : 'auto'}
                     className="object-cover group-hover:scale-100 md:group-hover:scale-105 transition-transform duration-[4000ms] ease-out"
                   />
 

@@ -27,41 +27,46 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
 
   const checkScroll = () => {
     if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+      requestAnimationFrame(() => {
+        if (!scrollRef.current) return;
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
 
-      if (isRtl) {
-        // In RTL (modern browsers), scrollLeft is 0 at start (right) and goes negative
-        // But some browsers/versions might vary, so we handle both or use a safer check
-        const isAtStart = scrollLeft >= -5
-        const isAtEnd = Math.abs(scrollLeft) + clientWidth >= scrollWidth - 5
-
-        setShowLeftArrow(!isAtEnd)   // Forward in RTL
-        setShowRightArrow(!isAtStart) // Back in RTL
-      } else {
-        // LTR: scrollLeft is 0 at start (left) and goes positive
-        const isAtStart = scrollLeft <= 5
-        const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5
-
-        setShowLeftArrow(!isAtStart) // Back in LTR
-        setShowRightArrow(!isAtEnd)  // Forward in LTR
-      }
+        if (isRtl) {
+          const isAtStart = scrollLeft >= -5;
+          const isAtEnd = Math.abs(scrollLeft) + clientWidth >= scrollWidth - 5;
+          setShowLeftArrow(!isAtEnd);
+          setShowRightArrow(!isAtStart);
+        } else {
+          const isAtStart = scrollLeft <= 5;
+          const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5;
+          setShowLeftArrow(!isAtStart);
+          setShowRightArrow(!isAtEnd);
+        }
+      });
     }
   }
 
   useEffect(() => {
-    checkScroll()
-    window.addEventListener('resize', checkScroll)
-    const currentRef = scrollRef.current
+    checkScroll();
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkScroll, 100);
+    };
+
+    window.addEventListener('resize', handleResize);
+    const currentRef = scrollRef.current;
     if (currentRef) {
-      currentRef.addEventListener('scroll', checkScroll)
+      currentRef.addEventListener('scroll', checkScroll, { passive: true });
     }
     return () => {
-      window.removeEventListener('resize', checkScroll)
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
       if (currentRef) {
-        currentRef.removeEventListener('scroll', checkScroll)
+        currentRef.removeEventListener('scroll', checkScroll);
       }
     }
-  }, [navLinks, categories, isRtl])
+  }, [navLinks, categories, isRtl]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
