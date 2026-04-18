@@ -141,7 +141,7 @@ export default function ourCategories() {
 
                     <aside className="lg:col-span-1 md:order-1 order-2">
                         <div className="border border-gray-200 overflow-hidden">
-                            <div className="bg-primary/90 text-white px-6 py-3.5 font-extrabold text-lg text-center">
+                            <div className="bg-primary text-white px-6 py-3.5 font-extrabold text-lg text-center">
                                 {t('FeaturedProducts')}
                             </div>
                             <div className="divide-y divide-gray-100 min-h-[385px]">

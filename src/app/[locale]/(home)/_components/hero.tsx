@@ -119,7 +119,7 @@ export default function Hero() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-5 mt-auto sm:mt-0">
-                      <Button asChild className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground border-none group px-8 rounded-2xl transition-all shadow-foreground/50 active:scale-95">
+                      <Button asChild className="h-12 bg-primary hover:bg-slate-900 text-primary-foreground border-none group px-8 rounded-2xl transition-all shadow-foreground/50 active:scale-95">
                         <Link href={slide.href}>
                           <span className="font-black text-[12px] ltr:tracking-wider uppercase">{t('MoreDetails')}</span>
                           {isRtl ? (
@@ -155,7 +155,7 @@ export default function Hero() {
                 <h2 className="text-primary-foreground text-lg font-black ltr:tracking-tight font-cairo">{t('CardPrinters')}</h2>
                 <p className="text-primary-foreground/70 text-[10px] leading-relaxed font-bold uppercase ltr:tracking-wide">{t('CardPrintersSubtitle')}</p>
               </div>
-              <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase ltr:tracking-widest px-6 py-3 rounded-xl inline-flex items-center justify-center gap-3 hover:bg-primary/90 transition-all duration-300 shadow-xl">
+              <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase ltr:tracking-widest px-6 py-3 rounded-xl inline-flex items-center justify-center gap-3 hover:bg-slate-900 transition-all duration-300 shadow-xl">
                 {t('Explore')}
                 <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
               </span>
