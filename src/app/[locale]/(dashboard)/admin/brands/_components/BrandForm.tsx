@@ -12,6 +12,7 @@ import { supabaseBrowser } from "@/lib/supabase/client";
 import { insertRecord, updateRecord } from "@/app/actions/db";
 import { Label } from "@/components/ui/label";
 import { ImageIcon, Globe, Layers, Type } from "lucide-react";
+import { toast } from "sonner";
 
 interface BrandFormProps {
     initialData?: any;
