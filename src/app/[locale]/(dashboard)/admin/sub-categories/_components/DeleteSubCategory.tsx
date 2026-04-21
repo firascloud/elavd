@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { DeleteConfirmModal } from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
-import { deleteRecord } from "@/app/actions/db";
+import { deleteSubCategoryAction } from "@/app/actions/db";
 import { toast } from "sonner";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -23,7 +23,7 @@ export default function DeleteSubCategory({ isOpen, onClose, onSuccess, subCateg
         if (!subCategory) return;
         setLoading(true);
         try {
-            await deleteRecord('sub_categories', subCategory.id);
+            await deleteSubCategoryAction(subCategory.id);
             toast.success(t("DeleteSubCategorySuccess"));
             onSuccess();
             onClose();

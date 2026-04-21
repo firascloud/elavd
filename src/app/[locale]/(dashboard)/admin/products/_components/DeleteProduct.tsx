@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { DeleteConfirmModal } from "@/app/[locale]/(dashboard)/_components/common/DeleteConfirmModal";
-import { deleteRecord } from "@/app/actions/db";
+import { deleteProductAction } from "@/app/actions/db";
 import { toast } from "sonner";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -23,7 +23,7 @@ export default function DeleteProduct({ isOpen, onClose, onSuccess, product }: D
         if (!product) return;
         setLoading(true);
         try {
-            await deleteRecord('products', product.id);
+            await deleteProductAction(product.id);
             toast.success(t("DeleteSuccess"));
             onSuccess();
             onClose();
