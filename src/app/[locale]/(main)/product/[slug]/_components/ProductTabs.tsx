@@ -35,19 +35,6 @@ export default function ProductTabs({ product }: ProductTabsProps) {
           </span>
           {tab === "desc" && <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary" />}
         </button>
-
-        <button
-          onClick={() => setTab("specs")}
-          className={`h-14 px-4 sm:px-6 cursor-pointer font-black text-xs sm:text-sm font-cairo relative transition-colors ${
-            tab === "specs" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <span className="inline-flex items-center gap-2">
-            <ListChecks size={16} className={tab === "specs" ? "text-primary" : "text-muted-foreground/30"} />
-            {t("DetailsTab")}
-          </span>
-          {tab === "specs" && <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary" />}
-        </button>
       </div>
 
       <div className="p-5 sm:p-10">
