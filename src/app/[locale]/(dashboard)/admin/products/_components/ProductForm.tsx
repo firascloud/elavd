@@ -51,6 +51,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
             sub_category_id: initialData?.sub_category_id || "",
             brand_id: initialData?.brand_id || "",
             main_image: "",
+            sort_order: initialData?.sort_order || 0,
         }
     });
 
@@ -92,6 +93,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                 ...data,
                 price: data.price ? parseFloat(data.price) : null,
                 discount_price: data.discount_price ? parseFloat(data.discount_price) : null,
+                sort_order: parseInt(data.sort_order) || 0,
                 category_id: (data.category_id && data.category_id !== "none") ? data.category_id : null,
                 sub_category_id: (data.sub_category_id && data.sub_category_id !== "none") ? data.sub_category_id : null,
                 brand_id: (data.brand_id && data.brand_id !== "none") ? data.brand_id : null,
@@ -149,7 +151,8 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
                             { label: t("Price"), name: "price", type: "number" },
-                            { label: t("DiscountPrice"), name: "discount_price", type: "number" }
+                            { label: t("DiscountPrice"), name: "discount_price", type: "number" },
+                            { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
                             <div key={field.name} className="space-y-2 group">
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
@@ -158,7 +161,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                 <Input
                                     {...register(field.name, { required: field.required })}
                                     type={field.type || "text"}
-                                    step="0.01"
+                                    step={field.type === "number" ? "0.01" : undefined}
                                     className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
                                 />
                             </div>

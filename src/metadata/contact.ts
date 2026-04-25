@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { buildMetadataSmart } from "./utils";
 
 export async function contactMetadata(locale: string): Promise<Metadata> {
-  const t = await getTranslations({ locale, namespace: "contact" });
+  const t = await getTranslations({ locale, namespace: "contact-us" });
   const isAr = locale === "ar";
 
   const title =

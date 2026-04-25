@@ -51,6 +51,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
             seo_description_ar: "",
             seo_keywords_en: "",
             seo_keywords_ar: "",
+            sort_order: initialData?.sort_order || 0,
         }
     });
 
@@ -71,6 +72,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
         try {
             const finalData = {
                 ...data,
+                sort_order: parseInt(data.sort_order) || 0,
                 seo_keywords_en: typeof data.seo_keywords_en === 'string' ? data.seo_keywords_en.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_en,
                 seo_keywords_ar: typeof data.seo_keywords_ar === 'string' ? data.seo_keywords_ar.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_ar,
             };
@@ -141,7 +143,8 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
                             { label: t("SlugEn"), name: "slug_en", required: true },
-                            { label: t("SlugAr"), name: "slug_ar", required: true }
+                            { label: t("SlugAr"), name: "slug_ar", required: true },
+                            { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
                             <div key={field.name} className="space-y-2 group">
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
@@ -149,6 +152,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                                 </Label>
                                 <Input
                                     {...register(field.name, { required: field.required })}
+                                    type={field.type || "text"}
                                     className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
                                 />
                             </div>

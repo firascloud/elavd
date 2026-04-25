@@ -26,6 +26,7 @@ import { Edit2, Trash2, Plus, Star, Package, RefreshCw, Eye } from "lucide-react
 import ProductForm from "./ProductForm";
 import DeleteProduct from "./DeleteProduct";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 export default function ProductList() {
     const t = useTranslations("dashboard");
@@ -72,6 +73,7 @@ export default function ProductList() {
         const to = from + pageSize - 1;
 
         const { data, count, error } = await query
+            .order('sort_order', { ascending: true })
             .order('created_at', { ascending: false })
             .range(from, to);
 
@@ -88,6 +90,22 @@ export default function ProductList() {
             }
         }
         setLoading(false);
+    };
+
+    const handleUpdateOrder = async (id: string, newOrder: number) => {
+        try {
+            const { error } = await supabaseBrowser
+                .from('products')
+                .update({ sort_order: newOrder })
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success(t("OrderUpdated"));
+            fetchProducts();
+        } catch (error) {
+            console.error("Error updating order:", error);
+            toast.error(t("UpdateFailed"));
+        }
     };
 
     useEffect(() => {
@@ -163,12 +181,12 @@ export default function ProductList() {
                 t("NameEn"),
                 t("Category"),
                 t("SubCategory"),
-                t("Brand"),
                 t("Price"),
+                t("Order"),
                 t("Status"),
                 t("Actions")
             ]}
-                headerClasses={["", "", "hidden md:table-cell", "hidden lg:table-cell", "hidden lg:table-cell", "", "hidden sm:table-cell", ""]}
+                headerClasses={["", "", "hidden md:table-cell", "hidden lg:table-cell", "", "w-[100px]", "hidden sm:table-cell", ""]}
                 isLoading={loading}
                 emptyMessage={t("NoProductsFound") || "No products found."}
             >
@@ -203,16 +221,24 @@ export default function ProductList() {
                                 {isAr ? product.sub_categories?.name_ar : product.sub_categories?.name_en || "-"}
                             </span>
                         </DashboardTableCell>
-                        <DashboardTableCell className="hidden lg:table-cell">
-                            <span className="text-xs font-semibold px-3 py-1 bg-accent/5 text-accent border border-accent/20 rounded-full">
-                                {isAr ? product.brands?.name_ar : product.brands?.name_en || "-"}
-                            </span>
-                        </DashboardTableCell>
                         <DashboardTableCell>
                             <div className="flex flex-col">
                                 <span className="font-semibold text-foreground"><Price amount={product.price} /></span>
                                 {product.discount_price > 0 && <span className="text-[11px] text-muted-foreground line-through decoration-2"><Price amount={product.discount_price} showIcon={false} /></span>}
                             </div>
+                        </DashboardTableCell>
+                        <DashboardTableCell>
+                            <Input
+                                type="number"
+                                defaultValue={product.sort_order || 0}
+                                onBlur={(e) => {
+                                    const val = parseInt(e.target.value);
+                                    if (val !== product.sort_order) {
+                                        handleUpdateOrder(product.id, val);
+                                    }
+                                }}
+                                className="w-16 h-8 text-center text-xs font-bold rounded-lg border-border/60 focus:ring-primary/20"
+                            />
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden sm:table-cell">
                             <div className="flex items-center gap-3">

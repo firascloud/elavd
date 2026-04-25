@@ -20,6 +20,7 @@ export async function getCategories(limit: number = 16) {
             *,
             sub_categories (*)
         `)
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 

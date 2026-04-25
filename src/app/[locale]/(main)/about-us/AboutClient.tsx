@@ -77,12 +77,12 @@ export default function AboutClient() {
             <div className="space-y-5">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase ltr:tracking-widest">
                 <span className="size-1.5 bg-primary rounded-full animate-pulse" />
-                Our Story
+                {t('storyLabel')}
               </div>
               <h2 id="story-title" className="text-3xl lg:text-4xl font-black text-foreground font-cairo leading-tight">
                 {t('subtitle')}
               </h2>
-              <p className="text-muted-foreground text-base leading-relaxed font-bold border-l-4 border-primary ps-5 rtl:border-l-0 rtl:border-r-4 rtl:pe-5 rtl:ps-0 font-cairo">
+              <p className="text-muted-foreground text-base leading-relaxed font-bold border-l-4 border-primary ps-5 rtl:border-l-0 rtl:border-r-4 font-cairo">
                 {t('desc1')}
               </p>
               <p className="text-gray-400 text-sm leading-7 font-medium">

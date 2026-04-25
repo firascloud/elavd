@@ -13,6 +13,8 @@
     "TotalCount": "Total",
     "Brands": "Brands",
     "Brand": "Brand",
+    "Order": "Order",
+    "OrderUpdated": "Order updated successfully",
     "Refresh": "Refresh",
     "EditUser": "Edit User",
     "All": "All",

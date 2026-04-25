@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server'
 import PageHeader from '@/components/common/page-header'
 import { ProductCard } from '@/components/common/product-card'
 import CategorySidebar from '@/components/common/category-sidebar'
-import { getCategoryBySlug, getProducts, getCategories, Product } from '@/services/home'
+import { getCategoryBySlug, getProducts, getCategories, Product, getSubCategoryBySlug } from '@/services/home'
 import { Search } from 'lucide-react'
 import FilterProduct from '../_components/fillterProduct'
 import Pagination from '../_components/pagination'
@@ -23,11 +23,20 @@ interface CategoryPageProps {
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { slug, locale } = await params
-  const category = await getCategoryBySlug(slug)
+  const [category, subCategory] = await Promise.all([
+    getCategoryBySlug(slug),
+    getSubCategoryBySlug(slug)
+  ])
 
-  if (!category) return { title: 'Category Not Found' }
+  if (!category && !subCategory) return { title: 'Category Not Found' }
 
-  return categoryMetadata({ locale, slug, category: category as any })
+  if (category) {
+    return categoryMetadata({ locale, slug, category: category as any })
+  } else {
+    // For sub-category, we can use the same categoryMetadata or a specialized one
+    // For now, let's use the same structure
+    return categoryMetadata({ locale, slug, category: subCategory as any })
+  }
 }
 
 export default async function CategoryPage({ params, searchParams }: {
@@ -44,17 +53,26 @@ export default async function CategoryPage({ params, searchParams }: {
   const currentLimit = parseInt(limit)
 
   // Data fetching
-  const [category, allCategories, featuredProducts] = await Promise.all([
+  const [category, subCategory, allCategories, featuredProducts] = await Promise.all([
     getCategoryBySlug(slug),
+    getSubCategoryBySlug(slug),
     getCategories(10),
     getProducts({ is_featured: true, limit: 4 })
   ])
 
-  if (!category) {
+  const effectiveCategory = category || subCategory
+
+  if (!effectiveCategory) {
     notFound()
   }
 
-  let allCategoryProducts = await getProducts({ categoryId: category.id, limit: 1000 })
+  const isSubCategory = !category && !!subCategory
+
+  let allCategoryProducts = await getProducts({ 
+    categoryId: category?.id, 
+    subCategoryId: subCategory?.id,
+    limit: 1000 
+  })
 
   if (sort === 'newest') {
     allCategoryProducts = [...allCategoryProducts].sort((a, b) =>
@@ -73,17 +91,17 @@ export default async function CategoryPage({ params, searchParams }: {
   const endIndex = startIndex + currentLimit
   const paginatedProducts = allCategoryProducts.slice(startIndex, endIndex)
 
-  const categoryName = isRtl ? category.name_ar : category.name_en
+  const categoryName = isRtl ? effectiveCategory!.name_ar : effectiveCategory!.name_en
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-20">
       <Script id="jsonld-category" type="application/ld+json" strategy="afterInteractive">
         {JSON.stringify(getCategoryJsonLd(locale, {
-          slug: (category as any).slug ?? "",
-          name_ar: category.name_ar ?? undefined,
-          name_en: category.name_en ?? undefined,
-          description_ar: category.description_ar ?? undefined,
-          description_en: category.description_en ?? undefined
+          slug: (effectiveCategory as any).slug ?? "",
+          name_ar: effectiveCategory!.name_ar ?? undefined,
+          name_en: effectiveCategory!.name_en ?? undefined,
+          description_ar: effectiveCategory!.description_ar ?? undefined,
+          description_en: effectiveCategory!.description_en ?? undefined
         }))}
       </Script>
       <PageHeader

@@ -53,7 +53,7 @@ export default function ourCategories() {
 
     const CategoryCard = ({ cat, idx, isGrid = false }: { cat: Category; idx: number; isGrid?: boolean }) => (
         <div key={cat.id ?? idx} className={isGrid ? "w-full" : "min-w-[100%] sm:min-w-[48%] md:min-w-[30%] flex-shrink-0"}>
-            <article className="group h-full border border-gray-100 bg-white rounded-2xl sm:rounded-3xl transition-all duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 p-4 sm:p-6 flex flex-col items-center">
+            <article className="group h-full border border-gray-100 bg-white rounded-2xl sm:rounded-3xl transition-all duration-500  hover:-translate-y-1 p-4 sm:p-6 flex flex-col items-center">
                 <div className="relative w-full aspect-square grid place-items-center overflow-hidden mb-4 sm:mb-6 transition-transform duration-500">
                     {loading ? (
                         <div className="w-full h-full animate-pulse bg-gray-100" />

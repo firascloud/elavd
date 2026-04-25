@@ -18,6 +18,7 @@ export async function getSubCategories(limit: number = 100) {
     const { data } = await supabaseBrowser
         .from('sub_categories')
         .select('*, categories(name_en, name_ar)')
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -29,6 +30,7 @@ export async function getSubCategoriesByCategoryId(categoryId: string) {
         .from('sub_categories')
         .select('*')
         .eq('category_id', categoryId)
+        .order('sort_order', { ascending: true })
         .order('name_en', { ascending: true });
 
     return (data || []) as SubCategory[];

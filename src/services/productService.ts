@@ -85,6 +85,7 @@ export async function getProducts({
     if (brandId) query = query.eq('brand_id', brandId);
     
     const { data } = await query
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -131,6 +132,7 @@ export async function searchProducts({
     }
 
     const { data, error } = await supabaseQuery
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 
