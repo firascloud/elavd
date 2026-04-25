@@ -14,7 +14,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 import { emailService } from '@/services/emailService';
 
 export default function ContactClient() {
-  const t = useTranslations('contact');
+  const t = useTranslations('contact-us');
   const common = useTranslations('common');
   const locale = useLocale();
   const isRtl = locale === 'ar';
