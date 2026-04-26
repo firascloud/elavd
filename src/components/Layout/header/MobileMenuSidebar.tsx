@@ -3,8 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
-import { X, ChevronRight, Tag, Heart, Repeat, ShoppingCart, User, Phone } from 'lucide-react'
-import { Icon } from '@iconify/react'
+import { X, ChevronRight, Tag, Heart, Repeat, ShoppingCart, User, Phone, Mail } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
 import Logo from '@/assets/logo.svg'
@@ -138,7 +137,7 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
             <a href="tel:0556482799" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0556482799</a>
           </div>
           <a href="mailto:sales@elavd.com" className="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors text-sm">
-            <Icon icon="mdi:email" className="w-4 h-4 text-primary" />
+            <Mail className="w-4 h-4 text-primary" />
             <span>sales@elavd.com</span>
           </a>
         </div>

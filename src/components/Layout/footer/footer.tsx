@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { Icon } from '@iconify/react'
+import { ChevronLeft, ChevronRight, Phone, Mail, MapPin } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import Logo from '@/assets/logo.svg'
@@ -40,9 +40,9 @@ export function Footer() {
               <li>
                 <Link href="/delivery-information" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('DeliveryInformation')}</span>
                 </Link>
@@ -50,9 +50,9 @@ export function Footer() {
               <li>
                 <Link href="/privacy-policy" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('PrivacyPolicy')}</span>
                 </Link>
@@ -60,9 +60,9 @@ export function Footer() {
               <li>
                 <Link href="/refund-policy" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('RefundPolicy')}</span>
                 </Link>
@@ -70,9 +70,9 @@ export function Footer() {
               <li>
                 <Link href="/partnerships" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('Partnerships')}</span>
                 </Link>
@@ -80,9 +80,9 @@ export function Footer() {
               <li>
                 <Link href="/contact-us" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('ContactTitle')}</span>
                 </Link>
@@ -98,9 +98,9 @@ export function Footer() {
               <li>
                 <Link href="/brands" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('Brands')}</span>
                 </Link>
@@ -108,9 +108,9 @@ export function Footer() {
               <li>
                 <Link href="/specials" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
-                    <Icon icon="mdi:chevron-left" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   ) : (
-                    <Icon icon="mdi:chevron-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   )}
                   <span>{t('Specials')}</span>
                 </Link>
@@ -125,7 +125,7 @@ export function Footer() {
             <ul className="space-y-5 text-[14px]">
               <li className="flex items-center gap-3 group">
                 <div className="p-2 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                  <Icon icon="mdi:phone" className="w-4 h-4" />
+                  <Phone className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col  gap-1.5">
                   <span className="font-bold">{t('PhoneLabel')}</span>
@@ -139,7 +139,7 @@ export function Footer() {
 
               <li className="flex items-center gap-3 group">
                 <div className="p-2 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                  <Icon icon="mdi:email" className="w-4 h-4" />
+                  <Mail className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col  gap-1.5">
                   <span className="font-bold">{t('EmailLabel')}</span>
@@ -148,7 +148,7 @@ export function Footer() {
               </li>
               <li className="flex  items-center  gap-3 group">
                 <div className="p-2 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm mt-1">
-                  <Icon icon="mdi:map-marker" className="w-4 h-4" />
+                  <MapPin className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col  gap-1">
                   <span className="font-bold">{t('LocationLabel')}</span>

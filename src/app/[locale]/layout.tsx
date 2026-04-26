@@ -22,6 +22,7 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export async function generateStaticParams() {
@@ -60,7 +61,6 @@ export default async function RootLayout({
           <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
           <link rel="preconnect" href="https://giomurhtsumtshqcsxwd.supabase.co" />
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-          <link rel="dns-prefetch" href="https://api.iconify.design" />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{

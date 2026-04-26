@@ -195,6 +195,7 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={t('Search')}
+              aria-label={t('Search')}
               className="flex-1 px-4 text-sm outline-none focus:outline-none focus:ring-0 focus:shadow-none placeholder:text-muted-foreground/60"
             />
 

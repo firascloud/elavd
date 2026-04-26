@@ -51,8 +51,8 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        title="Language"
-        aria-label="Language"
+        title={t('SwitchLanguage')}
+        aria-label={`${t('SwitchLanguage')}: ${currentLanguage?.nativeName}`}
         type="button"
         className={`group relative flex items-center gap-2 px-1 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-in-out`}
         onClick={handleToggle}
