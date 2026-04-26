@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Link } from '@/i18n/routing'
 import { Phone, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useLocale } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
 import type { Category } from '@/services/categoryService'
 
@@ -19,6 +19,7 @@ interface DesktopNavbarProps {
 }
 
 export default function DesktopNavbar({ navLinks, categories, activePathname }: DesktopNavbarProps) {
+  const t = useTranslations('common')
   const locale = useLocale()
   const isRtl = locale === 'ar'
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -89,6 +90,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
           {showLeftArrow && (
             <button
               onClick={() => scroll('left')}
+              aria-label={t('ScrollPrevious')}
               className={cn(
                 "absolute z-10 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white shadow-lg border border-gray-100 rounded-full text-gray-600 hover:text-primary transition-all active:scale-90",
                 isRtl ? "right-1" : "left-1"
@@ -152,6 +154,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
           {showRightArrow && (
             <button
               onClick={() => scroll('right')}
+              aria-label={t('ScrollNext')}
               className={cn(
                 "absolute z-10 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white shadow-lg border border-gray-100 rounded-full text-gray-600 hover:text-primary transition-all active:scale-90",
                 isRtl ? "left-1" : "right-1"
