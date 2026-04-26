@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Icon } from '@iconify/react'
-import { ChevronUp } from 'lucide-react'
+import { ChevronUp, Phone, MessageCircle } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
 export default function FloatingActions() {
@@ -23,7 +22,7 @@ export default function FloatingActions() {
       }
     }
 
-    window.addEventListener('scroll', checkScroll)
+    window.addEventListener('scroll', checkScroll, { passive: true })
     return () => window.removeEventListener('scroll', checkScroll)
   }, [showScroll])
 
@@ -68,7 +67,7 @@ export default function FloatingActions() {
         transition-all duration-300 hover:scale-110 active:scale-95"
         aria-label="WhatsApp"
       >
-        <Icon icon="mdi:whatsapp" className="w-6 h-6 relative z-10" />
+        <MessageCircle className="w-6 h-6 relative z-10" />
         <span className={`absolute ${isRtl ? 'left-full' : 'right-full'} top-1/2 -translate-y-1/2 ${isRtl ? 'ms-3' : 'me-3'} 
         px-3 py-1.5 rounded-lg text-[10px] font-black uppercase ltr:tracking-widest
         bg-foreground text-background whitespace-nowrap opacity-0 group-hover:opacity-100 
@@ -86,7 +85,7 @@ export default function FloatingActions() {
         transition-all duration-300 hover:scale-110 active:scale-95"
         aria-label="Call Us"
       >
-        <Icon icon="mdi:phone" className="size-5 relative z-10" />
+        <Phone className="size-5 relative z-10" />
         <span className={`absolute ${isRtl ? 'left-full' : 'right-full'} top-1/2 -translate-y-1/2 ${isRtl ? 'ms-3' : 'me-3'} 
         px-3 py-1.5 rounded-lg text-[10px] font-black uppercase ltr:tracking-widest
         bg-foreground text-background whitespace-nowrap opacity-0 group-hover:opacity-100 

@@ -1,10 +1,19 @@
 import Hero from "./_components/hero";
-import OurCategories from "./_components/ourCategories";
-import OurProducts from "./_components/ourProducts";
-import SpecialOffers from "./_components/specialOffers";
+import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import { getHomeJsonLd } from "@/seo/home";
 import { homeMetadata } from "@/metadata/home";
+
+// Lazy-load below-the-fold sections to reduce initial JS bundle
+const OurCategories = dynamic(() => import("./_components/ourCategories"), {
+  loading: () => <div className="w-full py-12 bg-white min-h-[400px]" />,
+});
+const OurProducts = dynamic(() => import("./_components/ourProducts"), {
+  loading: () => <div className="w-full py-12 bg-white min-h-[400px]" />,
+});
+const SpecialOffers = dynamic(() => import("./_components/specialOffers"), {
+  loading: () => <div className="w-full min-h-[200px]" />,
+});
 
 export async function generateMetadata({
   params,

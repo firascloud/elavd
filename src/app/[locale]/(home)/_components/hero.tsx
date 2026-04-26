@@ -9,6 +9,12 @@ import { ChevronRight, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
+// Import banner images once (not duplicated)
+import banner1 from '@/assets/banner-1.svg'
+import banner2 from '@/assets/banner-2.svg'
+import banner3 from '@/assets/banner-3.svg'
+import banner4 from '@/assets/banner-4.svg'
+
 export default function Hero() {
   const t = useTranslations('hero')
   const locale = useLocale()
@@ -21,10 +27,10 @@ export default function Hero() {
   }, [autoplay])
 
   const slides = [
-    { id: '1', image: require('@/assets/banner-3.svg'), href: '/store/ribbons-and-film' },
-    { id: '2', image: require('@/assets/banner-1.svg'), href: '/store/plastic-card-printers' },
-    { id: '3', image: require('@/assets/banner-2.svg'), href: '/store/biometric-attendance-systems' },
-    { id: '4', image: require('@/assets/banner-4.svg'), href: '/store/metal-safes' },
+    { id: '1', image: banner3, href: '/store/ribbons-and-film' },
+    { id: '2', image: banner1, href: '/store/plastic-card-printers' },
+    { id: '3', image: banner2, href: '/store/biometric-attendance-systems' },
+    { id: '4', image: banner4, href: '/store/metal-safes' },
   ]
 
   return (
@@ -39,9 +45,11 @@ export default function Hero() {
             >
 
               <Image
-                src={require('@/assets/banner-1.svg')}
+                src={banner1}
                 alt="PVC Card Printers"
                 fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 0px, 25vw"
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
@@ -58,9 +66,11 @@ export default function Hero() {
               className="flex-1 rounded-lg overflow-hidden relative group shadow-sm border border-border cursor-pointer min-h-[180px] hover:border-primary/30 transition-all"
             >
               <Image
-                src={require('@/assets/banner-2.svg')}
+                src={banner2}
                 alt="Biometric Systems"
                 fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 0px, 25vw"
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent pointer-events-none" />
@@ -75,15 +85,17 @@ export default function Hero() {
 
           <div className="lg:col-span-6 overflow-hidden rounded-none md:rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
             <div className="flex h-full">
-              {slides.map((slide) => (
+              {slides.map((slide, index) => (
                 <div key={slide.id} className="relative flex-[0_0_100%] min-w-0 h-full min-h-[300px] lg:min-h-[460px] overflow-hidden group">
 
                   <Image
                     src={slide.image}
                     alt="Banner Background"
                     fill
-                    priority={slide.id === '1'}
-                    fetchPriority={slide.id === '1' ? 'high' : 'auto'}
+                    priority={index === 0}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : 'low'}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover group-hover:scale-100 md:group-hover:scale-105 transition-transform duration-[4000ms] ease-out"
                   />
 
@@ -143,9 +155,11 @@ export default function Hero() {
             className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block"
           >
             <Image
-              src={require('@/assets/banner-3.svg')}
+              src={banner3}
               alt="ID Accessories"
               fill
+              loading="lazy"
+              sizes="(max-width: 1024px) 0px, 25vw"
               className="object-cover group-hover:scale-110 transition-transform duration-1000"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
