@@ -236,6 +236,8 @@
     "Event": "Event",
     "BrandIndexEn": "Brand Index (EN)",
     "BrandIndexAr": "Brand Index (AR)",
+    "Indexing": "Indexing",
+    "Optional": "Optional",
     "Inquiries": "Inquiries",
     "City": "City",
     "YourMessage": "Customer Question",

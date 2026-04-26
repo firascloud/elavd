@@ -31,8 +31,6 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
             name_ar: "",
             slug_en: "",
             slug_ar: "",
-            brand_index_en: "",
-            brand_index_ar: "",
             image_url: "",
         }
     });
@@ -41,18 +39,27 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
 
     const onSubmit = async (data: any) => {
         setLoading(true);
+        console.log("Submitting brand data:", data);
         try {
-            const { id: _id, created_at: _createdAt, updated_at: _updatedAt, ...cleanData } = data;
-
-            // Handle empty strings for optional fields
-            if (!cleanData.brand_index_en) delete cleanData.brand_index_en;
-            if (!cleanData.brand_index_ar) delete cleanData.brand_index_ar;
+            // Remove relational/non-table fields, IDs, timestamps, and generated columns
+            const {
+                id: _id,
+                created_at: _createdAt,
+                updated_at: _updatedAt,
+                brand_index_en: _brandIndexEn,
+                brand_index_ar: _brandIndexAr,
+                ...cleanData
+            } = data as any;
 
             if (initialData?.id) {
+                console.log("Updating brand:", initialData.id);
                 await updateRecord('brands', cleanData, initialData.id);
             } else {
+                console.log("Inserting new brand");
                 await insertRecord('brands', cleanData);
             }
+            
+            toast.success(t("Done") || "Operation successful");
             onSuccess();
         } catch (error: any) {
             console.error("Error saving brand:", error);
@@ -91,37 +98,6 @@ export default function BrandForm({ initialData, onSuccess, onCancel, formId }: 
                                 </Label>
                                 <Input
                                     {...register(field.name, { required: field.required })}
-                                    className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Section: Indexing */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary ring-1 ring-secondary/20 transition-transform">
-                            <Type className="h-5 w-5 stroke-[2]" />
-                        </div>
-                        <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Indexing")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("Optional")}</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
-                        {[
-                            { label: t("BrandIndexEn"), name: "brand_index_en" },
-                            { label: t("BrandIndexAr"), name: "brand_index_ar" }
-                        ].map((field) => (
-                            <div key={field.name} className="space-y-2 group">
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
-                                    {field.label}
-                                </Label>
-                                <Input
-                                    {...register(field.name)}
-                                    maxLength={1}
                                     className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
                                 />
                             </div>
