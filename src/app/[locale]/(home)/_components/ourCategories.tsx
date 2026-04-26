@@ -166,7 +166,7 @@ export default function ourCategories() {
                                             <div className=" font-bold text-[#1a1a1a]  text-sm truncate leading-tight group-hover:text-primary transition-colors">
                                                 {loading ? <div className="h-4 w-32 bg-gray-100  rounded  animate-pulse mx-auto" /> : (locale === 'ar' ? prod.name_ar : prod.name_en)}
                                             </div>
-                                            <div className="text-xs text-gray-400 mt-1 uppercase ltr:tracking-wider">
+                                            <div className="text-xs text-black/80 mt-1 uppercase ltr:tracking-wider">
                                                 {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : (prod.slug_en?.substring(0, 10).toUpperCase() || 'PROD')}
                                             </div>
                                         </div>
