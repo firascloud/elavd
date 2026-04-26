@@ -16,7 +16,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { toast } from 'sonner'
 import { X } from 'lucide-react'
 import { orderService, OrderItem, OrderData } from '@/services/orderService'
-import { emailService } from '@/services/emailService'
+import { emailService, ORDER_TEMPLATE_ID } from '@/services/emailService'
 
 interface QuoteModalProps {
   isOpen: boolean
@@ -134,11 +134,14 @@ export default function QuoteModal({ isOpen, onClose, product, items }: QuoteMod
         };
 
         // Send branded confirmation to customer (Elavd Team Branding)
-        // You can set up BCC in EmailJS if you also need to receive this email as an admin.
-        await emailService.sendCustomerConfirmation({
-          ...emailParams,
-          subject: locale === 'ar' ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
-        });
+        // This call also notifies the admin if the template is configured with auto-reply/BCC
+        await emailService.sendCustomerConfirmation(
+          {
+            ...emailParams,
+            subject: locale === 'ar' ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
+          },
+          ORDER_TEMPLATE_ID
+        );
         
       } catch (emailError) {
         console.error('Email notification failed:', emailError);

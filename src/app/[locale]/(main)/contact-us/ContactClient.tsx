@@ -11,7 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
 import { sendMessage } from '@/services/contactService';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { emailService } from '@/services/emailService';
+import { emailService, CONTACT_TEMPLATE_ID } from '@/services/emailService';
 
 export default function ContactClient() {
   const t = useTranslations('contact-us');
@@ -57,11 +57,14 @@ export default function ContactClient() {
         };
 
         // Send branded confirmation to customer (Elavd Team Branding)
-        // You can set up BCC in EmailJS if you also need to receive this email as an admin.
-        await emailService.sendCustomerConfirmation({
-          ...emailParams,
-          subject: isRtl ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
-        });
+        // This call also notifies the admin if the template is configured with auto-reply/BCC
+        await emailService.sendCustomerConfirmation(
+          {
+            ...emailParams,
+            subject: isRtl ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
+          },
+          CONTACT_TEMPLATE_ID
+        );
 
       } catch (emailError) {
         console.error('Email notification failed:', emailError);

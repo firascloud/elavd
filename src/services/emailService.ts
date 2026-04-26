@@ -2,8 +2,8 @@ import emailjs from '@emailjs/browser';
 
 const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '';
 const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '';
-const CONTACT_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID || '';
-const ORDER_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_ORDER_TEMPLATE_ID || '';
+export const CONTACT_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID || 'template_opj78rh';
+export const ORDER_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_ORDER_TEMPLATE_ID || 'template_ch5664l';
 
 // Initialize EmailJS once
 if (typeof window !== 'undefined' && PUBLIC_KEY) {
@@ -100,13 +100,18 @@ export const emailService = {
         SERVICE_ID,
         customTemplateId || ORDER_TEMPLATE_ID,
         {
+          name: params.name,
           from_name: params.name,
+          email: params.email,
           from_email: params.email,
           phone: params.phone,
           city: params.city,
           message: params.message,
+          total: params.total,
+          items: params.items,
           product_name: params.product_name,
           subject: params.subject || 'New Message from Elavd Team',
+          confirmation_message: params.confirmation_message,
           type: 'CUSTOMER_CONFIRMATION'
         }
       );
