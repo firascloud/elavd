@@ -145,29 +145,31 @@ export default function ourCategories() {
                                 {t('FeaturedProducts')}
                             </div>
                             <div className="divide-y divide-gray-100 min-h-[385px]">
-                                {(loading ? Array.from({ length: 4 }) : featuredProducts).map((prod: any, i) => (
+                                {(loading ? (Array.from({ length: 4 }) as (Product | undefined)[]) : featuredProducts).map((prod, i) => (
                                     <Link href={`/product/${prod?.slug_en || prod?.id}`} key={prod?.id ?? i} className="flex items-center gap-4 p-5 hover:bg-gray-50 transition-colors group">
                                         <div className="relative h-16 w-16 bg-white overflow-hidden border border-gray-100 flex-shrink-0 group-hover:border-primary/20 transition-colors">
-                                            {loading || !prod?.image_url ? (
-                                                <div className="h-full w-full grid place-items-center bg-gray-50">
-                                                    <Layers className="h-6 w-6 text-gray-300" />
-                                                </div>
-                                            ) : (
+                                            {loading ? (
+                                                <div className="h-full w-full animate-pulse bg-gray-100" />
+                                            ) : prod?.main_image ? (
                                                 <Image
-                                                    src={prod.image_url}
+                                                    src={prod.main_image}
                                                     alt={(locale === 'ar' ? prod.name_ar : prod.name_en) || 'Product'}
                                                     fill
                                                     sizes="64px"
                                                     className="object-contain p-1 transition-transform duration-500 group-hover:scale-110"
                                                 />
+                                            ) : (
+                                                <div className="h-full w-full grid place-items-center bg-gray-50">
+                                                    <Layers className="h-6 w-6 text-gray-300" />
+                                                </div>
                                             )}
                                         </div>
                                         <div className="text-start flex-1 min-w-0">
                                             <div className=" font-bold text-[#1a1a1a]  text-sm truncate leading-tight group-hover:text-primary transition-colors">
-                                                {loading ? <div className="h-4 w-32 bg-gray-100  rounded  animate-pulse mx-auto" /> : (locale === 'ar' ? prod.name_ar : prod.name_en)}
+                                                {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" /> : (locale === 'ar' ? prod?.name_ar : prod?.name_en)}
                                             </div>
                                             <div className="text-xs text-black/80 mt-1 uppercase ltr:tracking-wider">
-                                                {loading ? <div className="h-4 w-32 bg-gray-100 rounded animate-pulse mx-auto" /> : (prod.slug_en?.substring(0, 10).toUpperCase() || 'PROD')}
+                                                {loading ? <div className="h-3 w-24 bg-gray-100 rounded animate-pulse" /> : (prod?.slug_en?.substring(0, 10).toUpperCase() || 'PROD')}
                                             </div>
                                         </div>
                                     </Link>
