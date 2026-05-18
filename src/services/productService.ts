@@ -19,14 +19,14 @@ export type Product = {
     is_event?: boolean;
     is_active?: boolean;
     created_at?: string;
-    category_id?: string;
+    category_id?: string | null;
     category?: {
         id: string;
         name_en: string | null;
         name_ar: string | null;
         slug: string | null;
     },
-    sub_category_id?: string;
+    sub_category_id?: string | null;
     sub_category?: {
         id: string;
         name_en: string | null;
@@ -85,6 +85,7 @@ export async function getProducts({
     if (brandId) query = query.eq('brand_id', brandId);
     
     const { data } = await query
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -131,6 +132,7 @@ export async function searchProducts({
     }
 
     const { data, error } = await supabaseQuery
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 

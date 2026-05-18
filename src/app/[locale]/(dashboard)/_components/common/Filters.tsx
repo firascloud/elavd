@@ -4,6 +4,7 @@ import React from "react";
 import { Search as SearchIcon, Filter as FilterIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -39,7 +40,7 @@ export function DashboardFilter({ options, onSelect, selectedValue }: { options:
     <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
       <div className="flex items-center gap-2 px-4 py-2.5 bg-background/40 backdrop-blur-xl rounded-2xl border border-border/40 shrink-0">
         <FilterIcon className="h-3.5 w-3.5 text-foreground/70" />
-        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Filter</span>
+        <span className="text-[10px] font-bold uppercase ltr:tracking-widest text-muted-foreground">Filter</span>
       </div>
 
       <div className="flex items-center gap-2">
@@ -69,6 +70,7 @@ export function DashboardPagination({
   onNext,
   totalCount,
   onPageSelect,
+  className
 }: {
   page: number;
   totalPages: number;
@@ -76,7 +78,12 @@ export function DashboardPagination({
   onNext: () => void;
   totalCount?: number;
   onPageSelect?: (p: number) => void;
+  className?: string;
 }) {
+  const t = useTranslations("dashboard");
+  const locale = useLocale();
+  const isAr = locale === "ar";
+
   const makePages = (): (number | string)[] => {
     const pages: (number | string)[] = [];
     const maxButtons = 5;
@@ -100,55 +107,69 @@ export function DashboardPagination({
   const to = Math.min(page * pageSize, totalCount || page * pageSize);
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-10 p-5 bg-background/30 backdrop-blur-2xl border border-border/30 rounded-[2rem] shadow-xl shadow-black/[0.02]">
-      <div className="flex flex-col gap-0.5">
-        <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/60">Pagination</p>
-        {totalCount ? (
-          <p className="text-sm font-medium">
-            Showing <span className="text-foreground font-extrabold">{Math.min(from, totalCount)}</span>
-            <span className="mx-1 opacity-30">–</span>
-            <span className="text-foreground font-extrabold">{to}</span>
-            <span className="mx-2 opacity-30">of</span>
-            <span className="text-muted-foreground">{totalCount}</span>
-          </p>
-        ) : (
-          <p className="text-sm font-medium">
-            Page <span className="text-foreground font-extrabold">{page}</span>
-            <span className="mx-1 opacity-30">/</span>
-            <span className="text-muted-foreground">{totalPages}</span>
-          </p>
-        )}
+    <div className={cn(
+      "flex flex-col lg:flex-row lg:items-center justify-between gap-6 mt-12 p-6 lg:p-8 bg-background/30 backdrop-blur-2xl border border-border/30 rounded-[2.5rem] shadow-xl shadow-black/[0.02]",
+      className
+    )}>
+      {/* Status Info */}
+      <div className="flex items-center gap-4">
+        <div className="h-10 w-10 min-w-10 rounded-2xl bg-primary/5 flex items-center justify-center text-primary shadow-sm">
+          {isAr ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+        </div>
+        <div className="flex flex-col">
+          <span className="text-[10px] uppercase ltr:tracking-[0.2em] font-black text-muted-foreground/40">{t("Pagination")}</span>
+          {totalCount ? (
+            <div className="flex items-center gap-1.5 text-sm font-bold text-foreground/80">
+              <span>{Math.min(from, totalCount)}</span>
+              <span className="opacity-20">/</span>
+              <span>{to}</span>
+              <span className="mx-1 text-[10px] opacity-40 uppercase ltr:tracking-widest font-black">{t("of")}</span>
+              <span className="text-primary">{totalCount}</span>
+            </div>
+          ) : (
+            <p className="text-sm font-bold text-foreground/80">
+              {t("Page")} {page} <span className="opacity-20 px-1">/</span> {totalPages}
+            </p>
+          )}
+        </div>
       </div>
 
-      <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar">
+      {/* Navigation Controls */}
+      <div className="flex items-center justify-center sm:justify-end gap-2 flex-wrap sm:flex-nowrap">
         <Button
           variant="outline"
           onClick={onPrev}
           disabled={page <= 1}
-          className="h-11 w-11 p-0 rounded-2xl border-border/40 bg-background/40 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 disabled:opacity-30 shadow-sm shrink-0"
+          className="h-11 w-11 p-0 rounded-2xl border-border/40 bg-background/40 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 disabled:opacity-20 shadow-sm shrink-0"
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
-        {makePages().map((p, idx) => (
-          <Button
-            key={`${p}-${idx}`}
-            variant={p === page ? "default" : "outline"}
-            size="sm"
-            onClick={() => typeof p === "number" && onPageSelect?.(p)}
-            disabled={typeof p !== "number"}
-            className={cn(
-              "h-10 min-w-10 px-3 cursor-pointer rounded-2xl shrink-0",
-              p === page ? "bg-foreground text-background hover:bg-foreground/90" : "border-border/40 bg-background/40 hover:border-foreground/20 hover:bg-background/60"
-            )}
-          >
-            {p}
-          </Button>
-        ))}
+        
+        <div className="flex items-center gap-1.5 px-2 py-1 bg-foreground/[0.02] rounded-2xl border border-border/5">
+          {makePages().map((p, idx) => (
+            <Button
+              key={`${p}-${idx}`}
+              variant={p === page ? "default" : "ghost"}
+              size="sm"
+              onClick={() => typeof p === "number" && onPageSelect?.(p)}
+              disabled={typeof p !== "number"}
+              className={cn(
+                "h-9 min-w-9 px-0 cursor-pointer rounded-xl font-bold transition-all duration-300",
+                p === page 
+                  ? "bg-foreground text-background shadow-lg shadow-foreground/10 active:scale-95 translate-y-[-1px]" 
+                  : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground active:scale-95"
+              )}
+            >
+              {p}
+            </Button>
+          ))}
+        </div>
+
         <Button
           variant="outline"
           onClick={onNext}
           disabled={page >= totalPages}
-          className="h-11 w-11 p-0 cursor-pointer rounded-2xl border-border/40 bg-background/40 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 disabled:opacity-30 shadow-sm shrink-0"
+          className="h-11 w-11 p-0 cursor-pointer rounded-2xl border-border/40 bg-background/40 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 disabled:opacity-20 shadow-sm shrink-0"
         >
           <ChevronRight className="h-5 w-5" />
         </Button>

@@ -9,6 +9,8 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
+import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Package, FileText, ImageIcon, Globe, Plus, RefreshCw, Layers } from "lucide-react";
@@ -40,6 +42,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
             seo_description_ar: "",
             seo_keywords_en: "",
             seo_keywords_ar: "",
+            sort_order: initialData?.sort_order || 0,
         }
     });
 
@@ -50,27 +53,22 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
         try {
             const finalData = {
                 ...data,
+                sort_order: parseInt(data.sort_order) || 0,
                 seo_keywords_en: typeof data.seo_keywords_en === 'string' ? data.seo_keywords_en.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_en,
                 seo_keywords_ar: typeof data.seo_keywords_ar === 'string' ? data.seo_keywords_ar.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_ar,
             };
 
-            const { id: _id, created_at: _createdAt, updated_at: _updatedAt, ...cleanData } = finalData;
+            const { id: _id, created_at: _createdAt, updated_at: _updatedAt, sub_categories: _subCategories, ...cleanData } = finalData;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('categories')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('categories', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('categories')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('categories', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving category:", error);
+            toast.error(error.message || "Error saving category");
         } finally {
             setLoading(false);
         }
@@ -87,7 +85,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             <Layers className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("General")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
@@ -97,7 +95,8 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
                             { label: t("SlugEn"), name: "slug_en", required: true },
-                            { label: t("SlugAr"), name: "slug_ar", required: true }
+                            { label: t("SlugAr"), name: "slug_ar", required: true },
+                            { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
                             <div key={field.name} className="space-y-2 group">
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
@@ -105,6 +104,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                                 </Label>
                                 <Input
                                     {...register(field.name, { required: field.required })}
+                                    type={field.type || "text"}
                                     className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
                                 />
                             </div>
@@ -119,7 +119,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             <FileText className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Descriptions")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Descriptions")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
@@ -156,7 +156,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             <ImageIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Images")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
                         </div>
                     </div>
@@ -168,7 +168,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             bucket="categories"
                         />
                         <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
+                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("ImageUrl")}</p>
                             <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeCategory")}</p>
                         </div>
                     </div>
@@ -181,7 +181,7 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             <Plus className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>

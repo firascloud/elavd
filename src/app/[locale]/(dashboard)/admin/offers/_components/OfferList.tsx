@@ -130,7 +130,7 @@ export default function OfferList() {
                         </Button>
                         <Button
                             onClick={() => { setSelectedOffer(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
                         >
                             <Plus className="h-5 w-5 stroke-[3]" />
                             <span>{t("AddOffer")}</span>
@@ -188,7 +188,7 @@ export default function OfferList() {
                         </DashboardTableCell>
                         <DashboardTableCell>
                             <div className="flex flex-col">
-                                <span className="font-semibold tracking-tight text-sm">{isAr ? offer.title_ar : offer.title_en}</span>
+                                <span className="font-semibold ltr:tracking-tight text-sm">{isAr ? offer.title_ar : offer.title_en}</span>
                                 {offer.position > 0 && <span className="text-[10px] text-muted-foreground">{t("Pos")}: {offer.position}</span>}
                             </div>
                         </DashboardTableCell>
@@ -198,7 +198,7 @@ export default function OfferList() {
                             </span>
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden md:table-cell">
-                             <span className="text-xs font-semibold px-3 py-1 bg-secondary/5 text-secondary border border-secondary/20 rounded-full">
+                            <span className="text-xs font-semibold px-3 py-1 bg-secondary/5 text-secondary border border-secondary/20 rounded-full">
                                 {isAr ? offer.sub_categories?.name_ar : offer.sub_categories?.name_en || "-"}
                             </span>
                         </DashboardTableCell>

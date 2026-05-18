@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { 
-    Bell, 
-    MessageSquare, 
-    Clock, 
-    Check, 
+import {
+    Bell,
+    MessageSquare,
+    Clock,
+    Check,
     ExternalLink,
     User
 } from 'lucide-react';
-import { 
-    Popover, 
-    PopoverContent, 
-    PopoverTrigger 
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -20,7 +20,7 @@ import { useLocale } from "next-intl";
 import { getContacts, updateContactStatus } from "@/services/contactService";
 import { formatDistanceToNow } from 'date-fns';
 import { ar, enUS } from 'date-fns/locale';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { cn } from "@/lib/utils";
 
 export default function NotificationDropdown() {
@@ -47,7 +47,7 @@ export default function NotificationDropdown() {
 
     useEffect(() => {
         fetchNewContacts();
-        
+
         // Refresh every minute to keep times current and check for new ones
         const interval = setInterval(fetchNewContacts, 60000);
         return () => clearInterval(interval);
@@ -67,9 +67,9 @@ export default function NotificationDropdown() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button 
-                    variant="ghost" 
-                    size="icon" 
+                <Button
+                    variant="ghost"
+                    size="icon"
                     className={cn(
                         "text-muted-foreground hover:text-primary relative h-8 w-8 sm:h-9 sm:w-9 transition-all duration-300 rounded-xl",
                         unreadCount > 0 ? "bg-primary/5 text-primary" : "hover:bg-primary/5"
@@ -84,8 +84,8 @@ export default function NotificationDropdown() {
                     )}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent 
-                align="end" 
+            <PopoverContent
+                align="end"
                 className="w-[90vw] max-w-[380px] p-0 border-primary/10 shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden rounded-[2rem] bg-background/95 backdrop-blur-xl"
                 sideOffset={12}
             >
@@ -95,11 +95,11 @@ export default function NotificationDropdown() {
                             <Bell className="h-5 w-5" />
                         </div>
                         <div>
-                            <h4 className="font-black text-sm tracking-tight text-foreground uppercase">
+                            <h4 className="font-black text-sm ltr:tracking-tight text-foreground uppercase">
                                 {isAr ? "التنبيهات" : "Notifications"}
                             </h4>
-                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.1em]">
-                                {unreadCount > 0 
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase ltr:tracking-[0.1em]">
+                                {unreadCount > 0
                                     ? (isAr ? `لديك ${unreadCount} رسائل جديدة` : `You have ${unreadCount} new inquiries`)
                                     : (isAr ? "لا توجد رسائل جديدة" : "All caught up")
                                 }
@@ -107,15 +107,15 @@ export default function NotificationDropdown() {
                         </div>
                     </div>
                 </div>
-                
+
                 <Separator className="bg-primary/5" />
-                
+
                 <div className="max-h-[380px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/10">
                     {notifications.length > 0 ? (
                         <div className="p-2 space-y-1">
                             {notifications.map((notif) => (
-                                <div 
-                                    key={notif.id} 
+                                <div
+                                    key={notif.id}
                                     className="p-4 rounded-2xl hover:bg-primary/[0.03] transition-all duration-300 group relative border border-transparent hover:border-primary/10"
                                 >
                                     <div className="flex gap-4">
@@ -129,7 +129,7 @@ export default function NotificationDropdown() {
                                                 </span>
                                                 <span className="text-[10px] text-muted-foreground font-bold flex items-center gap-1.5 shrink-0 bg-muted/30 px-2 py-0.5 rounded-full">
                                                     <Clock className="h-3 w-3 opacity-60" />
-                                                    {formatDistanceToNow(new Date(notif.created_at), { 
+                                                    {formatDistanceToNow(new Date(notif.created_at), {
                                                         addSuffix: true,
                                                         locale: isAr ? ar : enUS
                                                     })}
@@ -139,22 +139,22 @@ export default function NotificationDropdown() {
                                                 "{notif.message}"
                                             </p>
                                             <div className="flex items-center gap-2">
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="sm" 
-                                                    className="h-8 px-3 text-[10px] font-black rounded-xl border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 uppercase tracking-widest gap-2 bg-primary/5"
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="h-8 px-3 text-[10px] font-black rounded-xl border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 uppercase ltr:tracking-widest gap-2 bg-primary/5"
                                                     asChild
                                                 >
-                                                    <Link href={`/${locale}/admin/contacts`}>
+                                                    <Link href="/admin/contacts">
                                                         <ExternalLink className="h-3.5 w-3.5" />
                                                         {isAr ? "عرض" : "View"}
                                                     </Link>
                                                 </Button>
-                                                <Button 
-                                                    variant="ghost" 
-                                                    size="sm" 
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
                                                     onClick={() => markAsRead(notif.id)}
-                                                    className="h-8 px-3 text-[10px] font-black rounded-xl hover:bg-green-500/10 hover:text-green-600 transition-all duration-300 uppercase tracking-widest gap-2"
+                                                    className="h-8 px-3 text-[10px] font-black rounded-xl hover:bg-green-500/10 hover:text-green-600 transition-all duration-300 uppercase ltr:tracking-widest gap-2"
                                                 >
                                                     <Check className="h-3.5 w-3.5" />
                                                     {isAr ? "تحديد كمقروء" : "Done"}
@@ -176,7 +176,7 @@ export default function NotificationDropdown() {
                                     <Check className="h-3 w-3 text-primary" />
                                 </div>
                             </div>
-                            <h5 className="text-sm font-black text-foreground uppercase tracking-tight mb-1">
+                            <h5 className="text-sm font-black text-foreground uppercase ltr:tracking-tight mb-1">
                                 {isAr ? "لا توجد رسائل جديدة" : "Perfectly Clean!"}
                             </h5>
                             <p className="text-[11px] text-muted-foreground font-medium max-w-[180px] leading-relaxed">
@@ -185,16 +185,16 @@ export default function NotificationDropdown() {
                         </div>
                     )}
                 </div>
-                
+
                 <Separator className="bg-primary/5" />
                 <div className="p-4">
-                    <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="w-full text-[11px] font-black uppercase tracking-[0.2em] h-12 rounded-2xl hover:bg-primary hover:text-primary-foreground transition-all duration-500 border border-primary/10 hover:border-primary shadow-sm group"
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-[11px] font-black uppercase ltr:tracking-[0.2em] h-12 rounded-2xl hover:bg-primary hover:text-primary-foreground transition-all duration-500 border border-primary/10 hover:border-primary shadow-sm group"
                         asChild
                     >
-                        <Link href={`/${locale}/admin/contacts`} className="flex items-center justify-center gap-2">
+                        <Link href="/admin/contacts" className="flex items-center justify-center gap-2">
                             {isAr ? "عرض جميع الاستفسارات" : "Inquiry Management Center"}
                             <ExternalLink className="h-3.5 w-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                         </Link>

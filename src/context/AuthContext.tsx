@@ -26,7 +26,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const isAdmin = user?.email === "admin@elavd.com";
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!user) {
+        setIsAdmin(false);
+        return;
+      }
+      
+      const { data, error } = await supabaseBrowser
+        .from("users")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+      
+      setIsAdmin(data?.role === "admin");
+    };
+
+    checkAdmin();
+  }, [user]);
 
   useEffect(() => {
     // Check session on mount

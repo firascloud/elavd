@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Search, ChevronDown, Menu, Loader2, Star, Tag, ChevronRight } from 'lucide-react'
 import { Link, useRouter } from '@/i18n/routing'
 import { useTranslations, useLocale } from 'next-intl'
-import Logo from '@/assets/logo.svg'
+import Logo from '@/assets/logo.webp'
 import LanguageSwitcher from './LanguageSwitcher'
 import HeaderActions from './HeaderActions'
 import { getCategories, type Category } from '@/services/categoryService'
@@ -101,7 +101,14 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
     <div className="bg-white h-[106px] flex items-center px-4 border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 lg:gap-6 w-full">
         <Link href="/" className="shrink-0">
-          <Image src={Logo} alt="Logo" width={200} height={200} className="w-32 lg:w-48 h-auto" />
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={200}
+            height={80}
+            priority
+            className="w-28 lg:w-48 h-auto max-h-[70px] lg:max-h-[80px] object-contain"
+          />
         </Link>
 
         {/* Desktop Search */}
@@ -173,12 +180,14 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={t('Search')}
+              aria-label={t('Search')}
               className="flex-1 px-4 text-sm outline-none focus:outline-none focus:ring-0 focus:shadow-none placeholder:text-muted-foreground/60"
             />
 
             <button
               type="submit"
               disabled={loading}
+              aria-label={t('Search')}
               className="bg-primary px-6 flex items-center justify-center text-white hover:bg-primary/95 transition disabled:opacity-80 rounded-e-[6px]"
             >
               {loading ? (
@@ -206,14 +215,14 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
                   </div>
                 ) : results.length > 0 ? (
                   <div className="p-2">
-                    <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                    <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase ltr:tracking-wider flex justify-between items-center">
                       <span>{t('TopResults')} ({results.length})</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">
                       {results.map((product) => (
                         <Link
                           key={product.id}
-                          href={`/products/${(locale === 'ar' ? product.slug_ar : product.slug_en) || product.id}`}
+                          href={`/product/${product.slug_en || product.id}`}
                           onClick={() => setSearchTerm('')}
                           className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all group border border-transparent hover:border-slate-100"
                         >

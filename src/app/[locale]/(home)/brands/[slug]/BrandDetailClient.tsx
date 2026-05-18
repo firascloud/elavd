@@ -5,9 +5,9 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getBrandBySlug, Brand } from '@/services/brandService';
 import { getProducts, Product } from '@/services/productService';
 import { ProductCard } from '@/components/common/product-card';
+import { AlertCircle, Building2, Package } from 'lucide-react';
 import PageHeader from '@/components/common/page-header';
 import Image from 'next/image';
-import { Icon } from '@iconify/react';
 
 interface BrandProductsPageProps {
     params: Promise<{ slug: string; locale: string }>;
@@ -48,7 +48,7 @@ export default function BrandDetailClient({ params }: BrandProductsPageProps) {
     if (!brand) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center p-4">
-                <Icon icon="mdi:alert-circle-outline" className="w-20 h-20 text-muted-foreground/20 mb-6" />
+                <AlertCircle className="w-20 h-20 text-muted-foreground/20 mb-6" />
                 <h1 className="text-2xl font-bold mb-2">Brand Not Found</h1>
                 <p className="text-muted-foreground mb-8">The brand you are looking for does not exist.</p>
             </div>
@@ -76,14 +76,14 @@ export default function BrandDetailClient({ params }: BrandProductsPageProps) {
                                 className="object-contain p-2"
                             />
                         ) : (
-                            <Icon icon="mdi:domain" className="w-16 h-16 text-muted-foreground/20" />
+                            <Building2 className="w-16 h-16 text-muted-foreground/20" />
                         )}
                     </div>
                     <div className="text-center md:text-start flex-1">
                         <h2 className="text-3xl font-black text-[#1a1a1b] mb-2">{brandName}</h2>
                         <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm font-medium text-muted-foreground">
                             <div className="flex items-center gap-1.5 bg-[#fcf8f8] px-3 py-1.5 rounded-full border border-[#eee1e1]">
-                                <Icon icon="mdi:package-variant-closed" className="text-primary" />
+                                <Package className="w-4 h-4 text-primary" />
                                 <span>{products.length} {isAr ? 'منتجات' : 'Products'}</span>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ export default function BrandDetailClient({ params }: BrandProductsPageProps) {
                 ) : (
                     <div className="text-center py-32 bg-white rounded-[2rem] border border-dashed border-[#eee1e1]">
                         <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-                            <Icon icon="mdi:package-variant" className="w-10 h-10 text-muted-foreground/30" />
+                            <Package className="w-10 h-10 text-muted-foreground/30" />
                         </div>
                         <h3 className="text-xl font-bold mb-2 text-[#1a1a1b]">{isAr ? 'لا يوجد منتجات' : 'No Products Found'}</h3>
                         <p className="text-muted-foreground">{isAr ? 'لا توجد منتجات متاحة لهذه العلامة التجارية حالياً.' : 'There are no products available for this brand at the moment.'}</p>

@@ -9,6 +9,7 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Package, FileText, ImageIcon, Globe, Plus, RefreshCw, Layers } from "lucide-react";
 import TextEditor from "@/components/TextEditor";
+import { toast } from "sonner";
 
 interface SubCategoryFormProps {
     initialData?: any;
@@ -49,6 +51,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
             seo_description_ar: "",
             seo_keywords_en: "",
             seo_keywords_ar: "",
+            sort_order: initialData?.sort_order || 0,
         }
     });
 
@@ -69,6 +72,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
         try {
             const finalData = {
                 ...data,
+                sort_order: parseInt(data.sort_order) || 0,
                 seo_keywords_en: typeof data.seo_keywords_en === 'string' ? data.seo_keywords_en.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_en,
                 seo_keywords_ar: typeof data.seo_keywords_ar === 'string' ? data.seo_keywords_ar.split(',').map((k: string) => k.trim()).filter(Boolean) : data.seo_keywords_ar,
             };
@@ -76,20 +80,14 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
             const { id: _id, created_at: _createdAt, updated_at: _updatedAt, categories: _categories, ...cleanData } = finalData;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('sub_categories')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('sub_categories', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('sub_categories')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('sub_categories', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving sub-category:", error);
+            toast.error(error.message || "Error saving sub-category");
         } finally {
             setLoading(false);
         }
@@ -106,7 +104,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <Layers className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("General")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
@@ -121,8 +119,8 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                                 control={control}
                                 rules={{ required: true }}
                                 render={({ field }) => (
-                                    <Select 
-                                        onValueChange={field.onChange} 
+                                    <Select
+                                        onValueChange={field.onChange}
                                         value={field.value}
                                         defaultValue={initialData?.category_id}
                                     >
@@ -145,7 +143,8 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
                             { label: t("SlugEn"), name: "slug_en", required: true },
-                            { label: t("SlugAr"), name: "slug_ar", required: true }
+                            { label: t("SlugAr"), name: "slug_ar", required: true },
+                            { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
                             <div key={field.name} className="space-y-2 group">
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
@@ -153,6 +152,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                                 </Label>
                                 <Input
                                     {...register(field.name, { required: field.required })}
+                                    type={field.type || "text"}
                                     className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
                                 />
                             </div>
@@ -167,7 +167,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <FileText className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Descriptions")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Descriptions")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
@@ -204,7 +204,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <ImageIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Images")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
                         </div>
                     </div>
@@ -216,7 +216,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             bucket="sub_categories"
                         />
                         <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
+                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("ImageUrl")}</p>
                             <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeCategory")}</p>
                         </div>
                     </div>
@@ -229,7 +229,7 @@ export default function SubCategoryForm({ initialData, onSuccess, onCancel, form
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>

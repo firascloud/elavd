@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, Bell, Loader2, User2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import {
     DropdownMenu,
     DropdownMenuContent,

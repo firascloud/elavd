@@ -18,6 +18,7 @@ import {
     DashboardHeader
 } from "@/app/[locale]/(dashboard)/_components/common/DashboardHeader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -63,6 +64,7 @@ export default function CategoryList() {
         const to = from + pageSize - 1;
 
         const { data, count, error } = await query
+            .order('sort_order', { ascending: true })
             .order('created_at', { ascending: false })
             .range(from, to);
 
@@ -79,6 +81,22 @@ export default function CategoryList() {
             }
         }
         setLoading(false);
+    };
+
+    const handleUpdateOrder = async (id: string, newOrder: number) => {
+        try {
+            const { error } = await supabaseBrowser
+                .from('categories')
+                .update({ sort_order: newOrder })
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success(t("OrderUpdated"));
+            fetchCategories();
+        } catch (error) {
+            console.error("Error updating order:", error);
+            toast.error(t("UpdateFailed"));
+        }
     };
 
     useEffect(() => {
@@ -118,7 +136,7 @@ export default function CategoryList() {
                         </Button>
                         <Button
                             onClick={() => { setSelectedCategory(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
                         >
                             <Plus className="h-5 w-5 stroke-[3]" />
                             <span>{t("AddCategory")}</span>
@@ -152,10 +170,11 @@ export default function CategoryList() {
                 t("NameEn"),
                 t("SubCategories"),
                 t("Slug"),
+                t("Order"),
                 t("CreatedAt"),
                 t("Actions")
             ]}
-                headerClasses={["", "", "hidden md:table-cell", "hidden sm:table-cell", "hidden md:table-cell", ""]}
+                headerClasses={["", "", "hidden md:table-cell", "hidden sm:table-cell", "w-[100px]", "hidden md:table-cell", ""]}
                 isLoading={loading}
                 emptyMessage={t("NoCategoriesFound") || "No categories found."}
             >
@@ -173,7 +192,7 @@ export default function CategoryList() {
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <span className="font-semibold tracking-tight text-sm">{isAr ? category.name_ar : category.name_en}</span>
+                            <span className="font-semibold ltr:tracking-tight text-sm">{isAr ? category.name_ar : category.name_en}</span>
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden md:table-cell">
                             <div className="flex flex-wrap gap-1.5 max-w-[250px]">
@@ -198,6 +217,19 @@ export default function CategoryList() {
                             <span className="text-[10px] uppercase font-medium text-muted-foreground bg-foreground/[0.05] px-3 py-1 rounded-full border border-border/60">
                                 {isAr ? category.slug_ar : category.slug_en}
                             </span>
+                        </DashboardTableCell>
+                        <DashboardTableCell>
+                            <Input
+                                type="number"
+                                defaultValue={category.sort_order || 0}
+                                onBlur={(e) => {
+                                    const val = parseInt(e.target.value);
+                                    if (val !== category.sort_order) {
+                                        handleUpdateOrder(category.id, val);
+                                    }
+                                }}
+                                className="w-16 h-8 text-center text-xs font-bold rounded-lg border-border/60 focus:ring-primary/20"
+                            />
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden md:table-cell">
                             <span className="text-xs text-muted-foreground font-medium">

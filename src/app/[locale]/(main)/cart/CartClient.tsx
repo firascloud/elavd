@@ -39,12 +39,12 @@ export default function CartClient() {
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             <div className="flex-1 space-y-4">
               <div className="flex items-center justify-between mb-4 px-2">
-                <h3 className="text-lg font-black text-foreground font-cairo uppercase tracking-widest">
+                <h3 className="text-lg font-black text-foreground font-cairo uppercase ltr:tracking-widest">
                   {t('Items')}
                 </h3>
                 <button
                   onClick={clearCart}
-                  className="text-[11px] font-black tracking-widest text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-50 px-4 py-2 rounded-xl transition-all cursor-pointer uppercase"
+                  className="text-[11px] font-black ltr:tracking-widest text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-50 px-4 py-2 rounded-xl transition-all cursor-pointer uppercase"
                 >
                   {t('ClearAll')}
                 </button>
@@ -62,7 +62,7 @@ export default function CartClient() {
                   </div>
 
                   <div className="flex-1 text-center md:text-start space-y-1">
-                    <h3 className="text-lg font-black text-foreground font-cairo tracking-tight">
+                    <h3 className="text-lg font-black text-foreground font-cairo ltr:tracking-tight">
                       {locale === 'ar' ? item.name_ar : item.name_en}
                     </h3>
                     <p className="text-xs text-muted-foreground font-medium line-clamp-1">
@@ -78,7 +78,7 @@ export default function CartClient() {
                     >
                       <Minus size={14} />
                     </button>
-                    <span 
+                    <span
                       className="w-10 text-center font-black text-sm text-foreground font-inter"
                       aria-label={`${t('Quantity')}: ${item.quantity}`}
                     >
@@ -107,14 +107,14 @@ export default function CartClient() {
             <div className="w-full lg:w-[380px] sticky top-24">
               <div className="bg-foreground rounded-2xl p-8 shadow-2xl shadow-muted text-primary-foreground space-y-6">
                 <div className="space-y-2">
-                  <h4 className="text-xl font-black font-cairo tracking-tight text-primary-foreground">{t('OrderSummary')}</h4>
-                  <p className="text-muted-foreground/60 text-[10px] font-black uppercase tracking-widest">
+                  <h4 className="text-xl font-black font-cairo ltr:tracking-tight text-primary-foreground">{t('OrderSummary')}</h4>
+                  <p className="text-muted-foreground/60 text-[10px] font-black uppercase ltr:tracking-widest">
                     Ready to request your quote
                   </p>
                 </div>
 
                 <div className="space-y-4 pt-4 border-t border-primary-foreground/5" role="region" aria-label={t('OrderSummary')}>
-                  <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-muted-foreground">
+                  <div className="flex justify-between items-center text-xs font-black uppercase ltr:tracking-wider text-muted-foreground">
                     <span>{t('Items')}</span>
                     <span className="text-primary-foreground bg-primary-foreground/10 px-3 py-1 rounded-lg" aria-label={`${count} ${t('Items')}`}>{count}</span>
                   </div>
@@ -122,7 +122,7 @@ export default function CartClient() {
                   <div className="p-4 bg-primary-foreground/5 rounded-xl border border-primary-foreground/5 flex gap-3 items-start" role="status">
                     <Info size={16} className="text-primary shrink-0" aria-hidden="true" />
                     <div className="space-y-1">
-                      <p className="text-[10px] text-primary-foreground/80 leading-relaxed font-medium uppercase tracking-[0.05em]">
+                      <p className="text-[10px] text-primary-foreground/80 leading-relaxed font-medium uppercase ltr:tracking-[0.05em]">
                         {locale === 'ar'
                           ? "سيتم مراجعة طلبك وإرسال عرض السعر النهائي قريباً"
                           : "Your list will be reviewed and a final quote sent shortly"}
@@ -134,7 +134,7 @@ export default function CartClient() {
                 <button
                   onClick={() => setIsQuoteOpen(true)}
                   aria-label={t('RequestQuote')}
-                  className="w-full h-14 bg-primary text-primary-foreground font-black text-sm rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95 group uppercase tracking-[0.1em] cursor-pointer"
+                  className="w-full h-14 bg-primary text-primary-foreground font-black text-sm rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95 group uppercase ltr:tracking-[0.1em] cursor-pointer"
                 >
                   <FileText className="group-hover:-translate-y-0.5 transition-transform" size={18} />
                   {t('RequestQuote')}
@@ -146,7 +146,7 @@ export default function CartClient() {
                   items={cartItems}
                 />
 
-                <p className="text-[9px] text-gray-500 text-center uppercase tracking-widest font-black">
+                <p className="text-[9px] text-gray-500 text-center uppercase ltr:tracking-widest font-black">
                   {t('TermsConditions')}
                 </p>
               </div>
@@ -165,7 +165,7 @@ export default function CartClient() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center px-10 py-3.5 bg-primary text-primary-foreground text-sm font-black rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 uppercase tracking-widest"
+              className="inline-flex items-center px-10 py-3.5 bg-primary text-primary-foreground text-sm font-black rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 uppercase ltr:tracking-widest"
             >
               {t('BrowseCategories')}
             </Link>

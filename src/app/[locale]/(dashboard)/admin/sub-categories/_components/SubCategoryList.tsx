@@ -18,6 +18,7 @@ import {
     DashboardHeader
 } from "@/app/[locale]/(dashboard)/_components/common/DashboardHeader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -63,6 +64,7 @@ export default function SubCategoryList() {
         const to = from + pageSize - 1;
 
         const { data, count, error } = await query
+            .order('sort_order', { ascending: true })
             .order('created_at', { ascending: false })
             .range(from, to);
 
@@ -79,6 +81,22 @@ export default function SubCategoryList() {
             }
         }
         setLoading(false);
+    };
+
+    const handleUpdateOrder = async (id: string, newOrder: number) => {
+        try {
+            const { error } = await supabaseBrowser
+                .from('sub_categories')
+                .update({ sort_order: newOrder })
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success(t("OrderUpdated"));
+            fetchSubCategories();
+        } catch (error) {
+            console.error("Error updating order:", error);
+            toast.error(t("UpdateFailed"));
+        }
     };
 
     useEffect(() => {
@@ -119,7 +137,7 @@ export default function SubCategoryList() {
                         </Button>
                         <Button
                             onClick={() => { setSelectedSubCategory(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
                         >
                             <Plus className="h-5 w-5 stroke-[3]" />
                             <span>{t("AddSubCategory")}</span>
@@ -153,10 +171,11 @@ export default function SubCategoryList() {
                 t("NameEn"),
                 t("Category"),
                 t("Slug"),
+                t("Order"),
                 t("CreatedAt"),
                 t("Actions")
             ]}
-                headerClasses={["", "", "", "hidden sm:table-cell", "hidden md:table-cell", ""]}
+                headerClasses={["", "", "", "hidden sm:table-cell", "w-[100px]", "hidden md:table-cell", ""]}
                 isLoading={loading}
                 emptyMessage={t("NoSubCategoriesFound") || "No sub-categories found."}
             >
@@ -174,7 +193,7 @@ export default function SubCategoryList() {
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <span className="font-semibold tracking-tight text-sm">{isAr ? subCat.name_ar : subCat.name_en}</span>
+                            <span className="font-semibold ltr:tracking-tight text-sm">{isAr ? subCat.name_ar : subCat.name_en}</span>
                         </DashboardTableCell>
                         <DashboardTableCell>
                             <span className="text-xs font-semibold px-3 py-1 bg-primary/5 text-primary border border-primary/20 rounded-full">
@@ -185,6 +204,19 @@ export default function SubCategoryList() {
                             <span className="text-[10px] uppercase font-medium text-muted-foreground bg-foreground/[0.05] px-3 py-1 rounded-full border border-border/60">
                                 {isAr ? subCat.slug_ar : subCat.slug_en}
                             </span>
+                        </DashboardTableCell>
+                        <DashboardTableCell>
+                            <Input
+                                type="number"
+                                defaultValue={subCat.sort_order || 0}
+                                onBlur={(e) => {
+                                    const val = parseInt(e.target.value);
+                                    if (val !== subCat.sort_order) {
+                                        handleUpdateOrder(subCat.id, val);
+                                    }
+                                }}
+                                className="w-16 h-8 text-center text-xs font-bold rounded-lg border-border/60 focus:ring-primary/20"
+                            />
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden md:table-cell">
                             <span className="text-xs text-muted-foreground font-medium">

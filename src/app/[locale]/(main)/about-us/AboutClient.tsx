@@ -67,7 +67,7 @@ export default function AboutClient() {
               <h3 className="text-white text-xl font-bold font-cairo">
                 {locale === 'ar' ? 'مؤسسة رائدة في تقنية المعلومات' : 'Leading IT Establishment'}
               </h3>
-              <p className="text-white/70 text-xs font-medium mt-1 uppercase tracking-widest">
+              <p className="text-white/70 text-xs font-medium mt-1 uppercase ltr:tracking-widest">
                 Serving Saudi Arabia since 2014
               </p>
             </div>
@@ -75,14 +75,14 @@ export default function AboutClient() {
 
           <div className="space-y-8">
             <div className="space-y-5">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase ltr:tracking-widest">
                 <span className="size-1.5 bg-primary rounded-full animate-pulse" />
-                Our Story
+                {t('storyLabel')}
               </div>
               <h2 id="story-title" className="text-3xl lg:text-4xl font-black text-foreground font-cairo leading-tight">
                 {t('subtitle')}
               </h2>
-              <p className="text-muted-foreground text-base leading-relaxed font-bold border-l-4 border-primary ps-5 rtl:border-l-0 rtl:border-r-4 rtl:pe-5 rtl:ps-0 font-cairo">
+              <p className="text-muted-foreground text-base leading-relaxed font-bold border-l-4 border-primary ps-5 rtl:border-l-0 rtl:border-r-4 font-cairo">
                 {t('desc1')}
               </p>
               <p className="text-gray-400 text-sm leading-7 font-medium">
@@ -115,7 +115,7 @@ export default function AboutClient() {
               <div className="text-2xl font-black text-gray-900 font-inter mb-1">
                 {stat.value}
               </div>
-              <div className="text-[10px] text-gray-400 font-black uppercase tracking-widest">
+              <div className="text-[10px] text-gray-400 font-black uppercase ltr:tracking-widest">
                 {stat.label}
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function AboutClient() {
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-4 space-y-6">
-              <div className="text-primary text-[10px] font-black tracking-[0.2em] uppercase">
+              <div className="text-primary text-[10px] font-black ltr:tracking-[0.2em] uppercase">
                 Benefits
               </div>
               <h2 id="benefits-title" className="text-3xl text-primary-foreground font-black font-cairo leading-tight">
