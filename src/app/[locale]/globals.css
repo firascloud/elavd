@@ -31,19 +31,24 @@
 :root {
   --radius: 0.5rem;
   --background: oklch(1 0 0);
-  --foreground: #1a1a1b; /* Near Black */
-  --primary: #c83a3b;    /* Darkened for better contrast (4.77:1) */
+  --foreground: #1a1a1b;
+  /* Near Black */
+  --primary: #c83a3b;
+  /* Darkened for better contrast (4.77:1) */
   --primary-foreground: oklch(1 0 0);
-  --secondary:#40b396;
+  --secondary: #40b396;
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
-  --accent: #3c3c3d;     /* Dark Gray */
+  --accent: #3c3c3d;
+  /* Dark Gray */
   --accent-foreground: oklch(1 0 0);
   --muted: oklch(0.96 0 0);
   --muted-foreground: #3c3c3d;
   --border: oklch(0.92 0 0);
   --input: oklch(0.92 0 0);
   --ring: #c83a3b;
+  --font-el-messiri: "El Messiri", Arial, Helvetica, sans-serif;
+  --font-inter: "Inter", sans-serif;
 }
 
 
@@ -68,10 +73,12 @@
 }
 
 @keyframes like-bounce {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
@@ -86,6 +93,7 @@
     transform: scale(0.5);
     opacity: 0.7;
   }
+
   100% {
     transform: scale(2.5);
     opacity: 0;
@@ -129,6 +137,7 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
