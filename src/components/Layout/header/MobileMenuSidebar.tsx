@@ -6,7 +6,7 @@ import { Link } from '@/i18n/routing'
 import { X, ChevronRight, Tag, Heart, Repeat, ShoppingCart, User, Phone, Mail } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
-import Logo from '@/assets/logo.svg'
+import Logo from '@/assets/logo.webp'
 import type { Category } from '@/services/categoryService'
 
 interface NavLink {

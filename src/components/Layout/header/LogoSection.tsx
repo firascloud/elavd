@@ -5,8 +5,7 @@ import Image from 'next/image'
 import { Search, ChevronDown, Menu, Loader2, Star, Tag, ChevronRight } from 'lucide-react'
 import { Link, useRouter } from '@/i18n/routing'
 import { useTranslations, useLocale } from 'next-intl'
-import Logo from '@/assets/logo.svg'
-import LogoWebp from '@/assets/logo.svg'
+import Logo from '@/assets/logo.webp'
 import LanguageSwitcher from './LanguageSwitcher'
 import HeaderActions from './HeaderActions'
 import { getCategories, type Category } from '@/services/categoryService'
@@ -102,28 +101,14 @@ export default function LogoSection({ setSearchOpen, setMenuOpen }: LogoSectionP
     <div className="bg-white h-[106px] flex items-center px-4 border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 lg:gap-6 w-full">
         <Link href="/" className="shrink-0">
-          {/* WebP for Mobile/Tablet (< 1024px) */}
-          <div className="lg:hidden">
-            <Image
-              src={LogoWebp}
-              alt="Logo"
-              width={140}
-              height={60}
-              priority
-              className="w-28 h-auto max-h-[70px] object-contain"
-            />
-          </div>
-          {/* SVG for Desktop (>= 1024px) */}
-          <div className="hidden lg:block">
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={200}
-              height={200}
-              priority
-              className="lg:w-48 h-auto max-h-[80px] object-contain"
-            />
-          </div>
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={200}
+            height={80}
+            priority
+            className="w-28 lg:w-48 h-auto max-h-[70px] lg:max-h-[80px] object-contain"
+          />
         </Link>
 
         {/* Desktop Search */}

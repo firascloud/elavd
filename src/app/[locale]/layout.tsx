@@ -49,7 +49,7 @@ export default async function RootLayout({
       <html
         lang={locale}
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className={`${locale === "ar" ? elMessiri.className : inter.className}`}
+        className={`${elMessiri.variable} ${inter.variable} ${locale === "ar" ? elMessiri.className : inter.className}`}
         suppressHydrationWarning
         data-scroll-behavior="smooth"
       >
@@ -60,7 +60,7 @@ export default async function RootLayout({
           <meta name="theme-color" content="#d94a4b" />
           <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
           <link rel="preconnect" href="https://giomurhtsumtshqcsxwd.supabase.co" />
-          <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+          <link rel="preconnect" href="https://www.googletagmanager.com" />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{

@@ -26,7 +26,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/logo.webp';
 import useAppStore from '@/store/store';
 import { useEffect } from 'react';
 

@@ -2,10 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import Logo from '@/assets/money-safe-security-cash-protection.svg';
-import card1 from '@/assets/card-printer-ribbon-accessories.svg';
-import card2 from '@/assets/magnetic-plastic-cards-high-quality.svg';
-import card3 from '@/assets/plastic-card-printer-primacy-lava.svg';
+import Logo from '@/assets/money-safe-security-cash-protection.webp';
+import card1 from '@/assets/card-printer-ribbon-accessories.webp';
+import card2 from '@/assets/magnetic-plastic-cards-high-quality.webp';
+import card3 from '@/assets/plastic-card-printer-primacy-lava.webp';
 
 export default function SpecialOffers({ position }: { position: number }) {
     const locale = useLocale();

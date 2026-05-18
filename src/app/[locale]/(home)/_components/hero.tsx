@@ -10,10 +10,10 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
 // Import banner images once (not duplicated)
-import banner1 from '@/assets/banner-1.svg'
-import banner2 from '@/assets/banner-2.svg'
-import banner3 from '@/assets/banner-3.svg'
-import banner4 from '@/assets/banner-4.svg'
+import banner1 from '@/assets/banner-1.webp'
+import banner2 from '@/assets/banner-2.webp'
+import banner3 from '@/assets/banner-3.webp'
+import banner4 from '@/assets/banner-4.webp'
 
 export default function Hero() {
   const t = useTranslations('hero')

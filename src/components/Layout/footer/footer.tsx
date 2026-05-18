@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Phone, Mail, MapPin } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/routing'
-import Logo from '@/assets/logo.svg'
+import Logo from '@/assets/logo.webp'
 
 export function Footer() {
   const t = useTranslations('footer')
