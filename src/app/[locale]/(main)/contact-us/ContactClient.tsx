@@ -11,9 +11,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
 import { sendMessage } from '@/services/contactService';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { emailService, CONTACT_TEMPLATE_ID } from '@/services/emailService';
 
 export default function ContactClient() {
-  const t = useTranslations('contact');
+  const t = useTranslations('contact-us');
   const common = useTranslations('common');
   const locale = useLocale();
   const isRtl = locale === 'ar';
@@ -34,25 +35,37 @@ export default function ContactClient() {
   const onSubmit = async (data: any) => {
     try {
       await sendMessage(data);
-      
+
       // Trigger analytics ONLY on successful DB insert / submission
       event({
         action: 'generate_lead',
         category: 'Contact',
         label: 'Contact Us Form'
       });
-      
+
       // Fallback conversion ID if not set in .env
       const conversionId = process.env.NEXT_PUBLIC_GADS_CONTACT_CONVERSION || 'AW-DEFAULT/CONTACT';
       conversion(conversionId, 1.0);
 
-      // Send email notifications
+      // Send email notifications via emailService
       try {
-        await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
+        const emailParams = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          message: data.message,
+        };
+
+        // Send branded confirmation to customer (Elavd Team Branding)
+        // This call also notifies the admin if the template is configured with auto-reply/BCC
+        await emailService.sendCustomerConfirmation(
+          {
+            ...emailParams,
+            subject: isRtl ? 'شكراً لتواصلك مع فريق إلافد' : 'Thank you for reaching out to Elavd Team'
+          },
+          CONTACT_TEMPLATE_ID
+        );
+
       } catch (emailError) {
         console.error('Email notification failed:', emailError);
       }
@@ -131,7 +144,7 @@ export default function ContactClient() {
           <div className="lg:col-span-5 bg-muted/30 border border-border rounded-[2rem] p-10 flex flex-col items-center text-center justify-center space-y-8 group">
             <div className="relative w-full max-w-[220px] h-28 transform transition-transform group-hover:scale-105 duration-700">
               <Image
-                src={require('@/assets/logo.svg')}
+                src={require('@/assets/logo.webp')}
                 alt="Logo"
                 fill
                 className="object-contain"
@@ -147,9 +160,9 @@ export default function ContactClient() {
               </p>
             </div>
 
-            <button 
+            <button
               onClick={scrollToForm}
-              className="px-10 py-3.5  cursor-pointer bg-primary text-primary-foreground font-black text-sm rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 active:scale-95 uppercase tracking-widest"
+              className="px-10 py-3.5  cursor-pointer bg-primary text-primary-foreground font-black text-sm rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 active:scale-95 uppercase ltr:tracking-widest"
             >
               {t('discoverMore')}
             </button>
@@ -173,7 +186,7 @@ export default function ContactClient() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" dir={isRtl ? 'rtl' : 'ltr'}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="contact-name" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                  <label htmlFor="contact-name" className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-[0.2em] block px-1">
                     {t('name')}
                   </label>
                   <input
@@ -186,7 +199,7 @@ export default function ContactClient() {
                   {errors.name && <p className="text-[10px] text-destructive font-bold px-1">{errors.name.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="contact-phone" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                  <label htmlFor="contact-phone" className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-[0.2em] block px-1">
                     {t('phone')}
                   </label>
                   <input
@@ -201,7 +214,7 @@ export default function ContactClient() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="contact-email" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                <label htmlFor="contact-email" className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-[0.2em] block px-1">
                   {t('emailLabel')}
                 </label>
                 <input
@@ -215,7 +228,7 @@ export default function ContactClient() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="contact-message" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block px-1">
+                <label htmlFor="contact-message" className="text-[10px] font-black text-muted-foreground uppercase ltr:tracking-[0.2em] block px-1">
                   {t('message')}
                 </label>
                 <textarea
@@ -229,9 +242,9 @@ export default function ContactClient() {
               </div>
 
               <div className="flex justify-end pt-2">
-                <button 
+                <button
                   disabled={isSubmitting}
-                  className="flex cursor-pointer items-center gap-3 px-12 py-3.5 bg-primary text-primary-foreground font-black rounded-xl hover:bg-primary/90 transition-all shadow-2xl shadow-primary/10 active:scale-95 group uppercase tracking-widest text-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="flex cursor-pointer items-center gap-3 px-12 py-3.5 bg-primary text-primary-foreground font-black rounded-xl hover:bg-primary/90 transition-all shadow-2xl shadow-primary/10 active:scale-95 group uppercase ltr:tracking-widest text-sm disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <Loader2 size={18} className="animate-spin" />

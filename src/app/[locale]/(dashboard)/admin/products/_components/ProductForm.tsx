@@ -20,8 +20,10 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Package, FileText, ImageIcon, Globe, Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw, Package, FileText, ImageIcon, Globe } from "lucide-react";
 import TextEditor from "@/components/TextEditor";
+import { insertRecord, updateRecord } from "@/app/actions/db";
+import { toast } from "sonner";
 
 interface ProductFormProps {
     initialData?: any;
@@ -49,6 +51,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
             sub_category_id: initialData?.sub_category_id || "",
             brand_id: initialData?.brand_id || "",
             main_image: "",
+            sort_order: initialData?.sort_order || 0,
         }
     });
 
@@ -90,9 +93,10 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                 ...data,
                 price: data.price ? parseFloat(data.price) : null,
                 discount_price: data.discount_price ? parseFloat(data.discount_price) : null,
-                category_id: data.category_id || null,
-                sub_category_id: data.sub_category_id || null,
-                brand_id: data.brand_id || null,
+                sort_order: parseInt(data.sort_order) || 0,
+                category_id: (data.category_id && data.category_id !== "none") ? data.category_id : null,
+                sub_category_id: (data.sub_category_id && data.sub_category_id !== "none") ? data.sub_category_id : null,
+                brand_id: (data.brand_id && data.brand_id !== "none") ? data.brand_id : null,
                 seo_keywords_en: toKeywordsArray(data.seo_keywords_en),
                 seo_keywords_ar: toKeywordsArray(data.seo_keywords_ar),
             };
@@ -102,6 +106,9 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                 categories: _categories,
                 sub_categories: _sub_categories,
                 brands: _brands,
+                category: _category,
+                sub_category: _sub_category,
+                brand: _brand,
                 id: _id,
                 created_at: _createdAt,
                 updated_at: _updatedAt,
@@ -109,20 +116,14 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
             } = finalData as any;
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('products')
-                    .update(cleanData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('products', cleanData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('products')
-                    .insert([cleanData]);
-                if (error) throw error;
+                await insertRecord('products', cleanData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving product:", error);
+            toast.error(error.message || "Error saving product");
         } finally {
             setLoading(false);
         }
@@ -140,7 +141,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             <Package className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("General")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo") || "Basic Info"}</p>
                         </div>
                     </div>
@@ -150,7 +151,8 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
                             { label: t("Price"), name: "price", type: "number" },
-                            { label: t("DiscountPrice"), name: "discount_price", type: "number" }
+                            { label: t("DiscountPrice"), name: "discount_price", type: "number" },
+                            { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
                             <div key={field.name} className="space-y-2 group">
                                 <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
@@ -159,7 +161,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                 <Input
                                     {...register(field.name, { required: field.required })}
                                     type={field.type || "text"}
-                                    step="0.01"
+                                    step={field.type === "number" ? "0.01" : undefined}
                                     className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
                                 />
                             </div>
@@ -212,6 +214,9 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                             <SelectValue placeholder={t("SubCategory")} />
                                         </SelectTrigger>
                                         <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
+                                            <SelectItem value="none" className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm opacity-70">
+                                                {t("None")}
+                                            </SelectItem>
                                             {filteredSubCategories.map((sub) => (
                                                 <SelectItem key={sub.id} value={sub.id} className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm">
                                                     {sub.name_en}
@@ -293,7 +298,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             <FileText className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Descriptions")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Descriptions")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
@@ -332,7 +337,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             <ImageIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Images")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("VisualPresentation")}</p>
                         </div>
                     </div>
@@ -344,7 +349,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             bucket="products"
                         />
                         <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("MainImage") || "Primary Image"}</p>
+                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("MainImage") || "Primary Image"}</p>
                             <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeProduct")}</p>
                         </div>
                     </div>
@@ -357,7 +362,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>

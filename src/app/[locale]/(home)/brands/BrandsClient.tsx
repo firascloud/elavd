@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { getBrands, Brand } from '@/services/brandService';
-import { Icon } from '@iconify/react';
+import { Building2, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import PageHeader from '@/components/common/page-header';
 
@@ -76,7 +76,7 @@ export default function BrandsClient() {
                                                     className="object-contain p-2"
                                                 />
                                             ) : (
-                                                <Icon icon="mdi:domain" className="w-12 h-12 text-muted-foreground/30" />
+                                                <Building2 className="w-12 h-12 text-muted-foreground/30" />
                                             )}
                                         </div>
                                         <h3 className="font-bold text-sm text-[#1a1a1b] group-hover:text-primary transition-colors line-clamp-1">
@@ -92,7 +92,7 @@ export default function BrandsClient() {
                 {brands.length === 0 && (
                    <div className="text-center py-40">
                        <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-                           <Icon icon="mdi:alert-circle-outline" className="w-10 h-10 text-muted-foreground/30" />
+                           <AlertCircle className="w-10 h-10 text-muted-foreground/30" />
                        </div>
                        <p className="text-muted-foreground font-medium">{t('NoBrandsFound')}</p>
                    </div>

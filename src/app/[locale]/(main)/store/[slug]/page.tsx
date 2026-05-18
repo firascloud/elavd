@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import PageHeader from '@/components/common/page-header'
 import { ProductCard } from '@/components/common/product-card'
 import CategorySidebar from '@/components/common/category-sidebar'
-import { getProducts, getCategories, searchProducts, getCategoryBySlug } from '@/services/home'
+import { getProducts, getCategories, searchProducts, getCategoryBySlug, getSubCategoryBySlug } from '@/services/home'
 import { getBrandBySlug } from '@/services/brandService'
 import { Search, PackageX } from 'lucide-react'
 import FilterProduct from '../../product-category/_components/fillterProduct'
@@ -29,8 +29,9 @@ interface StoreDynamicPageProps {
 
 export async function generateMetadata({ params }: StoreDynamicPageProps): Promise<Metadata> {
   const { slug, locale } = await params
-  const [category, brand] = await Promise.all([
+  const [category, subCategory, brand] = await Promise.all([
     getCategoryBySlug(slug),
+    getSubCategoryBySlug(slug),
     getBrandBySlug(slug)
   ])
 
@@ -41,6 +42,16 @@ export async function generateMetadata({ params }: StoreDynamicPageProps): Promi
       slug,
       title: name || undefined,
       description: (locale === 'ar' ? category.description_ar : category.description_en) || undefined,
+    })
+  }
+
+  if (subCategory) {
+    const name = locale === 'ar' ? subCategory.name_ar : subCategory.name_en
+    return storeSlugMetadata({
+      locale,
+      slug,
+      title: name || undefined,
+      description: (locale === 'ar' ? subCategory.description_ar : subCategory.description_en) || undefined,
     })
   }
 
@@ -71,8 +82,9 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   const currentPage = parseInt(page)
   const currentLimit = parseInt(limit)
 
-  const [category, brand, allCategories, featuredProducts] = await Promise.all([
+  const [category, subCategory, brand, allCategories, featuredProducts] = await Promise.all([
     getCategoryBySlug(slug),
+    getSubCategoryBySlug(slug),
     getBrandBySlug(slug),
     getCategories(100),
     getProducts({ is_featured: true, limit: 4 })
@@ -85,6 +97,9 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   if (category) {
     allProducts = await getProducts({ categoryId: category.id, limit: 1000 })
     pageTitle = isRtl ? category.name_ar || '' : category.name_en || ''
+  } else if (subCategory) {
+    allProducts = await getProducts({ subCategoryId: subCategory.id, limit: 1000 })
+    pageTitle = isRtl ? subCategory.name_ar || '' : subCategory.name_en || ''
   } else if (brand) {
     allProducts = await getProducts({ brandId: brand.id, limit: 1000 })
     pageTitle = isRtl ? brand.name_ar || '' : brand.name_en || ''

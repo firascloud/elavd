@@ -8,9 +8,9 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <LayoutWapper>
             <div className="flex min-h-screen">
                 <Sidebar />
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                     <Header />
-                    <main className="p-4">
+                    <main className="p-4 flex-1 overflow-auto min-w-0">
                         {children}
                     </main>
                 </div>

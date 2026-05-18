@@ -68,7 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const categories = await getCategories(1000);
     for (const c of categories || []) {
       const slugEn = c?.slug_en || "";
-      const slugAr = c?.slug_ar || slugEn;
+      const slugAr = slugEn;
       if (!slugEn) continue;
       entries.push(
         ...withAlternates(`/store/${slugEn}`, `/store/${slugAr}`, { priority: 0.8 })
@@ -84,7 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const brands = await getBrands(1000);
     for (const b of brands || []) {
       const slugEn = b?.slug_en || "";
-      const slugAr = b?.slug_ar || slugEn;
+      const slugAr = slugEn;
       if (!slugEn) continue;
       entries.push(
         ...withAlternates(`/store/${slugEn}`, `/store/${slugAr}`, { priority: 0.7 })
@@ -99,7 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const products = await getProducts({ limit: 1000 });
     for (const p of products || []) {
       const slugEn = (p as any)?.slug_en || (p as any)?.slug || "";
-      const slugAr = (p as any)?.slug_ar || slugEn;
+      const slugAr = slugEn;
       if (!slugEn) continue;
       entries.push(
         ...withAlternates(`/product/${slugEn}`, `/product/${slugAr}`, { priority: 0.9 })

@@ -183,16 +183,16 @@ export default function OrderList() {
                                 <div className="h-8 w-8 rounded-full bg-primary/5 flex items-center justify-center text-primary">
                                     <UserIcon className="h-4 w-4" />
                                 </div>
-                                <span className="font-bold tracking-tight text-sm truncate max-w-[120px]">
+                                <span className="font-bold ltr:tracking-tight text-sm truncate max-w-[120px]">
                                     {order.customer_name || `${t("CustomerHash")} ${order.user_id?.slice(0, 4)}`}
                                 </span>
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
                             {order.customer_phone ? (
-                                <a 
-                                    href={`https://wa.me/${order.customer_phone.replace(/\+/g, '')}`} 
-                                    target="_blank" 
+                                <a
+                                    href={`https://wa.me/${order.customer_phone.replace(/\+/g, '')}`}
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-1.5 text-xs font-bold text-secondary hover:text-secondary/80 bg-secondary/5 px-3 py-1.5 rounded-lg transition-colors w-fit"
                                 >

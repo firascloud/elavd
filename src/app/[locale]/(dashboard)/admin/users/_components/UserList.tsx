@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useForm } from "react-hook-form";
+import { updateRecord } from "@/app/actions/db";
 
 export default function UserList() {
     const tDashboard = useTranslations("dashboard");
@@ -67,19 +68,11 @@ export default function UserList() {
         }
 
         try {
-            const { error: updateError } = await supabaseBrowser
-                .from('users')
-                .update(updates)
-                .eq('id', editUser.id);
-
-            if (updateError) {
-                toast.error(tDashboard("UpdateFailed"), { description: updateError.message });
-            } else {
-                toast.success(tDashboard("UpdateSuccess"));
-                setEditUser(null);
-                reset();
-                fetchUsers();
-            }
+            await updateRecord('users', updates, editUser.id);
+            toast.success(tDashboard("UpdateSuccess"));
+            setEditUser(null);
+            reset();
+            fetchUsers();
         } catch (err: any) {
             toast.error(tDashboard("FailedToUpdateUser"), { description: err.message });
         } finally {
@@ -162,7 +155,7 @@ export default function UserList() {
             >
                 <form onSubmit={handleSubmit(onUpdate)} className="space-y-5 pt-4">
                     <div className="space-y-2">
-                        <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <label className="text-xs font-black uppercase ltr:tracking-wider text-muted-foreground flex items-center gap-2">
                             <NameIcon className="h-3 w-3" />
                             {tDashboard("Name")}
                         </label>
@@ -174,7 +167,7 @@ export default function UserList() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <label className="text-xs font-black uppercase ltr:tracking-wider text-muted-foreground flex items-center gap-2">
                             <Mail className="h-3 w-3" />
                             {tDashboard("Email")}
                         </label>
@@ -187,7 +180,7 @@ export default function UserList() {
                     </div>
 
                     <div className="space-y-4">
-                        <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                        <label className="text-xs font-black uppercase ltr:tracking-wider text-muted-foreground flex items-center gap-2">
                             <Lock className="h-3 w-3" />
                             {tDashboard("Password")}
                         </label>

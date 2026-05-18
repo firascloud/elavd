@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { Eye, Heart, ShoppingCart, Repeat, Layers } from "lucide-react";
+import { Eye, Heart, Repeat, Layers } from "lucide-react";
 import useAppStore from "@/store/store";
 import { toast } from "sonner";
 import { Product } from "@/services/home";
 import { QuickViewModal } from "./QuickViewModal";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export interface ProductCardProps extends Product {
     is_hot?: boolean;
@@ -54,6 +54,7 @@ const IconButton = ({
                     e.preventDefault();
                     onClick?.();
                 }}
+                aria-label={tooltip}
                 className={`p-2.5 cursor-pointer rounded-full bg-background shadow-md transition-all ${isActive ? 'bg-secondary text-primary-foreground' : 'text-muted-foreground hover:bg-primary hover:text-primary-foreground'}`}
             >
                 <Icon size={16} fill={isActive ? "currentColor" : "none"} />
@@ -83,7 +84,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
 
     const name = locale === 'ar' ? name_ar : name_en;
     const description = locale === 'ar' ? short_desc_ar : short_desc_en;
-    const localizedSlug = locale === 'ar' ? slug_ar : slug_en;
+    const localizedSlug = slug_en;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -122,10 +123,10 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
 
                     <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
                         <div className="space-y-4">
-                            <h4 className="text-muted-foreground font-bold text-xs uppercase tracking-widest font-cairo">
+                            <h4 className="text-muted-foreground font-bold text-xs uppercase ltr:tracking-widest font-cairo">
                                 {t('CategoryMetalSafes')}
                             </h4>
-                            <Link href={`/product/${slug_en}`} className="text-xl md:text-2xl font-black text-foreground font-cairo leading-tight">
+                            <Link href={`/product/${localizedSlug || id}`} className="text-xl md:text-2xl font-black text-foreground font-cairo leading-tight">
                                 {name || '—'}
                             </Link>
 
@@ -134,7 +135,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                         <div className="flex flex-wrap items-center gap-6 mt-10">
                             {/* <button
                                 onClick={handleAddToCart}
-                                className="px-10 py-3 bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 transform active:scale-95"
+                                className="px-10 py-3 bg-primary text-primary-foreground font-black text-xs uppercase ltr:tracking-widest rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 transform active:scale-95"
                             >
                                 {t('addToCart')}
                             </button> */}
@@ -180,12 +181,15 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
             >
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-secondary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                 {is_hot && (
-                    <div className="absolute top-4 ltr:right-4 rtl:left-4 z-10 px-3 py-1 bg-destructive text-destructive-foreground text-[10px] font-extrabold rounded-full tracking-wider uppercase">
+                    <div className="absolute top-4 ltr:right-4 rtl:left-4 z-10 px-3 py-1 bg-destructive text-destructive-foreground text-[10px] font-extrabold rounded-full ltr:tracking-wider uppercase">
                         {t('Hot')}
                     </div>
                 )}
 
-                <div className="absolute top-14 ltr:right-4 rtl:left-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 ltr:group-hover:translate-x-0 rtl:group-hover:-translate-x-0 z-20">
+                <div className="absolute top-14 ltr:right-4 rtl:left-4 flex flex-col gap-2 z-20 transition-all transform 
+                    opacity-100 translate-x-0 
+                    md:opacity-0 md:translate-x-2 
+                    md:group-hover:opacity-100 md:ltr:group-hover:translate-x-0 md:rtl:group-hover:-translate-x-0">
                     <IconButton
                         icon={Heart}
                         tooltip={t('Wishlist')}
@@ -208,7 +212,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 <div className="relative h-60 w-full mb-6 flex items-center justify-center bg-background overflow-hidden shrink-0">
                     {main_image ? (
                         <div className="relative size-44">
-                            <Link href={`/product/${slug_en}`} >
+                            <Link href={`/product/${localizedSlug || id}`} >
                                 <Image
                                     src={main_image}
                                     alt={name || 'Product'}
@@ -225,14 +229,15 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 </div>
 
                 <div className="flex flex-col items-center text-center flex-1">
-                    <Link href={`/product/${slug_en}`} >
+                    <Link href={`/product/${localizedSlug || id}`} >
                         <h3 className="text-foreground font-bold text-base line-clamp-1 mb-1 font-cairo">
                             {name || '—'}
                         </h3>
                     </Link>
-                    <p className="text-muted-foreground text-xs font-medium mb-8 line-clamp-1 h-4">
-                        {description || '—'}
-                    </p>
+                    <div 
+                        className="text-muted-foreground text-xs font-medium mb-8 line-clamp-1 h-4"
+                        dangerouslySetInnerHTML={{ __html: description || '—' }}
+                    />
 
                     {/* <button
                         onClick={handleAddToCart}
@@ -246,11 +251,12 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             <span>{t('addToCart')}</span>
                         </div>
                     </button> */}
-                    <Link 
-                        href={`/product/${slug_en}`}
+                    <Link
+                        href={`/product/${localizedSlug || id}`}
                         className="w-full h-11 bg-primary text-primary-foreground font-bold text-sm rounded-full transition-all hover:bg-primary/90 shadow-sm mt-auto transform active:scale-95 flex items-center justify-center"
                     >
                         {t('ReadMore')}
+                        <span className="sr-only"> {name}</span>
                     </Link>
                 </div>
             </motion.div>

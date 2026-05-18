@@ -9,6 +9,8 @@ import {
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { insertRecord, updateRecord } from "@/app/actions/db";
+import { toast } from "sonner";
 import {
     Select,
     SelectContent,
@@ -110,20 +112,14 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
             };
 
             if (initialData?.id) {
-                const { error } = await supabaseBrowser
-                    .from('offers')
-                    .update(finalData)
-                    .eq('id', initialData.id);
-                if (error) throw error;
+                await updateRecord('offers', finalData, initialData.id);
             } else {
-                const { error } = await supabaseBrowser
-                    .from('offers')
-                    .insert([finalData]);
-                if (error) throw error;
+                await insertRecord('offers', finalData);
             }
             onSuccess();
         } catch (error: any) {
             console.error("Error saving offer:", error);
+            toast.error(error.message || "Error saving offer");
         } finally {
             setLoading(false);
         }
@@ -138,7 +134,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <Megaphone className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("General")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
@@ -224,7 +220,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <LinkIcon className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("LinkingConnectivity")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("LinkingConnectivity")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("TargetProductCategory")}</p>
                         </div>
                     </div>
@@ -287,8 +283,8 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                     const selectedCategoryId = watch("category_id");
                                     const filteredSubs = subCategories.filter(sc => sc.category_id === selectedCategoryId);
                                     return (
-                                        <Select 
-                                            onValueChange={field.onChange} 
+                                        <Select
+                                            onValueChange={field.onChange}
                                             value={field.value || "none"}
                                             disabled={!selectedCategoryId || selectedCategoryId === "none"}
                                         >
@@ -322,7 +318,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <Calendar className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("Timeline")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Timeline")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("StartEndDates")}</p>
                         </div>
                     </div>
@@ -359,7 +355,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                 <ImageIcon className="h-5 w-5 stroke-[2]" />
                             </div>
                             <div>
-                                <h3 className="text-base font-semibold tracking-tight text-foreground">{t("VisualAsset")}</h3>
+                                <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("VisualAsset")}</h3>
                                 <p className="text-[11px] font-medium text-muted-foreground">{t("OfferBannerImage")}</p>
                             </div>
                         </div>
@@ -371,7 +367,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                                 bucket="offers"
                             />
                             <div className="mt-6 text-center space-y-1">
-                                <p className="text-[11px] font-semibold tracking-wide text-foreground/80">{t("ImageUrl")}</p>
+                                <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("ImageUrl")}</p>
                                 <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeOffer")}</p>
                             </div>
                         </div>
@@ -384,7 +380,7 @@ export default function OfferForm({ initialData, onSuccess, onCancel, formId }: 
                             <Globe className="h-5 w-5 stroke-[2]" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>

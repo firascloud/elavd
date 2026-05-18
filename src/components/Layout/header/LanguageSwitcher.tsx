@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import EnFlag from "@/assets/en-flag.svg";
 import ArFlag from "@/assets/ar-flag.svg";
@@ -52,8 +51,8 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        title="Language"
-        aria-label="Language"
+        title={t('SwitchLanguage')}
+        aria-label={`${t('SwitchLanguage')}: ${currentLanguage?.nativeName}`}
         type="button"
         className={`group relative flex items-center gap-2 px-1 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-in-out`}
         onClick={handleToggle}
