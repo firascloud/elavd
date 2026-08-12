@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
 import { Layers } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { getCategories, getFeaturedProducts, type Category, type Product } from '@/services/home';
@@ -16,21 +14,6 @@ export default function ourCategories() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
-
-    const emblaPlugins = useMemo(
-        () => [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })],
-        []
-    );
-
-    const [emblaRef] = useEmblaCarousel(
-        {
-            loop: true,
-            align: 'start',
-            dragFree: true,
-            direction: locale === 'ar' ? 'rtl' : 'ltr',
-        },
-        emblaPlugins
-    );
 
     useEffect(() => {
         const fetchData = async () => {
@@ -126,10 +109,10 @@ export default function ourCategories() {
                                 ))}
                             </div>
 
-                            {/* Carousel for large screens */}
+                            {/* Native horizontal scroller avoids layout measurements during hydration. */}
                             <div className="hidden sm:block">
-                                <div ref={emblaRef} className="overflow-hidden">
-                                    <div className="flex gap-6">
+                                <div className="overflow-x-auto no-scrollbar scroll-smooth">
+                                    <div className="flex gap-6 snap-x snap-mandatory">
                                         {displayCategories.map((cat, idx) => (
                                             <CategoryCard key={cat.id ?? idx} cat={cat} idx={idx} />
                                         ))}

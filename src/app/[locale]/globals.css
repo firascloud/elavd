@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Admin utilities are compiled separately and should not block storefront paint. */
+@source not "./(dashboard)";
+@source not "../../components/TextEditor";
+
 
 @theme inline {
   --color-background: var(--background);

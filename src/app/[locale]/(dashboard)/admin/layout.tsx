@@ -2,6 +2,7 @@ import React from 'react'
 import Sidebar from '../_components/layout/sidebar.tsx'
 import Header from '../_components/layout/header'
 import LayoutWapper from '../_components/LayoutWapper'
+import '../dashboard.css'
 
 export default function layout({ children }: { children: React.ReactNode }) {
     return (

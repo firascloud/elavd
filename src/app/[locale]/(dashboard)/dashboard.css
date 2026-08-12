@@ -1,0 +1,7 @@
+@import "tailwindcss" source(none);
+@reference "../globals.css";
+
+/* Only generate utilities used by the private dashboard and its rich editor. */
+@source "./admin";
+@source "./_components";
+@source "../../../components/TextEditor";

@@ -1,13 +1,11 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
 
 // Import banner images once (not duplicated)
 import banner1 from '@/assets/banner-1.webp'
@@ -20,18 +18,21 @@ export default function Hero() {
   const locale = useLocale()
   const isRtl = locale === 'ar'
 
-  const autoplay = useMemo(() => Autoplay({ delay: 6000, stopOnInteraction: false }), [])
-  const [emblaRef] = useEmblaCarousel({
-    loop: true,
-    direction: isRtl ? 'rtl' : 'ltr'
-  }, [autoplay])
-
   const slides = [
     { id: '1', image: banner3, href: '/store/ribbons-and-film' },
     { id: '2', image: banner1, href: '/store/plastic-card-printers' },
     { id: '3', image: banner2, href: '/store/biometric-attendance-systems' },
     { id: '4', image: banner4, href: '/store/metal-safes' },
   ]
+  const [activeSlide, setActiveSlide] = useState(0)
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slides.length)
+    }, 6000)
+
+    return () => window.clearInterval(intervalId)
+  }, [slides.length])
 
   return (
     <section className="bg-muted/30 p-0 md:py-6 md:px-4 font-sans overflow-hidden">
@@ -83,10 +84,17 @@ export default function Hero() {
             </Link>
           </div>
 
-          <div className="lg:col-span-6 overflow-hidden rounded-none md:rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" ref={emblaRef}>
-            <div className="flex h-full">
+          <div className="lg:col-span-6 overflow-hidden rounded-none md:rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" dir="ltr">
+            <div
+              className="flex h-full transition-transform duration-700 ease-out motion-reduce:transition-none"
+              style={{ transform: `translate3d(-${activeSlide * 100}%, 0, 0)` }}
+            >
               {slides.map((slide, index) => (
-                <div key={slide.id} className="relative flex-[0_0_100%] min-w-0 h-full min-h-[300px] lg:min-h-[460px] overflow-hidden group">
+                <div
+                  key={slide.id}
+                  dir={isRtl ? 'rtl' : 'ltr'}
+                  className="relative flex-[0_0_100%] min-w-0 h-full min-h-[300px] lg:min-h-[460px] overflow-hidden group"
+                >
 
                   <Image
                     src={slide.image}

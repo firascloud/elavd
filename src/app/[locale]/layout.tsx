@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { El_Messiri, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import Providers from "./providers";
 import { Toaster } from "sonner";
 import { getMessages } from "next-intl/server";
@@ -15,7 +14,7 @@ import Script from "next/script";
 const elMessiri = El_Messiri({
   variable: "--font-el-messiri",
   subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
+  weight: "variable",
   display: "swap",
   fallback: ["Arial", "Helvetica", "sans-serif"],
 });
@@ -23,7 +22,7 @@ const elMessiri = El_Messiri({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: "variable",
   display: "swap",
 });
 
@@ -111,13 +110,11 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               <Toaster richColors position="top-right" />
-              <SidebarProvider>
-                <MainLayoutWrapper>
-                  <Analytics />
-                  <SpeedInsights />
-                  {children}
-                </MainLayoutWrapper>
-              </SidebarProvider>
+              <MainLayoutWrapper>
+                <Analytics />
+                <SpeedInsights />
+                {children}
+              </MainLayoutWrapper>
             </ThemeProvider>
           </Providers>
         </body>
