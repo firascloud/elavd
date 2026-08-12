@@ -216,8 +216,8 @@ export default function SearchResults({ query, categoryId }: SearchResultsProps)
               <h4 className="font-bold text-foreground text-sm mb-1">{isRtl ? 'هل تحتاج لمساعدة؟' : 'Need Help?'}</h4>
               <p className="text-xs text-muted-foreground mb-4">{isRtl ? 'تواصل معنا في أي وقت' : 'Contact us anytime'}</p>
               <div className="flex flex-col gap-2">
-                <a href="tel:0556482799" className="text-sm font-bold text-primary hover:underline font-mono">0556482799</a>
-                <a href="tel:0553202091" className="text-sm font-bold text-primary hover:underline font-mono">0553202091</a>
+                <a href="tel:+966556482799" className="text-sm font-bold text-primary hover:underline font-mono">0556482799</a>
+                <a href="tel:+966553202091" className="text-sm font-bold text-primary hover:underline font-mono">0553202091</a>
               </div>
             </div>
           </aside>

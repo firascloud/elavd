@@ -99,13 +99,13 @@ export default function ContactClient() {
       icon: <Phone className="size-6 text-primary" />,
       title: t('phoneLabel1'),
       content: "0553202091",
-      link: "tel:0553202091",
+      link: "tel:+966553202091",
     },
     {
       icon: <Phone className="size-6 text-primary" />,
       title: t('phoneLabel2'),
       content: "0556482799",
-      link: "tel:0556482799",
+      link: "tel:+966556482799",
     }
   ];
 

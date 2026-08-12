@@ -182,9 +182,9 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
           <div className="p-2 rounded-full bg-primary/20 group-hover:bg-primary transition-colors">
             <Phone className="w-4 h-4 text-primary group-hover:text-white" />
           </div>
-          <a href="tel:0553202091" className="text-[14px] ltr:tracking-tight hover:text-primary transition-colors">0553202091</a>
+          <a href="tel:+966553202091" className="text-[14px] ltr:tracking-tight hover:text-primary transition-colors">0553202091</a>
           <span className="text-gray-300">-</span>
-          <a href="tel:0556482799" className="text-[14px] ltr:tracking-tight hover:text-primary transition-colors">0556482799</a>
+          <a href="tel:+966556482799" className="text-[14px] ltr:tracking-tight hover:text-primary transition-colors">0556482799</a>
         </div>
       </div>
     </div>

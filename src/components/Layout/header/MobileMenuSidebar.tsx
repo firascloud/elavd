@@ -132,9 +132,9 @@ export default function MobileMenuSidebar({ menuOpen, setMenuOpen, navLinks, cat
             <div className="p-2 rounded-full bg-primary/10">
               <Phone className="w-4 h-4 text-primary" />
             </div>
-            <a href="tel:0553202091" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0553202091</a>
+            <a href="tel:+966553202091" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0553202091</a>
             <span>-</span>
-            <a href="tel:0556482799" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0556482799</a>
+            <a href="tel:+966556482799" className="text-sm font-bold ltr:tracking-tight hover:text-primary transition-colors" dir="ltr">0556482799</a>
           </div>
           <a href="mailto:sales@elavd.com" className="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors text-sm">
             <Mail className="w-4 h-4 text-primary" />

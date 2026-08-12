@@ -11,10 +11,16 @@ export default function TopInfoBar() {
   return (
     <div className="bg-slate-50 border-b border-border h-[38px] items-center px-4 hidden lg:flex">
       <div className="max-w-7xl mx-auto flex items-center justify-between w-full text-[13px] text-muted-foreground">
-        <div className="flex items-center gap-2">
+        <a
+          href="https://maps.app.goo.gl/HNuVCYKNmeE8fpNJ6"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 transition-colors hover:text-primary"
+          aria-label={`${t('Location')} (Google Maps)`}
+        >
           <MapPin className="w-4 h-4" />
           <span>{t('Location')}</span>
-        </div>
+        </a>
         <div className="flex items-center gap-5" dir="ltr">
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4" />

@@ -10,7 +10,7 @@ export default function FloatingActions() {
   const isRtl = locale === 'ar'
   const [showScroll, setShowScroll] = useState(false)
 
-  const phone = '+0553202091'
+  const phone = '+966553202091'
   const whatsapp = '+966553202091'
 
   useEffect(() => {
