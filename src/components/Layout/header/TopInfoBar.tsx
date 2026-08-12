@@ -22,10 +22,13 @@ export default function TopInfoBar() {
           <span>{t('Location')}</span>
         </a>
         <div className="flex items-center gap-5" dir="ltr">
-          <div className="flex items-center gap-2">
+          <a
+            href="mailto:sales@elavd.com"
+            className="flex items-center gap-2 transition-colors hover:text-primary"
+          >
             <Mail className="w-4 h-4" />
             <span>sales@elavd.com</span>
-          </div>
+          </a>
           <LanguageSwitcher />
         </div>
       </div>
