@@ -12,7 +12,11 @@ export interface CanonicalConfig {
 }
 
 export function extractCanonicalPath(currentPath: string, locale: string): string {
-    let pathWithoutLocale = currentPath.replace(`/${locale}`, "") || "/";
+    let pathWithoutLocale = currentPath || "/";
+    if (pathWithoutLocale === `/${locale}`) pathWithoutLocale = "/";
+    else if (pathWithoutLocale.startsWith(`/${locale}/`)) {
+        pathWithoutLocale = pathWithoutLocale.slice(locale.length + 1) || "/";
+    }
 
     // Optional redirects map; keep simple for this project
     const redirects: Record<string, string> = {
@@ -64,10 +68,7 @@ function isSafePath(path: string): boolean {
 export function generateHreflangUrls({ baseUrl, currentPath, locale }: CanonicalConfig): HreflangUrl[] {
     const canonicalPath = extractCanonicalPath(currentPath, locale);
     if (!isSafePath(canonicalPath)) return [];
-    return [
-        { locale: "en", url: `${baseUrl}${canonicalPath}` },
-        { locale: "ar", url: `${baseUrl}/ar${canonicalPath}` },
-    ];
+    return [];
 }
 
 export function generateXDefaultUrl(baseUrl: string, currentPath: string, locale: string): string {

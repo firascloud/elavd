@@ -193,4 +193,3 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
     </div>
   );
 }
-

@@ -54,7 +54,7 @@ export function buildLanguageAlternates(path: string, locale = "en") {
   for (const { locale: loc, url } of hreflangList) {
     languages[loc] = url;
   }
-  if (xDefault) languages["x-default"] = xDefault;
+  if (hreflangList.length > 0 && xDefault) languages["x-default"] = xDefault;
 
   return { canonical, languages };
 }
@@ -176,7 +176,7 @@ export async function buildMetadataSmart(opts: BuildMetadataOpts): Promise<Metad
     languages[loc] = url;
   }
 
-  if (seoData.xDefaultUrl) {
+  if (seoData.hreflangUrls.length > 0 && seoData.xDefaultUrl) {
     languages["x-default"] = seoData.xDefaultUrl;
   }
 

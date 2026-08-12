@@ -1,0 +1,29 @@
+# Elavd Office Equipment & Communication Technology Establishment
+
+> Elavd is a Saudi e-commerce supplier of office equipment, card and barcode printers, money counting machines, metal safes, surveillance systems, biometric attendance devices, point-of-sale equipment, and related accessories.
+
+Elavd serves individuals and businesses across Saudi Arabia. The website supports Arabic and English on the same locale-free URLs; use the visible language selector to change the displayed language. Official contact: sales@elavd.com, +966 55 320 2091, and +966 55 648 2799. Location: Jabr Bin Rashid Street, Al Murabba, Riyadh 12628, Saudi Arabia.
+
+## Shopping
+
+- [Home](https://www.elavd.com/): Overview of Elavd, featured categories, products, and offers.
+- [Store](https://www.elavd.com/store): Browse all available product categories and products.
+- [Brands](https://www.elavd.com/brands): Browse the brands supplied by Elavd.
+- [Special offers](https://www.elavd.com/specials): View current product promotions and special offers.
+
+## Company and support
+
+- [About Elavd](https://www.elavd.com/about-us): Company background, services, and areas of expertise.
+- [Contact Elavd](https://www.elavd.com/contact-us): Official phone numbers, email address, location, and contact form.
+- [Delivery information](https://www.elavd.com/delivery-information): Delivery coverage, shipping fees, and expected processing times.
+- [Partnerships](https://www.elavd.com/partnerships): Information for brands and suppliers interested in working with Elavd.
+
+## Policies
+
+- [Privacy policy](https://www.elavd.com/privacy-policy): How customer and visitor information is handled.
+- [Refund policy](https://www.elavd.com/refund-policy): Return, exchange, and refund terms.
+
+## Optional
+
+- [XML sitemap](https://www.elavd.com/sitemap.xml): Machine-readable index of public website pages and products.
+- [Robots directives](https://www.elavd.com/robots.txt): Search crawler access rules.

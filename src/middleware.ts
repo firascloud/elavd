@@ -10,8 +10,7 @@ export default async function middleware(request: NextRequest) {
  
   if (pathname.includes("/admin")) {
     if (!token) { 
-      const locale = pathname.split('/')[1] || routing.defaultLocale;
-      const loginUrl = new URL(`/${locale}/login`, request.url);
+      const loginUrl = new URL("/login", request.url);
       return NextResponse.redirect(loginUrl);
     }
   }

@@ -4,13 +4,13 @@
  *
  * Checks:
  *   1.  robots.txt — must not globally block crawlers
- *   2.  sitemap.xml — must exist and have enough entries for both locales
+ *   2.  sitemap.xml — must exist and expose locale-free public URLs
  *   3.  JSON-LD — must be present in server-rendered HTML
  *   4.  noindex — cart / compare / favorite must be noindexed
- *   5.  hreflang — must be absolute URLs + x-default present
+ *   5.  canonical — must be absolute and locale-free
  *   6.  canonical — must be absolute URL
  *   7.  404 page — must return HTTP 404 + noindex meta
- *   8.  Redirect check — root domain redirects to locale
+ *   8.  Root behavior — root domain is directly accessible
  *
  * v2 improvements:
  *   - Smarter sitemap locale detection (handles bare /en and /en/path)
@@ -28,7 +28,6 @@ const BASE_URL = (() => {
   return idx !== -1 ? args[idx + 1] : "https://elavd.com";
 })();
 const JSON_MODE = args.includes("--json");
-const LOCALES = ["en", "ar"];
 const IS_LOCAL = BASE_URL.includes("localhost") || BASE_URL.includes("127.0.0.1");
 
 // localePrefix:'never' — URLs have NO /en/ or /ar/ prefix.
@@ -151,26 +150,11 @@ async function checkSitemap() {
     record("PASS", cat, "Sitemap has enough URLs", `${urlCount} URLs found`);
   }
 
-  // Locale presence — sitemap uses /en/ and /ar/ paths for hreflang even when
-  // localePrefix:'never' is set (hreflang spec requires absolute locale URLs).
-  // Next.js internally rewrites the URL, so /en/... and /ar/... are valid targets.
-  for (const l of LOCALES) {
-    const hasLocale =
-      text.includes(`/${l}/`) ||             // /en/store, /ar/product/...
-      new RegExp(`elavd\\.com/${l}[<"&\\s]`).test(text) || // bare locale root
-      text.includes(`/${l}\n`);
-    if (hasLocale) {
-      record("PASS", cat, `Locale /${l}/ entries in sitemap`);
-    } else {
-      record("FAIL", cat, `Locale /${l}/ entries in sitemap`, "Missing locale entries — check sitemap.ts");
-    }
-  }
-
-  // x-default
-  if (text.includes("x-default")) {
-    record("PASS", cat, "x-default hreflang present");
+  const hasLocalePrefix = /<loc>https?:\/\/[^<]+\/(?:ar|en)(?:\/|<)/i.test(text);
+  if (hasLocalePrefix) {
+    record("FAIL", cat, "Sitemap URLs are locale-free", "Found /ar or /en in a public sitemap URL");
   } else {
-    record("WARN", cat, "x-default hreflang present", "No x-default found in sitemap alternates");
+    record("PASS", cat, "Sitemap URLs are locale-free");
   }
 
   // Absolute URLs only
@@ -206,9 +190,6 @@ async function checkPage({ path, acceptLang = "en", expectIndex, expectJsonLd })
   // Next.js renders: <meta name="robots" content="noindex,nofollow"/>
   const hasNoindex = /noindex/i.test(decoded);
   if (expectIndex) {
-    hasFailed => hasNoindex
-      ? record("FAIL", cat, "Page is indexable", "Found noindex — page should be indexed")
-      : record("PASS", cat, "Page is indexable");
     if (hasNoindex) record("FAIL", cat, "Page is indexable", "Found noindex — page should be indexed");
     else record("PASS", cat, "Page is indexable");
   } else {
@@ -232,7 +213,7 @@ async function checkPage({ path, acceptLang = "en", expectIndex, expectJsonLd })
     const linkHreflang = [...decoded.matchAll(/<link[^>]+hreflang[^>]*>/gi)];
 
     if (linkHreflang.length === 0) {
-      record("WARN", cat, "hreflang tags present", "No hreflang <link> tags found");
+      record("PASS", cat, "hreflang omitted for shared locale-free URL");
     } else {
       record("PASS", cat, "hreflang tags present", `${linkHreflang.length} found`);
 
@@ -328,8 +309,7 @@ async function check404() {
 }
 
 // ─── Check 6: Root behavior ───────────────────────────────────────────────────
-// next-intl redirects via middleware — may be immediate 200 with locale prefix
-// or 307 redirect depending on deployment. Treat both as acceptable.
+// With localePrefix:'never', the root should normally return 200 directly.
 
 async function checkRootRedirect() {
   const cat = "Root behavior";
@@ -343,10 +323,9 @@ async function checkRootRedirect() {
     const loc = res.headers.get("location") || "";
 
     if (res.status >= 300 && res.status < 400) {
-      record("PASS", cat, `Root → locale redirect (HTTP ${res.status})`, `→ ${loc}`);
+      record("WARN", cat, `Unexpected root redirect (HTTP ${res.status})`, `→ ${loc}`);
     } else if (res.status === 200) {
-      // next-intl prefix-always mode serves /en directly without redirect
-      record("PASS", cat, "Root behavior", `HTTP ${res.status} — next-intl may handle routing internally`);
+      record("PASS", cat, "Root is directly accessible", `HTTP ${res.status}`);
     } else {
       record("WARN", cat, "Root behavior", `Unexpected HTTP ${res.status}`);
     }

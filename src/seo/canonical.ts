@@ -1,13 +1,8 @@
 /**
  * Canonical & Hreflang URL utilities — elavd.com
  *
- * Adapted from a reference implementation for a bilingual (ar/en) Next.js 15 site
- * using next-intl with localePrefix: 'never'.
- *
- * Even though the user-facing URL has no locale prefix (e.g. elavd.com/store),
- * the hreflang and canonical tags reference the internal locale-prefixed paths
- * (e.g. elavd.com/en/store | elavd.com/ar/store). This is the recommended
- * approach when localePrefix:'never' is used — Google accepts it.
+ * URL helpers for a bilingual site using next-intl with localePrefix: 'never'.
+ * All public canonical URLs are locale-free (e.g. elavd.com/store).
  */
 
 import { headers } from "next/headers";
@@ -104,9 +99,7 @@ function isBlockedPath(path: string): boolean {
 // ─── Canonical URL ────────────────────────────────────────────────────────────
 
 /**
- * Builds the canonical URL for the current page.
- * For localePrefix:'never', canonical points to the locale-prefixed inter  nal URL.
- * Example: /store → https://elavd.com/en/store   (for locale = "en")
+ * Builds the public, locale-free canonical URL for the current page.
  */
 export function generateCanonicalUrl({
   baseUrl,
@@ -118,17 +111,16 @@ export function generateCanonicalUrl({
   // Clean up any accidental double slashes
   const cleanPath = canonicalPath.replace(/\/+/g, "/");
 
-  // Build locale-prefixed canonical (required by hreflang spec)
   const canonicalUrl = cleanPath === "/"
-    ? `${baseUrl}/${locale}`
-    : `${baseUrl}/${locale}${cleanPath}`;
+    ? baseUrl
+    : `${baseUrl}${cleanPath}`;
 
   try {
     new URL(canonicalUrl); // validates format
     return canonicalUrl;
   } catch (error) {
     console.error("[SEO] Invalid canonical URL generated:", canonicalUrl, error);
-    return `${baseUrl}/${DEFAULT_LOCALE}`;
+    return baseUrl;
   }
 }
 
@@ -139,7 +131,6 @@ export function generateCanonicalUrl({
  * Returns an empty array for blocked or unsafe paths (noindexed pages).
  */
 export function generateHreflangUrls({
-  baseUrl,
   currentPath,
   locale,
 }: CanonicalConfig): HreflangUrl[] {
@@ -149,17 +140,14 @@ export function generateHreflangUrls({
     return [];
   }
 
-  return LOCALES.map((loc) => ({
-    locale: loc,
-    url: canonicalPath === "/"
-      ? `${baseUrl}/${loc}`
-      : `${baseUrl}/${loc}${canonicalPath}`,
-  }));
+  // Both languages intentionally share one public URL. Emitting two hreflang
+  // entries with the same URL would be ambiguous, so alternates are omitted.
+  return [];
 }
 
 /**
  * Generates the x-default hreflang URL.
- * x-default always points to the English version (as the international fallback).
+ * x-default points to the same locale-free public URL.
  */
 export function generateXDefaultUrl(
   baseUrl: string,
@@ -168,11 +156,9 @@ export function generateXDefaultUrl(
 ): string {
   const canonicalPath = extractCanonicalPath(currentPath, locale);
 
-  if (!isSafePath(canonicalPath) || isBlockedPath(canonicalPath)) {
-    return `${baseUrl}/en`;
-  }
+  if (!isSafePath(canonicalPath) || isBlockedPath(canonicalPath)) return baseUrl;
 
-  return canonicalPath === "/" ? `${baseUrl}/en` : `${baseUrl}/en${canonicalPath}`;
+  return canonicalPath === "/" ? baseUrl : `${baseUrl}${canonicalPath}`;
 }
 
 // ─── Validators ───────────────────────────────────────────────────────────────
@@ -253,7 +239,7 @@ export async function getPageSeoData(locale: string) {
   }
 
   return {
-    /** Absolute locale-prefixed canonical URL for this page and locale */
+    /** Absolute locale-free canonical URL for this page */
     canonicalUrl,
     /** Array of { locale, url } pairs for all supported locales */
     hreflangUrls,

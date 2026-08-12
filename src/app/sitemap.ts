@@ -2,56 +2,39 @@ import type { MetadataRoute } from "next";
 import { getCategories, getProducts } from "@/services/home";
 
 const BASE_URL = "https://elavd.com";
-const LOCALES = ["en", "ar"] as const;
-
 type UrlEntry = {
   url: string;
   lastModified?: Date | string;
   changeFrequency?: MetadataRoute.Sitemap[number]["changeFrequency"];
   priority?: number;
-  alternates?: {
-    languages?: Record<string, string>;
-  };
 };
 
 /**
- * Emits one <url> entry per locale so both /en/... and /ar/... appear as
- * independent sitemap entries — required by the hreflang spec.
- * arPath is optional: supply it when the Arabic slug differs from English.
- * x-default always points to the English version.
+ * Emits one locale-free public URL. The selected language is stored in the
+ * NEXT_LOCALE cookie and is intentionally not encoded in the path.
  */
 function withAlternates(
   enPath: string,
-  arPath?: string,
+  _arPath?: string,
   opts?: { priority?: number; changeFrequency?: UrlEntry["changeFrequency"] }
 ): UrlEntry[] {
-  const toAbsolute = (locale: string, path: string) => {
+  const toAbsolute = (path: string) => {
     const p = path.startsWith("/") ? path : `/${path}`;
-    return `${BASE_URL}/${locale}${p === "/" ? "" : p}`;
+    return `${BASE_URL}${p === "/" ? "" : p}`;
   };
 
   const enLocPath = enPath.startsWith("/") ? enPath : `/${enPath}`;
-  const arLocPath = arPath
-    ? arPath.startsWith("/") ? arPath : `/${arPath}`
-    : enLocPath;
-
-  const languages: Record<string, string> = {
-    en: toAbsolute("en", enLocPath),
-    ar: toAbsolute("ar", arLocPath),
-    "x-default": toAbsolute("en", enLocPath),
-  };
 
   const isRoot = enLocPath === "/";
   const priority = opts?.priority ?? (isRoot ? 1 : 0.7);
   const changeFrequency = opts?.changeFrequency ?? "weekly";
 
-  return LOCALES.map((locale) => ({
-    url: locale === "ar" ? toAbsolute("ar", arLocPath) : toAbsolute("en", enLocPath),
+  return [{
+    url: toAbsolute(enLocPath),
     lastModified: new Date(),
     changeFrequency,
     priority,
-    alternates: { languages },
-  }));
+  }];
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
