@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { X, ChevronDown, Search, Loader2, Star, Tag, ChevronRight } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
-import { getCategories, type Category } from '@/services/categoryService'
+import type { Category } from '@/services/categoryService'
 import { searchProducts, type Product } from '@/services/productService'
 import Image from 'next/image'
 import { Link, useRouter } from '@/i18n/routing'
@@ -13,30 +13,21 @@ interface SearchOverlayProps {
   searchOpen: boolean
   setSearchOpen: (open: boolean) => void
   searchInputRef: React.RefObject<HTMLInputElement | null>
+  categories: Category[]
 }
 
-export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRef }: SearchOverlayProps) {
+export default function SearchOverlay({ searchOpen, setSearchOpen, searchInputRef, categories }: SearchOverlayProps) {
   const t = useTranslations('common')
   const locale = useLocale()
   const router = useRouter()
 
   const [searchTerm, setSearchTerm] = useState('')
-  const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const [results, setResults] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const [showCatMenu, setShowCatMenu] = useState(false)
 
   const catMenuRef = useRef<HTMLDivElement>(null)
-
-  // Initial category fetch
-  useEffect(() => {
-    const fetchCats = async () => {
-      const data = await getCategories(20)
-      setCategories(data)
-    }
-    fetchCats()
-  }, [])
 
   // Live search effect
   useEffect(() => {

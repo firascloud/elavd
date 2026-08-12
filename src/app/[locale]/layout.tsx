@@ -1,30 +1,9 @@
 import type { Metadata } from "next";
-import { El_Messiri, Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import Providers from "./providers";
-import { Toaster } from "sonner";
-import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { BASE_URL, SITE_NAME } from "@/metadata/utils";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import Script from "next/script";
-
-const elMessiri = El_Messiri({
-  variable: "--font-el-messiri",
-  subsets: ["arabic"],
-  weight: "variable",
-  display: "swap",
-  fallback: ["Arial", "Helvetica", "sans-serif"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: "variable",
-  display: "swap",
-});
+import { getStorefrontCategories } from "@/services/storefrontServer";
+import DeferredToaster from "@/components/DeferredToaster";
 
 export async function generateStaticParams() {
   const locales = ["en", "ar"];
@@ -32,8 +11,7 @@ export async function generateStaticParams() {
 }
 
 import MainLayoutWrapper from "@/components/MainLayoutWrapper";
-import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import { WebVitals } from "@/components/analytics/WebVitals";
+import DeferredAnalytics from "@/components/analytics/DeferredAnalytics";
 
 export default async function RootLayout({
   children,
@@ -43,14 +21,15 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
-  const messages = await getMessages({ locale }).catch(() => ({}));
+  const messages = (await import(`../../../messages/common/${locale}.json`)).default;
+  const headerCategories = await getStorefrontCategories(10);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <html
         lang={locale}
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className={`${elMessiri.variable} ${inter.variable} ${locale === "ar" ? elMessiri.className : inter.className}`}
+        className={locale === "ar" ? "font-el-messiri" : "font-inter"}
         suppressHydrationWarning
         data-scroll-behavior="smooth"
       >
@@ -60,8 +39,6 @@ export default async function RootLayout({
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#d94a4b" />
           <meta name="google-site-verification" content="ERXn8H6hiTOE4gPlX7GEJFf_G5CgxqOkIaGGhSKreFE" />
-          <link rel="preconnect" href="https://giomurhtsumtshqcsxwd.supabase.co" />
-          <link rel="preconnect" href="https://www.googletagmanager.com" />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -90,9 +67,8 @@ export default async function RootLayout({
           />
         </head>
 
-        <body className="antialiased font-sans">
-          <GoogleAnalytics />
-          <WebVitals />
+        <body className="antialiased">
+          <DeferredAnalytics />
           <a
 
 
@@ -101,22 +77,10 @@ export default async function RootLayout({
           >
             {locale === "en" ? "Skip to main content" : "الانتقال إلى المحتوى الرئيسي"}
           </a>
-          <Providers>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              forcedTheme="light"
-              enableSystem={false}
-              disableTransitionOnChange
-            >
-              <Toaster richColors position="top-right" />
-              <MainLayoutWrapper>
-                <Analytics />
-                <SpeedInsights />
-                {children}
-              </MainLayoutWrapper>
-            </ThemeProvider>
-          </Providers>
+          <DeferredToaster />
+          <MainLayoutWrapper categories={headerCategories}>
+            {children}
+          </MainLayoutWrapper>
         </body>
       </html>
     </NextIntlClientProvider>

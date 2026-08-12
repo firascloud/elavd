@@ -1,38 +1,14 @@
-"use client";
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { Layers } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
-import { getCategories, getFeaturedProducts, type Category, type Product } from '@/services/home';
+import { getTranslations } from 'next-intl/server';
+import type { Category, Product } from '@/services/home';
 import { Link } from '@/i18n/routing';
 
-export default function ourCategories() {
-    const t = useTranslations('common');
-    const locale = useLocale();
+export default async function ourCategories({ locale, categories, featuredProducts }: { locale: string; categories: Category[]; featuredProducts: Product[] }) {
+    const t = await getTranslations({ locale, namespace: 'common' });
 
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const [categoriesData, productsData] = await Promise.all([
-                    getCategories(16),
-                    getFeaturedProducts(4)
-                ]);
-                setCategories(categoriesData);
-                setFeaturedProducts(productsData);
-            } catch (error) {
-                console.error("Error fetching homepage data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+    const loading = false;
 
     const CategoryCard = ({ cat, idx, isGrid = false }: { cat: Category; idx: number; isGrid?: boolean }) => (
         <div key={cat.id ?? idx} className={isGrid ? "w-full" : "min-w-[100%] sm:min-w-[48%] md:min-w-[30%] flex-shrink-0"}>
@@ -88,7 +64,7 @@ export default function ourCategories() {
 
     return (
         <section
-            className="w-full py-12 bg-white"
+            className="defer-below-fold w-full py-12 bg-white"
             dir={locale === 'ar' ? 'rtl' : 'ltr'}
         >
             <div className="max-w-7xl mx-auto px-4">

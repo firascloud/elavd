@@ -1,15 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { Eye, Heart, Repeat, Layers } from "lucide-react";
 import useAppStore from "@/store/store";
-import { toast } from "sonner";
-import { Product } from "@/services/home";
-import { QuickViewModal } from "./QuickViewModal";
+import type { Product } from "@/services/home";
 import { Link } from "@/i18n/routing";
+
+const QuickViewModal = dynamic(
+    () => import("./QuickViewModal").then((module) => module.QuickViewModal),
+    { ssr: false },
+);
 
 export interface ProductCardProps extends Product {
     is_hot?: boolean;
@@ -17,19 +20,12 @@ export interface ProductCardProps extends Product {
 }
 
 const Tooltip = ({ text, isVisible }: { text: string; isVisible: boolean }) => (
-    <AnimatePresence>
-        {isVisible && (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.8, x: 10 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.8, x: 10 }}
-                className="absolute top-1/2 -translate-y-1/2 ltr:right-full ltr:me-3 rtl:left-full rtl:ms-3 px-2 py-1 bg-foreground text-primary-foreground text-[10px] rounded whitespace-nowrap z-30 pointer-events-none"
-            >
-                {text}
-                <div className="absolute top-1/2 -translate-y-1/2 ltr:-right-1 rtl:-left-1 border-t-4 border-t-transparent border-b-4 border-b-transparent ltr:border-l-4 ltr:border-l-foreground rtl:border-r-4 rtl:border-r-foreground" />
-            </motion.div>
-        )}
-    </AnimatePresence>
+    isVisible ? (
+        <div className="absolute top-1/2 -translate-y-1/2 ltr:right-full ltr:me-3 rtl:left-full rtl:ms-3 px-2 py-1 bg-foreground text-primary-foreground text-[10px] rounded whitespace-nowrap z-30 pointer-events-none animate-in fade-in zoom-in-95 duration-150">
+            {text}
+            <div className="absolute top-1/2 -translate-y-1/2 ltr:-right-1 rtl:-left-1 border-t-4 border-t-transparent border-b-4 border-b-transparent ltr:border-l-4 ltr:border-l-foreground rtl:border-r-4 rtl:border-r-foreground" />
+        </div>
+    ) : null
 );
 
 const IconButton = ({
@@ -80,27 +76,16 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
     const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
     const locale = useLocale();
     const t = useTranslations('common');
-    const { toggleWishlist, isInWishlist, addToCompare, isInCompare, addToCart } = useAppStore();
+    const { toggleWishlist, isInWishlist, addToCompare, isInCompare } = useAppStore();
 
     const name = locale === 'ar' ? name_ar : name_en;
     const description = locale === 'ar' ? short_desc_ar : short_desc_en;
     const localizedSlug = slug_en;
 
-    const handleAddToCart = (e: React.MouseEvent) => {
-        e.preventDefault();
-        addToCart(props);
-        toast.success(t('AddedToCartDesc'));
-    };
-
     if (view === "list") {
         return (
             <>
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    className="group relative flex flex-col md:flex-row bg-muted/30 border border-border rounded-md overflow-hidden hover:shadow-md transition-all duration-500"
-                >
+                <div className="group relative flex flex-col md:flex-row bg-muted/30 border border-border rounded-md overflow-hidden hover:shadow-md transition-all duration-500">
                     <div className="relative w-full md:w-80 h-64 md:h-auto bg-background flex items-center justify-center px-4 py-1 shrink-0">
                         {main_image ? (
                             <div className="relative size-48 md:size-56">
@@ -161,24 +146,17 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             </div>
                         </div>
                     </div>
-                </motion.div>
-                <QuickViewModal
-                    isOpen={isQuickViewOpen}
-                    onClose={() => setIsQuickViewOpen(false)}
-                    product={props}
-                />
+                </div>
+                {isQuickViewOpen && (
+                    <QuickViewModal isOpen onClose={() => setIsQuickViewOpen(false)} product={props} />
+                )}
             </>
         )
     }
 
     return (
         <>
-            <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="group relative flex flex-col bg-background border border-border p-6 transition-all hover:shadow-md hover:border-secondary/30 shadow-sm rounded-md h-full overflow-hidden"
-            >
+            <div className="group relative flex flex-col bg-background border border-border p-6 transition-all hover:shadow-md hover:border-secondary/30 shadow-sm rounded-md h-full overflow-hidden">
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-secondary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                 {is_hot && (
                     <div className="absolute top-4 ltr:right-4 rtl:left-4 z-10 px-3 py-1 bg-destructive text-destructive-foreground text-[10px] font-extrabold rounded-full ltr:tracking-wider uppercase">
@@ -259,13 +237,11 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                         <span className="sr-only"> {name}</span>
                     </Link>
                 </div>
-            </motion.div>
+            </div>
 
-            <QuickViewModal
-                isOpen={isQuickViewOpen}
-                onClose={() => setIsQuickViewOpen(false)}
-                product={props}
-            />
+            {isQuickViewOpen && (
+                <QuickViewModal isOpen onClose={() => setIsQuickViewOpen(false)} product={props} />
+            )}
         </>
     );
 };

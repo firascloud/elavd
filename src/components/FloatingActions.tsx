@@ -14,17 +14,24 @@ export default function FloatingActions() {
   const whatsapp = '+966553202091'
 
   useEffect(() => {
+    let frameId: number | null = null
+
     const checkScroll = () => {
-      if (!showScroll && window.pageYOffset > 300) {
-        setShowScroll(true)
-      } else if (showScroll && window.pageYOffset <= 300) {
-        setShowScroll(false)
-      }
+      if (frameId !== null) return
+
+      frameId = window.requestAnimationFrame(() => {
+        const shouldShow = window.scrollY > 300
+        setShowScroll((current) => current === shouldShow ? current : shouldShow)
+        frameId = null
+      })
     }
 
     window.addEventListener('scroll', checkScroll, { passive: true })
-    return () => window.removeEventListener('scroll', checkScroll)
-  }, [showScroll])
+    return () => {
+      window.removeEventListener('scroll', checkScroll)
+      if (frameId !== null) window.cancelAnimationFrame(frameId)
+    }
+  }, [])
 
   const scrollToTop = () => {
     window.scrollTo({

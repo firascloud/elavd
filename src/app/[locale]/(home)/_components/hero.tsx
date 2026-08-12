@@ -1,8 +1,6 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
-import { useTranslations, useLocale } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
@@ -13,9 +11,8 @@ import banner2 from '@/assets/banner-2.webp'
 import banner3 from '@/assets/banner-3.webp'
 import banner4 from '@/assets/banner-4.webp'
 
-export default function Hero() {
-  const t = useTranslations('hero')
-  const locale = useLocale()
+export default async function Hero({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'hero' })
   const isRtl = locale === 'ar'
 
   const slides = [
@@ -24,15 +21,7 @@ export default function Hero() {
     { id: '3', image: banner2, href: '/store/biometric-attendance-systems' },
     { id: '4', image: banner4, href: '/store/metal-safes' },
   ]
-  const [activeSlide, setActiveSlide] = useState(0)
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % slides.length)
-    }, 6000)
-
-    return () => window.clearInterval(intervalId)
-  }, [slides.length])
+  const animatedSlides = [...slides, slides[0]]
 
   return (
     <section className="bg-muted/30 p-0 md:py-6 md:px-4 font-sans overflow-hidden">
@@ -85,13 +74,10 @@ export default function Hero() {
           </div>
 
           <div className="lg:col-span-6 overflow-hidden rounded-none md:rounded-lg bg-foreground border border-primary-white/5 order-1 lg:order-2 perspective" dir="ltr">
-            <div
-              className="flex h-full transition-transform duration-700 ease-out motion-reduce:transition-none"
-              style={{ transform: `translate3d(-${activeSlide * 100}%, 0, 0)` }}
-            >
-              {slides.map((slide, index) => (
+            <div className="hero-slider-track flex h-full">
+              {animatedSlides.map((slide, index) => (
                 <div
-                  key={slide.id}
+                  key={`${slide.id}-${index}`}
                   dir={isRtl ? 'rtl' : 'ltr'}
                   className="relative flex-[0_0_100%] min-w-0 h-full min-h-[300px] lg:min-h-[460px] overflow-hidden group"
                 >

@@ -1,38 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { getProducts, type Product } from '@/services/home';
+import type { Product } from '@/services/home';
 import { PackageX } from 'lucide-react';
 import { ProductCard } from '@/components/common/product-card';
-import { ProductCardSkeleton } from '@/components/common/ProductCardSkeleton';
 
-export default function OurProducts() {
+type ProductTab = 'featured' | 'best_seller' | 'all';
+
+export default function OurProducts({ productGroups }: { productGroups: Record<ProductTab, Product[]> }) {
     const t = useTranslations('common');
     const locale = useLocale();
 
-    const [activeTab, setActiveTab] = useState<'featured' | 'best_seller' | 'all'>('all');
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setProducts([]);  
-            setLoading(true);
-            const data = await getProducts({
-                is_featured: activeTab === 'featured',
-                is_popular: activeTab === 'best_seller',
-                limit: 4
-            });
-            setProducts(data);
-            setLoading(false);
-        };
-        fetchProducts();
-    }, [activeTab]);
+    const [activeTab, setActiveTab] = useState<ProductTab>('all');
+    const products = productGroups[activeTab];
 
     return (
-        <section className="w-full py-16 px-3 md:px-0 bg-background" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+        <section className="defer-below-fold w-full py-16 px-3 md:px-0 bg-background" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
             <div className="max-w-7xl mx-auto"> 
                 <div className="flex items-center justify-start border-b border-border gap-8 mb-10 pb-1">
                     <button
@@ -63,13 +47,7 @@ export default function OurProducts() {
                         )}
                     </button>
                 </div>
-                {loading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {Array.from({ length: 4 }).map((_, idx) => (
-                            <ProductCardSkeleton key={idx} />
-                        ))}
-                    </div>
-                ) : products.length > 0 ? (
+                {products.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {products.map((prod) => (
                             <ProductCard key={prod.id} {...prod} is_hot={prod.is_featured} />

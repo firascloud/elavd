@@ -21,7 +21,7 @@ export default function SpecialOffers({ position }: { position: number }) {
 
     if (position === 1) {
         return (
-            <section className="w-full bg-background mt-4">
+            <section className="defer-below-fold w-full bg-background mt-4">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         {[0, 1, 2].map((index) => (
@@ -35,7 +35,8 @@ export default function SpecialOffers({ position }: { position: number }) {
                                         alt={cardAlts[index]}
                                         fill
                                         className="object-contain group-hover:scale-105 transition-transform duration-1000"
-                                        priority
+                                        loading="lazy"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                     />
                                 </Link>
                             </div>
@@ -48,7 +49,7 @@ export default function SpecialOffers({ position }: { position: number }) {
 
     if (position === 2) {
         return (
-            <section className="w-full mt-10 pb-12 bg-background">
+            <section className="defer-below-fold w-full mt-10 pb-12 bg-background">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="relative w-full aspect-[21/9] md:aspect-[25/7] lg:aspect-[30/7] overflow-hidden group">
                         <Link href="/store/steel-security-safes" className="block relative w-full h-full">

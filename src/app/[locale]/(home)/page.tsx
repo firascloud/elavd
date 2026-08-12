@@ -1,19 +1,12 @@
 import Hero from "./_components/hero";
-import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import { getHomeJsonLd } from "@/seo/home";
 import { homeMetadata } from "@/metadata/home";
+import { getStorefrontCategories, getStorefrontProducts } from "@/services/storefrontServer";
 
-// Lazy-load below-the-fold sections to reduce initial JS bundle
-const OurCategories = dynamic(() => import("./_components/ourCategories"), {
-  loading: () => <div className="w-full py-12 bg-white min-h-[400px]" />,
-});
-const OurProducts = dynamic(() => import("./_components/ourProducts"), {
-  loading: () => <div className="w-full py-12 bg-white min-h-[400px]" />,
-});
-const SpecialOffers = dynamic(() => import("./_components/specialOffers"), {
-  loading: () => <div className="w-full min-h-[200px]" />,
-});
+import OurCategories from "./_components/ourCategories";
+import OurProducts from "./_components/ourProducts";
+import SpecialOffers from "./_components/specialOffers";
 
 export async function generateMetadata({
   params,
@@ -30,6 +23,12 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const [categories, featuredProducts, allProducts, popularProducts] = await Promise.all([
+    getStorefrontCategories(16),
+    getStorefrontProducts("featured", 4),
+    getStorefrontProducts("all", 4),
+    getStorefrontProducts("popular", 4),
+  ]);
 
   return (
     <main className="min-h-screen px-0">
@@ -38,10 +37,16 @@ export default async function Home({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomeJsonLd(locale)) }}
       />
-      <Hero />
-      <OurCategories />
+      <Hero locale={locale} />
+      <OurCategories locale={locale} categories={categories} featuredProducts={featuredProducts} />
       <SpecialOffers position={1} />
-      <OurProducts />
+      <OurProducts
+        productGroups={{
+          all: allProducts,
+          featured: featuredProducts,
+          best_seller: popularProducts,
+        }}
+      />
       <SpecialOffers position={2} />
     </main>
   );

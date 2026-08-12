@@ -1,5 +1,19 @@
 export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
-export const GADS_TRACKING_ID = process.env.NEXT_PUBLIC_GADS_ID;
+
+const configuredGoogleAdsId = process.env.NEXT_PUBLIC_GADS_ID;
+const placeholderGoogleAdsIds = new Set([
+  "AW-123456789",
+  "AW-000000000",
+]);
+
+// Never initialize the Google Ads destination for documentation/example IDs.
+// A configured Ads destination causes gtag to fetch and execute another script.
+export const GADS_TRACKING_ID =
+  configuredGoogleAdsId &&
+  /^AW-\d{9,12}$/.test(configuredGoogleAdsId) &&
+  !placeholderGoogleAdsIds.has(configuredGoogleAdsId)
+    ? configuredGoogleAdsId
+    : undefined;
 
 declare global {
   interface Window {

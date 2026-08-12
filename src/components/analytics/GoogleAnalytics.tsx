@@ -3,34 +3,21 @@
 import Script from 'next/script';
 import { usePathname } from '@/i18n/routing';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, Suspense, useState } from 'react';
+import { useEffect, Suspense } from 'react';
 import { GA_TRACKING_ID, GADS_TRACKING_ID, trackPageView } from '@/lib/analytics';
 
 function GoogleAnalyticsInner() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [shouldLoad, setShouldLoad] = useState(false);
-
-    // Defer analytics loading until after the page is interactive
-    useEffect(() => {
-        if ('requestIdleCallback' in window) {
-            (window as any).requestIdleCallback(() => setShouldLoad(true), { timeout: 3000 });
-        } else {
-            // Fallback: load after 2 seconds
-            const timer = setTimeout(() => setShouldLoad(true), 2000);
-            return () => clearTimeout(timer);
-        }
-    }, []);
-
     // Track pageviews automatically on route change
     useEffect(() => {
-        if (pathname && shouldLoad) {
+        if (pathname) {
             const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
             trackPageView(url);
         }
-    }, [pathname, searchParams, shouldLoad]);
+    }, [pathname, searchParams]);
 
-    if (!GA_TRACKING_ID || !shouldLoad) return null;
+    if (!GA_TRACKING_ID) return null;
 
     return (
         <>

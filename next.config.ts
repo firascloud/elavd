@@ -1,5 +1,6 @@
 import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
+import path from "node:path";
 const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
@@ -30,6 +31,16 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', '@iconify/react', 'embla-carousel-react'],
+  },
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.resolve.alias["../build/polyfills/polyfill-module$"] = path.resolve(
+        process.cwd(),
+        "src/polyfills/next-modern.ts",
+      );
+    }
+
+    return config;
   },
 };
 
