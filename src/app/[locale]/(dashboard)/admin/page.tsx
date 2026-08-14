@@ -1,15 +1,27 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
-import { StatsCard, DashboardCard } from '@/app/[locale]/(dashboard)/_components/common/Card';
-import { DashboardTable, DashboardTableRow, DashboardTableCell } from '@/app/[locale]/(dashboard)/_components/common/Table';
-import { supabaseBrowser } from '@/lib/supabase/client';
-import { DashboardHeader } from '@/app/[locale]/(dashboard)/_components/common/DashboardHeader';
-import { Package, ShoppingCart, Users, SaudiRiyal, Calendar, User as UserIcon, RefreshCw, Tag, Layers } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import {
+    ArrowUpRight,
+    Calendar,
+    Layers,
+    LayoutDashboard,
+    Package,
+    RefreshCw,
+    SaudiRiyal,
+    ShoppingCart,
+    Tag,
+    User as UserIcon,
+    Users,
+} from 'lucide-react';
+import { DashboardCard, StatsCard } from '@/app/[locale]/(dashboard)/_components/common/Card';
+import { DashboardTable, DashboardTableCell, DashboardTableRow } from '@/app/[locale]/(dashboard)/_components/common/Table';
 import { Price } from '@/app/[locale]/(dashboard)/_components/common/Price';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/routing';
+import { supabaseBrowser } from '@/lib/supabase/client';
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboardPage() {
     const t = useTranslations('dashboard');
@@ -20,7 +32,7 @@ export default function AdminDashboardPage() {
         users: 0,
         revenue: 0,
         activeOffers: 0,
-        subCategories: 0
+        subCategories: 0,
     });
     const [recentOrders, setRecentOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -33,7 +45,7 @@ export default function AdminDashboardPage() {
                 { count: ordersCount },
                 { count: usersCount },
                 { count: offersCount },
-                { count: subCategoriesCount }
+                { count: subCategoriesCount },
             ] = await Promise.all([
                 supabaseBrowser.from('products').select('*', { count: 'exact', head: true }),
                 supabaseBrowser.from('orders').select('*', { count: 'exact', head: true }),
@@ -48,7 +60,10 @@ export default function AdminDashboardPage() {
                 .order('created_at', { ascending: false })
                 .limit(100);
 
-            const revenue = (revenueAgg || []).reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0);
+            const revenue = (revenueAgg || []).reduce(
+                (sum: number, order: any) => sum + (order.total_amount || 0),
+                0,
+            );
 
             const { data: latest } = await supabaseBrowser
                 .from('orders')
@@ -62,7 +77,7 @@ export default function AdminDashboardPage() {
                 users: usersCount || 0,
                 revenue,
                 activeOffers: offersCount || 0,
-                subCategories: subCategoriesCount || 0
+                subCategories: subCategoriesCount || 0,
             });
             setRecentOrders(latest || []);
         } finally {
@@ -78,163 +93,189 @@ export default function AdminDashboardPage() {
         switch (status) {
             case 'pending': return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
             case 'processing': return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
-            case 'shipped': return 'bg-purple-500/10 text-purple-600 border-purple-500/20';
-            case 'delivered': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+            case 'shipped': return 'bg-violet-500/10 text-violet-600 border-violet-500/20';
+            case 'delivered': return 'bg-secondary/10 text-secondary border-secondary/20';
             case 'canceled': return 'bg-rose-500/10 text-rose-600 border-rose-500/20';
-            default: return 'bg-muted/30 text-muted-foreground border-transparent';
+            default: return 'bg-muted/50 text-muted-foreground border-border/60';
         }
     };
 
-    return (
-        <div className="space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-6 duration-700">
-            {/* Header Section */}
-            <DashboardHeader
-                title={`${t('WelcomeBack')}, ${t('Admin')}`}
-                description={t('DashboardSubtitle')}
-                actions={
-                    <div className="flex items-center gap-3">
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={load}
-                            className="h-12 w-12 rounded-2xl border-border/40 bg-background/40 hover:bg-background/60 transition-all duration-300 shadow-sm backdrop-blur-xl shrink-0"
-                        >
-                            <RefreshCw className={cn("h-5 w-5 text-muted-foreground", loading && "animate-spin")} />
-                        </Button>
-                    </div>
-                }
-            />
+    const quickLinks = [
+        { href: '/admin/orders', icon: ShoppingCart, label: t('Orders'), value: stats.orders, color: 'bg-amber-500/10 text-amber-600' },
+        { href: '/admin/products', icon: Package, label: t('Products'), value: stats.products, color: 'bg-blue-500/10 text-blue-600' },
+        { href: '/admin/sub-categories', icon: Layers, label: t('SubCategories'), value: stats.subCategories, color: 'bg-violet-500/10 text-violet-600' },
+        { href: '/admin/offers', icon: Tag, label: t('Offers'), value: stats.activeOffers, color: 'bg-secondary/10 text-secondary' },
+    ];
 
-            {/* Statistics Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                <StatsCard
-                    title={t('TotalProducts')}
-                    value={loading ? '—' : stats.products}
-                    icon={Package}
-                    change="12%"
-                    isIncrease={true}
-                />
-                <StatsCard
-                    title={t('TotalOrders')}
-                    value={loading ? '—' : stats.orders}
-                    icon={ShoppingCart}
-                    change="5.4%"
-                    isIncrease={true}
-                />
-                <StatsCard
-                    title={t('TotalUsers')}
-                    value={loading ? '—' : stats.users}
-                    icon={Users}
-                    change="2.1%"
-                    isIncrease={false}
-                />
+    return (
+        <div className="mx-auto w-full max-w-[1600px] space-y-6 pb-8 animate-in fade-in slide-in-from-bottom-3 duration-500">
+            <section className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] via-background to-secondary/[0.08] px-5 py-5 shadow-sm sm:px-7 sm:py-6">
+                <div className="pointer-events-none absolute -end-16 -top-20 h-52 w-52 rounded-full bg-primary/10 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-24 start-1/3 h-44 w-44 rounded-full bg-secondary/10 blur-3xl" />
+
+                <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
+                        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-background/70 px-3 py-1 text-[11px] font-bold text-primary shadow-sm backdrop-blur">
+                            <LayoutDashboard className="h-3.5 w-3.5" />
+                            {t('Overview')}
+                        </div>
+                        <h1 className="text-2xl font-black leading-tight text-foreground sm:text-3xl">
+                            {t('WelcomeBack')}, {t('Admin')}
+                        </h1>
+                        <p className="mt-2 max-w-2xl text-xs font-medium leading-relaxed text-muted-foreground sm:text-sm">
+                            {t('DashboardSubtitle')}
+                        </p>
+                    </div>
+
+                    <Button
+                        variant="outline"
+                        onClick={load}
+                        disabled={loading}
+                        className="h-10 w-full shrink-0 rounded-xl border-border/70 bg-background/80 px-4 text-xs font-bold shadow-sm backdrop-blur hover:border-primary/25 hover:bg-background sm:w-auto"
+                    >
+                        <RefreshCw className={cn('h-4 w-4 text-primary', loading && 'animate-spin')} />
+                        {t('Refresh')}
+                    </Button>
+                </div>
+            </section>
+
+            <section
+                aria-label={t('TotalStatistics')}
+                className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 2xl:grid-cols-5"
+            >
+                <StatsCard title={t('TotalProducts')} value={loading ? '—' : stats.products} icon={Package} tone="blue" />
+                <StatsCard title={t('TotalOrders')} value={loading ? '—' : stats.orders} icon={ShoppingCart} tone="amber" />
+                <StatsCard title={t('TotalUsers')} value={loading ? '—' : stats.users} icon={Users} tone="secondary" />
                 <StatsCard
                     title={t('RecentRevenue')}
-                    value={loading ? '—' : <Price amount={stats.revenue} iconClassName='w-7 h-7' />}
+                    value={loading ? '—' : <Price amount={stats.revenue} iconClassName="h-6 w-6" />}
                     icon={SaudiRiyal}
-                    change="24%"
-                    isIncrease={true}
+                    tone="primary"
                 />
-                <StatsCard
-                    title={t('SubCategories')}
-                    value={loading ? '—' : stats.subCategories}
-                    icon={Layers}
-                    change="8.2%"
-                    isIncrease={true}
-                />
-            </div>
+                <StatsCard title={t('SubCategories')} value={loading ? '—' : stats.subCategories} icon={Layers} tone="violet" />
+            </section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Recent Orders List */}
+            <section className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1.8fr)_minmax(280px,0.7fr)]">
                 <DashboardCard
                     title={t('RecentOrders')}
                     subtitle={t('LatestFiveOrders')}
-                    className="lg:col-span-2"
+                    contentClassName="p-0"
+                    action={
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            asChild
+                            className="h-8 rounded-lg px-2.5 text-[11px] font-bold text-primary hover:bg-primary/10 hover:text-primary"
+                        >
+                            <Link href="/admin/orders">
+                                {t('Orders')}
+                                <ArrowUpRight className="h-3.5 w-3.5 rtl:-rotate-90" />
+                            </Link>
+                        </Button>
+                    }
                 >
-                    <DashboardTable headers={[
-                        t('OrderID'),
-                        t('Customer'),
-                        t('Status'),
-                        t('Total'),
-                        t('CreatedAt')
-                    ]}>
-                        {recentOrders.map((order) => (
-                            <DashboardTableRow key={order.id} className="group cursor-pointer">
-                                <DashboardTableCell>
-                                    <span className="text-[10px] uppercase font-bold text-muted-foreground bg-foreground/[0.04] px-2.5 py-1 rounded-lg border border-border/40 group-hover:bg-primary/5 transition-colors">
-                                        #{order.id?.slice(0, 8)}
-                                    </span>
-                                </DashboardTableCell>
-                                <DashboardTableCell>
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-sm">
-                                            <UserIcon className="h-4.5 w-4.5" />
+                    <DashboardTable
+                        headers={[t('OrderID'), t('Customer'), t('Status'), t('Total'), t('CreatedAt')]}
+                        className="rounded-none border-0 shadow-none"
+                        isLoading={loading}
+                        emptyMessage={t('NoOrdersFound')}
+                        loadingMessage={t('Loading')}
+                    >
+                        {recentOrders.map((order) => {
+                            const status = order.status || 'pending';
+
+                            return (
+                                <DashboardTableRow key={order.id} className="group h-16 cursor-pointer">
+                                    <DashboardTableCell>
+                                        <span className="rounded-lg border border-border/50 bg-muted/50 px-2.5 py-1 font-mono text-[10px] font-bold uppercase text-muted-foreground transition-colors group-hover:bg-primary/5">
+                                            #{order.id?.slice(0, 8)}
+                                        </span>
+                                    </DashboardTableCell>
+                                    <DashboardTableCell>
+                                        <div className="flex items-center gap-3">
+                                            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-primary/15 bg-primary/10 text-primary">
+                                                <UserIcon className="h-4 w-4" />
+                                            </div>
+                                            <div className="flex min-w-0 flex-col">
+                                                <span className="truncate text-xs font-bold ltr:tracking-tight">
+                                                    {t('CustomerHash')}{order.user_id?.slice(0, 4) || '—'}
+                                                </span>
+                                                <span className="text-[10px] text-muted-foreground">{t('PremiumUser')}</span>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col">
-                                            <span className="font-bold text-sm ltr:tracking-tight">{t('CustomerHash')}{order.user_id?.slice(0, 4)}</span>
-                                            <span className="text-[10px] text-muted-foreground">{t('PremiumUser') || 'Premium User'}</span>
-                                        </div>
-                                    </div>
-                                </DashboardTableCell>
-                                <DashboardTableCell>
-                                    <span className={cn(
-                                        "px-2.5 py-1 rounded-full text-[10px] font-black uppercase border ltr:tracking-tighter",
-                                        getStatusStyle(order.status)
-                                    )}>
-                                        {t(order.status.charAt(0).toUpperCase() + order.status.slice(1))}
-                                    </span>
-                                </DashboardTableCell>
-                                <DashboardTableCell>
-                                    <span className="font-black font-mono text-sm ltr:tracking-tighter">
-                                        <Price amount={order.total_amount || 0} />
-                                    </span>
-                                </DashboardTableCell>
-                                <DashboardTableCell>
-                                    <span className="text-xs text-muted-foreground font-semibold flex items-center gap-1.5">
-                                        <Calendar className="h-3.5 w-3.5 opacity-40" />
-                                        {order.created_at ? new Date(order.created_at).toLocaleDateString(locale) : '—'}
-                                    </span>
-                                </DashboardTableCell>
-                            </DashboardTableRow>
-                        ))}
+                                    </DashboardTableCell>
+                                    <DashboardTableCell>
+                                        <span className={cn(
+                                            'rounded-full border px-2.5 py-1 text-[10px] font-black uppercase ltr:tracking-tighter',
+                                            getStatusStyle(status),
+                                        )}>
+                                            {t(status.charAt(0).toUpperCase() + status.slice(1))}
+                                        </span>
+                                    </DashboardTableCell>
+                                    <DashboardTableCell>
+                                        <span className="font-mono text-xs font-black ltr:tracking-tighter">
+                                            <Price amount={order.total_amount || 0} />
+                                        </span>
+                                    </DashboardTableCell>
+                                    <DashboardTableCell>
+                                        <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground">
+                                            <Calendar className="h-3.5 w-3.5 opacity-40" />
+                                            {order.created_at ? new Date(order.created_at).toLocaleDateString(locale) : '—'}
+                                        </span>
+                                    </DashboardTableCell>
+                                </DashboardTableRow>
+                            );
+                        })}
                     </DashboardTable>
                 </DashboardCard>
 
-                {/* Dashboard Highlights */}
-                <div className="space-y-6">
-                    <DashboardCard title={t('QuickActivity') || 'Quick Activity'}>
-                        <div className="space-y-5">
-                            {[
-                                { icon: ShoppingCart, label: t('TotalOrders'), val: stats.orders, color: 'text-amber-500 bg-amber-500/10' },
-                                { icon: Package, label: t('TotalProducts'), val: stats.products, color: 'text-blue-500 bg-blue-500/10' },
-                                { icon: Layers, label: t('SubCategories'), val: stats.subCategories, color: 'text-purple-500 bg-purple-500/10' },
-                                { icon: Tag, label: t('TotalOffers'), val: stats.activeOffers, color: 'text-emerald-500 bg-emerald-500/10' },
-                            ].map((item, i) => (
-                                <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-foreground/[0.02] border border-border/40 hover:bg-foreground/[0.04] transition-all">
-                                    <div className="flex items-center gap-4">
-                                        <div className={cn("h-10 w-10 rounded-xl flex items-center justify-center shadow-sm", item.color)}>
-                                            <item.icon className="h-5 w-5" />
-                                        </div>
-                                        <span className="text-sm font-bold text-muted-foreground">{item.label}</span>
+                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-1">
+                    <DashboardCard title={t('QuickActivity')} contentClassName="space-y-2 p-3 sm:p-3">
+                        {quickLinks.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="group flex items-center justify-between gap-3 rounded-xl border border-transparent p-2.5 transition-colors hover:border-border/60 hover:bg-muted/50"
+                            >
+                                <div className="flex min-w-0 items-center gap-3">
+                                    <div className={cn('grid h-9 w-9 shrink-0 place-items-center rounded-xl', item.color)}>
+                                        <item.icon className="h-[18px] w-[18px]" />
                                     </div>
-                                    <span className="text-lg font-black ltr:tracking-tight">{item.val}</span>
+                                    <span className="truncate text-xs font-bold text-foreground/80 group-hover:text-foreground">
+                                        {item.label}
+                                    </span>
                                 </div>
-                            ))}
-                        </div>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm font-black text-foreground">{loading ? '—' : item.value}</span>
+                                    <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary rtl:-rotate-90" />
+                                </div>
+                            </Link>
+                        ))}
                     </DashboardCard>
 
-                    <div className="p-6 rounded-[2.5rem] bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-2xl relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-8 opacity-10 scale-150 rotate-12 group-hover:scale-[1.8] transition-transform duration-700">
-                            <Tag className="h-24 w-24" />
+                    <Link
+                        href="/admin/offers"
+                        className="group relative min-h-48 overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-5 text-primary-foreground shadow-lg shadow-primary/15 transition-transform duration-200 hover:-translate-y-0.5"
+                    >
+                        <div className="absolute -end-8 -top-8 h-32 w-32 rounded-full border-[22px] border-white/5 transition-transform duration-500 group-hover:scale-110" />
+                        <div className="absolute bottom-0 end-0 p-5 opacity-10 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
+                            <Tag className="h-20 w-20" />
                         </div>
-                        <div className="relative z-10">
-                            <h3 className="text-xl font-black mb-1">{t('ActiveOffers')}</h3>
-                            <p className="text-primary-foreground/70 text-xs font-medium mb-4">{t('OffersDescription')}</p>
-                            <div className="text-4xl font-black">{stats.activeOffers}</div>
+                        <div className="relative z-10 flex h-full flex-col">
+                            <div className="mb-5 flex items-start justify-between gap-4">
+                                <div>
+                                    <h3 className="text-lg font-black">{t('ActiveOffers')}</h3>
+                                    <p className="mt-1 line-clamp-2 text-[11px] font-medium leading-relaxed text-primary-foreground/70">
+                                        {t('OffersDescription')}
+                                    </p>
+                                </div>
+                                <ArrowUpRight className="h-5 w-5 shrink-0 opacity-70 rtl:-rotate-90" />
+                            </div>
+                            <div className="mt-auto text-4xl font-black">{loading ? '—' : stats.activeOffers}</div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
-            </div>
+            </section>
         </div>
     );
 }

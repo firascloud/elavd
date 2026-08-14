@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, use } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { getBrandBySlug, Brand } from '@/services/brandService';
 import { getProducts, Product } from '@/services/productService';
 import { ProductCard } from '@/components/common/product-card';
@@ -15,8 +15,6 @@ interface BrandProductsPageProps {
 
 export default function BrandDetailClient({ params }: BrandProductsPageProps) {
     const { slug } = use(params);
-    const t = useTranslations('dashboard');
-    const commonT = useTranslations('common');
     const locale = useLocale();
     const isAr = locale === 'ar';
     

@@ -7,22 +7,18 @@ import {
     DashboardTableCell
 } from "@/app/[locale]/(dashboard)/_components/common/Table";
 import {
-    DashboardSearch,
     DashboardSelectFilter,
     DashboardPagination
 } from "@/app/[locale]/(dashboard)/_components/common/Filters";
 import {
     DashboardModal
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
-import {
-    DashboardHeader
-} from "@/app/[locale]/(dashboard)/_components/common/DashboardHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import { Edit2, Trash2, Plus, RefreshCw, Layers, ImageIcon } from "lucide-react";
+import { Edit2, Trash2, Plus, RefreshCw, Layers, ImageIcon, Search, X } from "lucide-react";
 import CategoryForm from "./CategoryForm";
 import DeleteCategory from "./DeleteCategory";
 import { toast } from "sonner";
@@ -73,11 +69,12 @@ export default function CategoryList() {
             toast.error(t("FailedLoadCategories"));
         } else {
             setCategories(data || []);
-            if (count) {
-                setTotalPages(Math.ceil(count / pageSize));
+            if (count !== null) {
+                setTotalPages(Math.max(1, Math.ceil(count / pageSize)));
                 setTotalCount(count);
             } else {
                 setTotalCount(data?.length || 0);
+                setTotalPages(1);
             }
         }
         setLoading(false);
@@ -120,37 +117,68 @@ export default function CategoryList() {
         toast.success(t("Done"));
     };
     return (
-        <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
-            <DashboardHeader
-                title={t("Categories")}
-                description={t("CategoriesDescription")}
-                actions={
-                    <div className="flex items-center gap-3">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-3 duration-500">
+            <section className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.07] via-background to-secondary/[0.07] px-5 py-5 shadow-sm sm:px-7 sm:py-6">
+                <div className="pointer-events-none absolute -end-14 -top-16 h-44 w-44 rounded-full bg-secondary/10 blur-3xl" />
+                <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-secondary/15 bg-background/70 px-3 py-1 text-[11px] font-bold text-secondary shadow-sm backdrop-blur">
+                            <Layers className="h-3.5 w-3.5" />
+                            {t("Overview")}
+                        </div>
+                        <h1 className="text-2xl font-black leading-tight text-foreground sm:text-3xl">{t("Categories")}</h1>
+                        <p className="mt-2 max-w-2xl text-xs font-medium leading-relaxed text-muted-foreground sm:text-sm">
+                            {t("CategoriesDescription")}
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
                         <Button
                             variant="outline"
-                            size="icon"
                             onClick={fetchCategories}
-                            className="h-12 w-12 rounded-2xl border-border/40 bg-background/40 hover:bg-background/60 transition-all duration-300 shadow-sm shrink-0"
+                            disabled={loading}
+                            className="h-10 rounded-xl border-border/70 bg-background/75 px-3 text-xs font-bold shadow-none hover:border-secondary/25 hover:bg-secondary/5 hover:text-secondary"
+                            aria-label={t("Refresh")}
                         >
-                            <RefreshCw className={cn("h-5 w-5 text-muted-foreground", loading && "animate-spin")} />
+                            <RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} />
+                            <span className="hidden sm:inline">{t("Refresh")}</span>
                         </Button>
                         <Button
                             onClick={() => { setSelectedCategory(null); setIsEditOpen(true); }}
-                            className="h-12 px-6 rounded-2xl font-bold ltr:tracking-tight gap-2.5 shadow-xl shadow-foreground/10 border-none bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 whitespace-nowrap"
+                            className="h-10 rounded-xl px-4 text-xs font-bold shadow-lg shadow-primary/15"
                         >
-                            <Plus className="h-5 w-5 stroke-[3]" />
-                            <span>{t("AddCategory")}</span>
+                            <Plus className="h-4 w-4" />
+                            {t("AddCategory")}
                         </Button>
                     </div>
-                }
-            >
-                <DashboardSearch
-                    placeholder={t("SearchCategories")}
-                    onChange={(val) => { setSearch(val); setPage(1); }}
-                    className="w-full lg:w-[32rem]"
-                />
+                </div>
+            </section>
 
-                <div className="flex flex-wrap items-center gap-3 justify-end flex-1">
+            <section className="flex flex-col gap-3 rounded-2xl border border-border/70 bg-background p-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                <div className="relative w-full sm:max-w-xl">
+                    <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        value={search}
+                        onChange={(event) => { setSearch(event.target.value); setPage(1); }}
+                        placeholder={t("SearchCategories")}
+                        className="h-10 rounded-xl border-border/70 bg-muted/25 ps-10 pe-10 text-xs shadow-none focus-visible:bg-background"
+                    />
+                    {search && (
+                        <button
+                            type="button"
+                            onClick={() => { setSearch(""); setPage(1); }}
+                            className="absolute end-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+                            aria-label={t("Cancel")}
+                        >
+                            <X className="h-3.5 w-3.5" />
+                        </button>
+                    )}
+                </div>
+
+                <div className="flex items-center justify-between gap-3 sm:justify-end">
+                    <span className="whitespace-nowrap text-[11px] font-bold text-muted-foreground">
+                        {totalCount} {t("results")}
+                    </span>
                     <DashboardSelectFilter
                         value={imageFilter}
                         onChange={(val) => { setImageFilter(val); setPage(1); }}
@@ -160,10 +188,10 @@ export default function CategoryList() {
                             { label: t("WithoutImage"), value: "without_image" },
                         ]}
                         placeholder={t("Filter")}
-                        className="w-full sm:w-[180px]"
+                        className="h-10 min-w-[150px] rounded-xl border-border/70 bg-muted/25 px-3 text-xs shadow-none sm:w-[170px]"
                     />
                 </div>
-            </DashboardHeader>
+            </section>
 
             <DashboardTable headers={[
                 t("Images"),
@@ -176,33 +204,46 @@ export default function CategoryList() {
             ]}
                 headerClasses={["", "", "hidden md:table-cell", "hidden sm:table-cell", "w-[100px]", "hidden md:table-cell", ""]}
                 isLoading={loading}
-                emptyMessage={t("NoCategoriesFound") || "No categories found."}
+                emptyMessage={t("NoCategoriesFound")}
+                loadingMessage={t("Loading")}
+                className="border-border/70 bg-background shadow-sm"
             >
                 {categories.map((category) => (
-                    <DashboardTableRow key={category.id}>
-                        <DashboardTableCell>
-                            <div className="h-14 w-14 rounded-xl overflow-hidden border border-border/60 bg-background/60 p-1 group">
+                    <DashboardTableRow key={category.id} className="h-[72px]">
+                        <DashboardTableCell className="py-3">
+                            <div className="group h-12 w-12 overflow-hidden rounded-xl border border-border/60 bg-muted/30 p-1">
                                 {category.image_url ? (
-                                    <img src={category.image_url} alt="" className="h-full w-full object-cover rounded-lg transition-transform duration-500 group-hover:scale-105" />
+                                    <img
+                                        src={category.image_url}
+                                        alt={(isAr ? category.name_ar : category.name_en) || ""}
+                                        className="h-full w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
                                 ) : (
                                     <div className="h-full w-full flex items-center justify-center text-muted-foreground/60">
-                                        <ImageIcon className="h-6 w-6 opacity-30" />
+                                        <ImageIcon className="h-5 w-5 opacity-40" />
                                     </div>
                                 )}
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <span className="font-semibold ltr:tracking-tight text-sm">{isAr ? category.name_ar : category.name_en}</span>
+                            <div className="flex max-w-[240px] flex-col gap-1">
+                                <span className="truncate text-sm font-extrabold text-foreground">
+                                    {(isAr ? category.name_ar : category.name_en) || category.name_en || category.name_ar}
+                                </span>
+                                <span className="truncate text-[10px] font-medium text-muted-foreground" dir="ltr">
+                                    {category.slug_en || "—"}
+                                </span>
+                            </div>
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden md:table-cell">
                             <div className="flex flex-wrap gap-1.5 max-w-[250px]">
                                 {(category.sub_categories || []).slice(0, 3).map((sub: any) => (
-                                    <span key={sub.id} className="text-[10px] font-bold px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded-md whitespace-nowrap">
-                                        {isAr ? sub.name_ar : sub.name_en}
+                                    <span key={sub.id} className="whitespace-nowrap rounded-full bg-secondary/10 px-2.5 py-1 text-[10px] font-bold text-secondary">
+                                        {(isAr ? sub.name_ar : sub.name_en) || sub.name_en}
                                     </span>
                                 ))}
                                 {category.sub_categories?.length > 3 && (
-                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-muted text-muted-foreground border border-border rounded-md">
+                                    <span className="rounded-full bg-muted px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
                                         +{category.sub_categories.length - 3}
                                     </span>
                                 )}
@@ -214,8 +255,8 @@ export default function CategoryList() {
                             </div>
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden sm:table-cell">
-                            <span className="text-[10px] uppercase font-medium text-muted-foreground bg-foreground/[0.05] px-3 py-1 rounded-full border border-border/60">
-                                {isAr ? category.slug_ar : category.slug_en}
+                            <span className="inline-flex max-w-[170px] truncate rounded-full bg-muted px-2.5 py-1 text-[10px] font-medium text-muted-foreground" dir="ltr">
+                                {(isAr ? category.slug_ar : category.slug_en) || "—"}
                             </span>
                         </DashboardTableCell>
                         <DashboardTableCell>
@@ -228,21 +269,22 @@ export default function CategoryList() {
                                         handleUpdateOrder(category.id, val);
                                     }
                                 }}
-                                className="w-16 h-8 text-center text-xs font-bold rounded-lg border-border/60 focus:ring-primary/20"
+                                className="h-8 w-14 rounded-lg border-border/60 bg-muted/20 text-center text-xs font-bold shadow-none focus:ring-primary/20"
+                                aria-label={t("Order")}
                             />
                         </DashboardTableCell>
                         <DashboardTableCell className="hidden md:table-cell">
-                            <span className="text-xs text-muted-foreground font-medium">
-                                {new Date(category.created_at).toLocaleDateString(locale)}
+                            <span className="text-[11px] font-medium text-muted-foreground">
+                                {category.created_at ? new Intl.DateTimeFormat(isAr ? "ar-SA" : "en-US", { year: "numeric", month: "short", day: "numeric" }).format(new Date(category.created_at)) : "—"}
                             </span>
                         </DashboardTableCell>
                         <DashboardTableCell>
-                            <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="icon" onClick={() => handleEdit(category)} className="h-9 w-9 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-all">
-                                    <Edit2 className="h-4 w-4" />
+                            <div className="flex items-center gap-1">
+                                <Button variant="ghost" size="icon" onClick={() => handleEdit(category)} className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-primary/10 hover:text-primary" aria-label={t("EditCategory")}>
+                                    <Edit2 className="h-3.5 w-3.5" />
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={() => handleDelete(category)} className="h-9 w-9 rounded-full hover:bg-destructive/10 hover:text-destructive transition-all">
-                                    <Trash2 className="h-4 w-4" />
+                                <Button variant="ghost" size="icon" onClick={() => handleDelete(category)} className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive" aria-label={t("Delete")}>
+                                    <Trash2 className="h-3.5 w-3.5" />
                                 </Button>
                             </div>
                         </DashboardTableCell>
@@ -257,6 +299,7 @@ export default function CategoryList() {
                 onNext={() => setPage(p => Math.min(totalPages, p + 1))}
                 totalCount={totalCount}
                 onPageSelect={(p) => setPage(p)}
+                className="mt-0 rounded-2xl border-border/70 bg-background p-4 shadow-sm lg:p-5"
             />
 
             <DashboardModal
@@ -264,18 +307,21 @@ export default function CategoryList() {
                 onClose={() => setIsEditOpen(false)}
                 title={selectedCategory ? t("EditCategory") : t("AddCategory")}
                 description={selectedCategory ? (isAr ? selectedCategory.name_ar : selectedCategory.name_en) : t("AddCategoryDescription")}
+                className="w-[calc(100%_-_1.25rem)] overflow-hidden rounded-3xl border-border/70 sm:max-w-4xl"
                 footer={
                     <div className="flex items-center gap-2">
                         <Button
                             type="button"
                             variant="outline"
                             onClick={() => setIsEditOpen(false)}
+                            className="h-10 rounded-xl px-5 text-xs font-bold"
                         >
                             {t("Cancel")}
                         </Button>
                         <Button
                             type="submit"
                             form="category-form"
+                            className="h-10 rounded-xl px-6 text-xs font-bold shadow-lg shadow-primary/15"
                         >
                             {t("Save")}
                         </Button>

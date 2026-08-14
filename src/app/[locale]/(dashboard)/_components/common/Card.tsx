@@ -7,63 +7,81 @@ import { LucideIcon } from "lucide-react";
 interface StatsCardProps {
   title: string;
   value: React.ReactNode;
-  change?: string;
-  isIncrease?: boolean;
   icon: LucideIcon;
-  color?: string;
+  tone?: "primary" | "secondary" | "amber" | "blue" | "violet";
 }
 
-export function StatsCard({ title, value, change, isIncrease, icon: Icon, color = "primary" }: StatsCardProps) {
+const toneStyles = {
+  primary: {
+    icon: "bg-primary/10 text-primary ring-primary/15",
+    accent: "bg-primary",
+  },
+  secondary: {
+    icon: "bg-secondary/10 text-secondary ring-secondary/15",
+    accent: "bg-secondary",
+  },
+  amber: {
+    icon: "bg-amber-500/10 text-amber-600 ring-amber-500/15",
+    accent: "bg-amber-500",
+  },
+  blue: {
+    icon: "bg-blue-500/10 text-blue-600 ring-blue-500/15",
+    accent: "bg-blue-500",
+  },
+  violet: {
+    icon: "bg-violet-500/10 text-violet-600 ring-violet-500/15",
+    accent: "bg-violet-500",
+  },
+} as const;
+
+export function StatsCard({ title, value, icon: Icon, tone = "primary" }: StatsCardProps) {
+  const styles = toneStyles[tone];
+
   return (
-    <div className="group rounded-2xl bg-background/70 backdrop-blur border border-border/60 p-5 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden">
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-0",
-          "bg-[radial-gradient(1200px_400px_at_120%_-20%,hsl(var(--primary)/0.06),transparent_60%)]",
-          "group-hover:bg-[radial-gradient(1200px_400px_at_120%_-20%,hsl(var(--primary)/0.09),transparent_60%)] transition-colors"
-        )}
-      />
-
-      <div className="flex items-start justify-between relative z-10">
-        <div>
-          <p className="text-[11px] font-semibold uppercase ltr:tracking-wide text-muted-foreground/80 mb-1">{title}</p>
-          <h3 className="text-3xl font-bold ltr:tracking-tight text-foreground">{value}</h3>
-
-          {change && (
-            <div className="flex items-center gap-1.5 mt-2">
-              <div className={cn(
-                "px-2 py-0.5 rounded-full text-[11px] font-semibold",
-                isIncrease ? "bg-secondary/10 text-secondary" : "bg-destructive/10 text-destructive"
-              )}>
-                {isIncrease ? "+" : ""}{change}
-              </div>
-              <span className="text-[11px] font-medium text-muted-foreground/80">vs last month</span>
-            </div>
-          )}
-        </div>
-
-        <div className={cn(
-          "h-11 w-11 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:rotate-6",
-          "bg-primary/10 text-primary ring-1 ring-primary/20"
-        )}>
-          <Icon className="h-5 w-5 stroke-[2.25]" />
+    <div className="group relative min-h-[126px] overflow-hidden rounded-2xl border border-border/70 bg-background p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-md sm:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <p className="pt-1 text-[11px] font-bold uppercase leading-4 text-muted-foreground ltr:tracking-wide">
+          {title}
+        </p>
+        <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl ring-1 transition-transform duration-200 group-hover:scale-105", styles.icon)}>
+          <Icon className="h-[18px] w-[18px] stroke-[2.25]" />
         </div>
       </div>
+
+      <div className="mt-4 text-3xl font-black leading-none text-foreground ltr:tracking-tight [&_svg]:h-6 [&_svg]:w-6">
+        {value}
+      </div>
+
+      <div className={cn("absolute inset-x-0 bottom-0 h-0.5 opacity-70", styles.accent)} />
     </div>
   );
 }
 
-export function DashboardCard({ title, subtitle, children, className, action }: { title: string, subtitle?: string, children: React.ReactNode, className?: string, action?: React.ReactNode }) {
+export function DashboardCard({
+  title,
+  subtitle,
+  children,
+  className,
+  contentClassName,
+  action,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+  className?: string;
+  contentClassName?: string;
+  action?: React.ReactNode;
+}) {
   return (
-    <div className={cn("rounded-2xl bg-background/60 backdrop-blur border border-border/60 p-6 shadow-sm", className)}>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-lg font-bold ltr:tracking-tight text-foreground">{title}</h2>
-          {subtitle && <p className="text-sm font-medium text-muted-foreground/80 mt-1">{subtitle}</p>}
+    <section className={cn("overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm", className)}>
+      <div className="flex min-h-16 items-center justify-between gap-4 border-b border-border/60 px-4 py-3 sm:px-5">
+        <div className="min-w-0">
+          <h2 className="text-base font-extrabold text-foreground ltr:tracking-tight sm:text-lg">{title}</h2>
+          {subtitle && <p className="mt-0.5 truncate text-xs font-medium text-muted-foreground">{subtitle}</p>}
         </div>
         {action}
       </div>
-      {children}
-    </div>
+      <div className={cn("p-4 sm:p-5", contentClassName)}>{children}</div>
+    </section>
   );
 }

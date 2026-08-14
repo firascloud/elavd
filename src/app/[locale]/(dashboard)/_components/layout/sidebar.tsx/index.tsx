@@ -11,9 +11,6 @@ import {
     LayoutGrid,
     ShoppingCart,
     Tag,
-    Ticket,
-    Settings,
-    ChevronRight,
     LogOut,
     Loader2,
     X,
@@ -50,7 +47,7 @@ export default function Sidebar() {
     const router = useRouter();
     const isAr = locale === 'ar';
     const logoutStore = useAppStore((state) => state.logout);
-    const { isSidebarOpen, setSidebarOpen, toggleSidebar } = useAppStore();
+    const { isSidebarOpen, setSidebarOpen } = useAppStore();
     const t = useTranslations("common");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -86,31 +83,47 @@ export default function Sidebar() {
             {/* Mobile Overlay */}
             {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[45] lg:hidden transition-opacity duration-300"
+                    className="fixed inset-0 z-[45] bg-black/35 backdrop-blur-[2px] lg:hidden"
                     onClick={() => setSidebarOpen(false)}
+                    aria-hidden="true"
                 />
             )}
 
             <aside className={cn(
-                "fixed lg:sticky top-0 h-screen bg-background border-e border-primary/5 flex flex-col transition-all duration-500 z-[50]",
-                isSidebarOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full lg:w-0 lg:translate-x-0 opacity-0 overflow-hidden",
-                isAr && !isSidebarOpen ? "translate-x-full" : ""
+                "fixed lg:sticky start-0 top-0 z-[50] flex h-dvh flex-col overflow-hidden border-e border-border/70 bg-background/95 shadow-2xl backdrop-blur-xl transition-[width,transform,opacity] duration-300 ease-out lg:bg-background lg:shadow-none",
+                isSidebarOpen
+                    ? "w-[min(86vw,280px)] translate-x-0 opacity-100 lg:w-[280px]"
+                    : "pointer-events-none w-[min(86vw,280px)] opacity-0 ltr:-translate-x-full rtl:translate-x-full lg:w-0 lg:translate-x-0"
             )}>
-                <div className="p-8 flex items-center justify-between gap-3">
-                    <Image src={logo} alt="Logo" width={170} height={40} className="w-auto h-10 object-contain" />
+                <div className="flex h-20 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-5">
+                    <Link href="/admin" aria-label={isAr ? 'لوحة التحكم' : 'Dashboard'}>
+                        <Image
+                            src={logo}
+                            alt="Elavd"
+                            width={155}
+                            height={36}
+                            priority
+                            className="h-9 w-auto object-contain"
+                        />
+                    </Link>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="lg:hidden"
+                        className="h-9 w-9 rounded-xl border border-border/70 bg-muted/40 text-muted-foreground hover:bg-primary/10 hover:text-primary lg:hidden"
                         onClick={() => setSidebarOpen(false)}
+                        aria-label={isAr ? 'إغلاق القائمة' : 'Close menu'}
                     >
-                        <X className="h-5 w-5" />
+                        <X className="h-4 w-4" />
                     </Button>
                 </div>
 
-                <nav className="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar pt-2">
+                <nav className="custom-scrollbar flex-1 min-h-0 space-y-1 overflow-y-auto px-3 py-4" aria-label={isAr ? 'التنقل في لوحة التحكم' : 'Dashboard navigation'}>
                     {nav.map((n) => {
-                        const isActive = pathname === n.href || pathname === `/${locale}${n.href}`;
+                        const localizedHref = `/${locale}${n.href}`;
+                        const isDashboardHome = n.href === '/admin';
+                        const isActive = isDashboardHome
+                            ? pathname === n.href || pathname === localizedHref
+                            : pathname === n.href || pathname.startsWith(`${n.href}/`) || pathname === localizedHref || pathname.startsWith(`${localizedHref}/`);
                         const Icon = n.icon;
 
                         return (
@@ -120,46 +133,57 @@ export default function Sidebar() {
                                 onClick={() => {
                                     if (window.innerWidth < 1024) setSidebarOpen(false);
                                 }}
+                                aria-current={isActive ? 'page' : undefined}
                                 className={cn(
-                                    'flex items-center justify-between group rounded-2xl px-5 py-3.5 text-sm font-bold transition-all duration-300 relative overflow-hidden',
+                                    'group relative flex min-h-11 items-center rounded-xl px-3 py-2 text-[13px] font-bold transition-all duration-200',
                                     isActive
-                                        ? 'bg-primary text-primary-foreground shadow-xl shadow-primary/25'
-                                        : 'text-muted-foreground hover:bg-primary/5 hover:text-primary'
+                                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                                        : 'text-foreground/75 hover:bg-muted/70 hover:text-foreground'
                                 )}
                             >
-                                <div className="flex items-center gap-3 relative z-10">
-                                    <Icon className={cn(
-                                        "h-5 w-5 transition-all duration-300 group-hover:scale-110",
-                                        isActive ? "text-white" : "text-secondary group-hover:font-bold"
-                                    )} />
-                                    <span>{n.label[isAr ? 'ar' : 'en']}</span>
-                                </div>
-
                                 {isActive && (
-                                    <div className="absolute inset-y-0 ltr:right-0 rtl:left-0 w-1 bg-secondary rounded-full my-3" />
+                                    <span className="absolute inset-y-2 start-0 w-1 rounded-e-full bg-secondary" />
                                 )}
+
+                                <div className="relative z-10 flex min-w-0 items-center gap-3">
+                                    <span className={cn(
+                                        "grid h-8 w-8 shrink-0 place-items-center rounded-lg transition-colors duration-200",
+                                        isActive
+                                            ? "bg-white/15 text-white"
+                                            : "bg-secondary/10 text-secondary group-hover:bg-secondary/15"
+                                    )}>
+                                    <Icon className={cn(
+                                            "h-[18px] w-[18px] transition-transform duration-200 group-hover:scale-105"
+                                    )} />
+                                    </span>
+                                    <span className="truncate">{n.label[isAr ? 'ar' : 'en']}</span>
+                                </div>
                             </Link>
                         );
                     })}
                 </nav>
 
-                <div className="p-6 mt-auto">
-                    <Button variant="link" asChild className="w-full h-12 mb-5 flex items-center gap-2 text-sm font-medium border-2 border-secondary rounded-2xl text-foreground hover:bg-secondary/5 transition-all duration-300">
+                <div className="mt-auto shrink-0 space-y-2 border-t border-border/60 bg-muted/20 p-3">
+                    <Button
+                        variant="outline"
+                        asChild
+                        className="h-10 w-full rounded-xl border-border/80 bg-background text-xs font-bold text-foreground/75 shadow-none hover:border-secondary/40 hover:bg-secondary/5 hover:text-secondary"
+                    >
                         <Link href="/">
-                            <p>back to website</p>
-                            <ArrowRight className="h-5 w-5" />
+                            {isAr ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
+                            <span>{isAr ? 'العودة إلى الموقع' : 'Back to website'}</span>
                         </Link>
                     </Button>
                     <Button
                         onClick={handleLogout}
                         disabled={isLoading}
                         variant="outline"
-                        className="w-full h-12 hover:bg-destructive hover:text-destructive-foreground bg-destructive/10 border-none text-destructive rounded-2xl font-bold transition-all duration-300 disabled:opacity-50"
+                        className="h-10 w-full rounded-xl border-transparent bg-destructive/10 text-xs font-bold text-destructive shadow-none hover:border-destructive/20 hover:bg-destructive hover:text-destructive-foreground disabled:opacity-50"
                     >
                         {isLoading ? (
-                            <Loader2 className="h-5 w-5 me-3 animate-spin" />
+                            <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                            <LogOut className="h-5 w-5 me-3" />
+                            <LogOut className="h-4 w-4" />
                         )}
                         {t("Logout")}
                     </Button>

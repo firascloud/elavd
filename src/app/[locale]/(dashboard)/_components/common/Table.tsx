@@ -18,10 +18,11 @@ interface DashboardTableProps {
   className?: string;
   isLoading?: boolean;
   emptyMessage?: string;
+  loadingMessage?: string;
   headerClasses?: string[];
 }
 
-export function DashboardTable({ headers, children, className, isLoading, emptyMessage, headerClasses = [] }: DashboardTableProps) {
+export function DashboardTable({ headers, children, className, isLoading, emptyMessage, loadingMessage, headerClasses = [] }: DashboardTableProps) {
   const hasRows = React.Children.count(children) > 0;
   return (
     <div className={cn("rounded-2xl sm:rounded-[2.5rem] border border-border/40 bg-background/20 backdrop-blur-2xl shadow-2xl shadow-black/[0.02] w-full overflow-hidden", className)}>
@@ -45,7 +46,9 @@ export function DashboardTable({ headers, children, className, isLoading, emptyM
                       <Loader2 className="h-10 w-10 animate-spin text-primary/40" />
                       <div className="absolute inset-0 blur-xl bg-primary/20 animate-pulse"></div>
                     </div>
-                    <span className="text-[11px] font-black ltr:tracking-[0.2em] uppercase opacity-40">Processing Transaction Cycle...</span>
+                    <span className="text-[11px] font-black ltr:tracking-[0.15em] uppercase opacity-50">
+                      {loadingMessage || "Loading..."}
+                    </span>
                   </div>
                 </TableCell>
               </TableRow>
@@ -58,9 +61,8 @@ export function DashboardTable({ headers, children, className, isLoading, emptyM
                     <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl sm:rounded-3xl bg-background/40 border border-border/20 flex items-center justify-center text-muted-foreground/30 mb-5 shadow-inner">
                       <FileX className="h-7 w-7 sm:h-8 sm:w-8" />
                     </div>
-                    <p className="text-base sm:text-lg font-[900] ltr:tracking-tight text-foreground">Zero Manifests Found</p>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-2  mx-auto font-medium opacity-80">
-                      {emptyMessage || "Expand your horizons with a fresh search or refined filters."}
+                    <p className="text-base sm:text-lg font-[900] ltr:tracking-tight text-foreground">
+                      {emptyMessage || "No data found"}
                     </p>
                   </div>
                 </TableCell>

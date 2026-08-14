@@ -1,19 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
     DashboardImageUpload
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
 import { useTranslations } from "next-intl";
-import { supabaseBrowser } from "@/lib/supabase/client";
 import { insertRecord, updateRecord } from "@/app/actions/db";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Package, FileText, ImageIcon, Globe, Plus, RefreshCw, Layers } from "lucide-react";
+import { FileText, ImageIcon, Search, Layers } from "lucide-react";
 import TextEditor from "@/components/TextEditor";
 
 interface CategoryFormProps {
@@ -23,7 +21,7 @@ interface CategoryFormProps {
     formId?: string;
 }
 
-export default function CategoryForm({ initialData, onSuccess, onCancel, formId }: CategoryFormProps) {
+export default function CategoryForm({ initialData, onSuccess, formId }: CategoryFormProps) {
     const t = useTranslations("dashboard");
     const [loading, setLoading] = useState(false);
 
@@ -75,22 +73,21 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
     };
 
     return (
-        <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-            <div className="max-h-[70vh] overflow-y-auto pe-2 custom-scrollbar space-y-12 py-2 px-1">
+        <form id={formId} onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-5">
 
-                {/* Section: General */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary ring-1 ring-primary/20 transition-transform">
-                            <Layers className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                            <Layers className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("General")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {[
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
@@ -98,39 +95,38 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             { label: t("SlugAr"), name: "slug_ar", required: true },
                             { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
-                            <div key={field.name} className="space-y-2 group">
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                            <div key={field.name} className="group space-y-1.5">
+                                <Label className="block text-[10px] font-bold text-muted-foreground transition-colors group-focus-within:text-primary">
                                     {field.label}
                                 </Label>
                                 <Input
                                     {...register(field.name, { required: field.required })}
                                     type={field.type || "text"}
-                                    className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
+                                    className="h-10 rounded-xl border-border/70 bg-background px-3 text-xs font-semibold shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10"
                                 />
                             </div>
                         ))}
                     </div>
                 </section>
 
-                {/* Section: Descriptions */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary ring-1 ring-primary/20 transition-transform">
-                            <FileText className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                            <FileText className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Descriptions")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("Descriptions")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
                         {[
                             { label: t("DescriptionEn"), name: "description_en", h: "h-24" },
                             { label: t("DescriptionAr"), name: "description_ar", h: "h-24" },
                         ].map((area) => (
-                            <div key={area.name} className="space-y-2">
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">
+                            <div key={area.name} className="min-w-0 space-y-1.5">
+                                <Label className="block text-[10px] font-bold text-muted-foreground">
                                     {area.label}
                                 </Label>
                                 <Controller
@@ -149,44 +145,42 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                     </div>
                 </section>
 
-                {/* Section: Image */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-accent/10 flex items-center justify-center text-accent ring-1 ring-accent/20 transition-transform">
-                            <ImageIcon className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-secondary/10 text-secondary">
+                            <ImageIcon className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("Images")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("VisualBrand")}</p>
                         </div>
                     </div>
 
-                    <div className="bg-background/60 border border-dashed border-border/60 rounded-2xl p-10 flex flex-col items-center hover:bg-foreground/[0.02] transition-colors">
+                    <div className="flex flex-col items-center rounded-xl border border-dashed border-border/70 bg-background p-5 transition-colors hover:border-secondary/30 hover:bg-secondary/[0.02] sm:flex-row sm:justify-center sm:gap-6">
                         <DashboardImageUpload
                             value={imageUrl}
                             onUpload={(url) => setValue("image_url", url)}
                             bucket="categories"
                         />
-                        <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("ImageUrl")}</p>
-                            <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeCategory")}</p>
+                        <div className="mt-4 text-center sm:mt-0 sm:text-start">
+                            <p className="text-xs font-black text-foreground/80">{t("ImageUrl")}</p>
+                            <p className="mt-1 text-[10px] font-medium text-muted-foreground">{t("ImageRecommendedSizeCategory")}</p>
                         </div>
                     </div>
                 </section>
 
-                {/* Section: SEO */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary ring-1 ring-secondary/20 transition-transform">
-                            <Plus className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-secondary/10 text-secondary">
+                            <Search className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         {[
                             { label: t("SEOTitleEn"), name: "seo_title_en" },
                             { label: t("SEOTitleAr"), name: "seo_title_ar" },
@@ -195,17 +189,17 @@ export default function CategoryForm({ initialData, onSuccess, onCancel, formId 
                             { label: t("Keywords") + " (EN)", name: "seo_keywords_en", placeholder: t("KeywordsCategoryPlaceholder") },
                             { label: t("Keywords") + " (AR)", name: "seo_keywords_ar", placeholder: t("KeywordsCategoryPlaceholder") }
                         ].map((seo) => (
-                            <div key={seo.name} className={`space-y-2 ${seo.area ? 'md:col-span-2' : ''}`}>
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">
+                            <div key={seo.name} className={`space-y-1.5 ${seo.area ? 'md:col-span-2' : ''}`}>
+                                <Label className="block text-[10px] font-bold text-muted-foreground">
                                     {seo.label}
                                 </Label>
                                 {seo.area ? (
-                                    <Textarea {...register(seo.name)} className="h-24 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border p-4 font-medium text-sm" />
+                                    <Textarea {...register(seo.name)} className="min-h-20 resize-y rounded-xl border-border/70 bg-background p-3 text-xs font-medium shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10" />
                                 ) : (
                                     <Input
                                         {...register(seo.name)}
                                         placeholder={seo.placeholder}
-                                        className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
+                                        className="h-10 rounded-xl border-border/70 bg-background px-3 text-xs font-semibold shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10"
                                     />
                                 )}
                             </div>

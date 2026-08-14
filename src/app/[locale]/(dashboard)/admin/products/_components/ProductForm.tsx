@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import {
     DashboardImageUpload
 } from "@/app/[locale]/(dashboard)/_components/common/Modal";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import {
     Select,
@@ -19,8 +19,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { Plus, RefreshCw, Package, FileText, ImageIcon, Globe } from "lucide-react";
+import { Package, FileText, ImageIcon, Globe } from "lucide-react";
 import TextEditor from "@/components/TextEditor";
 import { insertRecord, updateRecord } from "@/app/actions/db";
 import { toast } from "sonner";
@@ -32,8 +31,10 @@ interface ProductFormProps {
     formId?: string;
 }
 
-export default function ProductForm({ initialData, onSuccess, onCancel, formId }: ProductFormProps) {
+export default function ProductForm({ initialData, onSuccess, formId }: ProductFormProps) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
+    const isAr = locale === "ar";
     const [categories, setCategories] = useState<any[]>([]);
     const [subCategories, setSubCategories] = useState<any[]>([]);
     const [brands, setBrands] = useState<any[]>([]);
@@ -130,23 +131,21 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
     };
 
     return (
-        <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-            {/* Scrollable Container */}
-            <div className="max-h-[70vh] overflow-y-auto pe-2 custom-scrollbar space-y-12 py-2 px-1">
+        <form id={formId} onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-5">
 
-                {/* Section: General */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary ring-1 ring-primary/20 transition-transform">
-                            <Package className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                            <Package className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("General")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("BasicInfo") || "Basic Info"}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("General")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("BasicInfo")}</p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {[
                             { label: t("NameEn"), name: "name_en", required: true },
                             { label: t("NameAr"), name: "name_ar", required: true },
@@ -154,21 +153,21 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             { label: t("DiscountPrice"), name: "discount_price", type: "number" },
                             { label: t("Order"), name: "sort_order", type: "number" }
                         ].map((field) => (
-                            <div key={field.name} className="space-y-2 group">
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                            <div key={field.name} className="group space-y-1.5">
+                                <Label className="block text-[10px] font-bold text-muted-foreground transition-colors group-focus-within:text-primary">
                                     {field.label}
                                 </Label>
                                 <Input
                                     {...register(field.name, { required: field.required })}
                                     type={field.type || "text"}
                                     step={field.type === "number" ? "0.01" : undefined}
-                                    className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
+                                    className="h-10 rounded-xl border-border/70 bg-background px-3 text-xs font-semibold shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10"
                                 />
                             </div>
                         ))}
 
-                        <div className="space-y-2 group">
-                            <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                        <div className="group space-y-1.5">
+                            <Label className="block text-[10px] font-bold text-muted-foreground transition-colors group-focus-within:text-primary">
                                 {t("Category")}
                             </Label>
                             <Controller
@@ -182,13 +181,13 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                         }}
                                         value={field.value}
                                     >
-                                        <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm text-start">
+                                        <SelectTrigger className="h-10 rounded-xl border-border/70 bg-background px-3 text-start text-xs font-semibold shadow-none focus:ring-primary/10">
                                             <SelectValue placeholder={t("Category")} />
                                         </SelectTrigger>
                                         <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
                                             {categories.map((cat) => (
                                                 <SelectItem key={cat.id} value={cat.id} className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm">
-                                                    {cat.name_en}
+                                                    {(isAr ? cat.name_ar : cat.name_en) || cat.name_en}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -197,8 +196,8 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             />
                         </div>
 
-                        <div className="space-y-2 group">
-                            <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                        <div className="group space-y-1.5">
+                            <Label className="block text-[10px] font-bold text-muted-foreground transition-colors group-focus-within:text-primary">
                                 {t("SubCategory")}
                             </Label>
                             <Controller
@@ -210,7 +209,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                         value={field.value}
                                         disabled={!selectedCategoryId}
                                     >
-                                        <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm text-start">
+                                        <SelectTrigger className="h-10 rounded-xl border-border/70 bg-background px-3 text-start text-xs font-semibold shadow-none focus:ring-primary/10">
                                             <SelectValue placeholder={t("SubCategory")} />
                                         </SelectTrigger>
                                         <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
@@ -219,7 +218,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                             </SelectItem>
                                             {filteredSubCategories.map((sub) => (
                                                 <SelectItem key={sub.id} value={sub.id} className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm">
-                                                    {sub.name_en}
+                                                    {(isAr ? sub.name_ar : sub.name_en) || sub.name_en}
                                                 </SelectItem>
                                             ))}
                                             {filteredSubCategories.length === 0 && (
@@ -231,8 +230,8 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             />
                         </div>
 
-                        <div className="space-y-2 group">
-                            <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                        <div className="group space-y-1.5">
+                            <Label className="block text-[10px] font-bold text-muted-foreground transition-colors group-focus-within:text-primary">
                                 {t("Brand")}
                             </Label>
                             <Controller
@@ -243,7 +242,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                         onValueChange={field.onChange}
                                         value={field.value}
                                     >
-                                        <SelectTrigger className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm text-start">
+                                        <SelectTrigger className="h-10 rounded-xl border-border/70 bg-background px-3 text-start text-xs font-semibold shadow-none focus:ring-primary/10">
                                             <SelectValue placeholder={t("Brand")} />
                                         </SelectTrigger>
                                         <SelectContent className="rounded-xl border-border/60 shadow-xl overflow-hidden bg-background/95 backdrop-blur-md z-[9999]">
@@ -252,7 +251,7 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                                             </SelectItem>
                                             {brands.map((brand) => (
                                                 <SelectItem key={brand.id} value={brand.id} className="py-2.5 px-4 focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer font-medium text-sm">
-                                                    {brand.name_en}
+                                                    {(isAr ? brand.name_ar : brand.name_en) || brand.name_en}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -261,57 +260,55 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             />
                         </div>
 
-                        <div className="space-y-2 group">
-                            <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block group-focus-within:text-foreground transition-colors">
+                        <div className="group space-y-1.5">
+                            <Label className="block text-[10px] font-bold text-muted-foreground transition-colors group-focus-within:text-primary">
                                 {t("CountryOfOrigin")}
                             </Label>
-                            <Input {...register("country_of_origin")} className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm" />
+                            <Input {...register("country_of_origin")} className="h-10 rounded-xl border-border/70 bg-background px-3 text-xs font-semibold shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10" />
                         </div>
 
-                        {/* Special Flags */}
-                        <div className="md:col-span-2 bg-background/60 p-6 rounded-2xl border border-border/60 shadow-sm grid grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/60 bg-background p-2 md:col-span-2 xl:col-span-3 xl:grid-cols-4">
                             {[
                                 { name: "is_active", label: t("Active") },
                                 { name: "is_featured", label: t("Featured") },
                                 { name: "is_popular", label: t("Popular") },
                                 { name: "is_event", label: t("Event") }
                             ].map((flag) => (
-                                <div key={flag.name} className="flex flex-col items-center gap-3">
+                                <div key={flag.name} className="flex min-h-11 items-center justify-between gap-3 rounded-lg px-3 py-2 hover:bg-muted/60">
+                                    <Label className="text-[10px] font-bold text-foreground/75">
+                                        {flag.label}
+                                    </Label>
                                     <Switch
                                         checked={watch(flag.name)}
                                         onCheckedChange={(val) => setValue(flag.name, val)}
-                                        className="data-[state=checked]:bg-secondary scale-90"
+                                        className="scale-90 data-[state=checked]:bg-secondary"
                                     />
-                                    <Label className="text-[11px] font-medium text-muted-foreground">
-                                        {flag.label}
-                                    </Label>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Section: Descriptions */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary ring-1 ring-primary/20 transition-transform">
-                            <FileText className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                            <FileText className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Descriptions")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("Descriptions")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("LocalizedContent")}</p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-8">
+                    <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
                         {[
                             { label: t("ShortDescEn"), name: "short_desc_en", h: "h-24" },
                             { label: t("ShortDescAr"), name: "short_desc_ar", h: "h-24" },
                             { label: t("FullDescEn"), name: "full_desc_en", h: "h-40", span: true },
                             { label: t("FullDescAr"), name: "full_desc_ar", h: "h-40", span: true }
                         ].map((area) => (
-                            <div key={area.name} className={`space-y-2 w-full ${area.span ? 'md:col-span-1' : ''}`}>
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">
+                            <div key={area.name} className="w-full min-w-0 space-y-1.5">
+                                <Label className="block text-[10px] font-bold text-muted-foreground">
                                     {area.label}
                                 </Label>
                                 <Controller
@@ -330,44 +327,42 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                     </div>
                 </section>
 
-                {/* Section: Image */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-accent/10 flex items-center justify-center text-accent ring-1 ring-accent/20 transition-transform">
-                            <ImageIcon className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-secondary/10 text-secondary">
+                            <ImageIcon className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("Images")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("VisualPresentation")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("Images")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("VisualPresentation")}</p>
                         </div>
                     </div>
 
-                    <div className="bg-background/60 border border-dashed border-border/60 rounded-2xl p-10 flex flex-col items-center hover:bg-foreground/[0.02] transition-colors">
+                    <div className="flex flex-col items-center rounded-xl border border-dashed border-border/70 bg-background p-5 transition-colors hover:border-secondary/30 hover:bg-secondary/[0.02] sm:flex-row sm:justify-center sm:gap-6">
                         <DashboardImageUpload
                             value={mainImageUrl}
                             onUpload={(url) => setValue("main_image", url)}
                             bucket="products"
                         />
-                        <div className="mt-6 text-center space-y-1">
-                            <p className="text-[11px] font-semibold ltr:tracking-wide text-foreground/80">{t("MainImage") || "Primary Image"}</p>
-                            <p className="text-[11px] font-medium text-muted-foreground/80">{t("ImageRecommendedSizeProduct")}</p>
+                        <div className="mt-4 text-center sm:mt-0 sm:text-start">
+                            <p className="text-xs font-black text-foreground/80">{t("MainImage")}</p>
+                            <p className="mt-1 text-[10px] font-medium text-muted-foreground">{t("ImageRecommendedSizeProduct")}</p>
                         </div>
                     </div>
                 </section>
 
-                {/* Section: SEO */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-4 transition-all group">
-                        <div className="h-9 w-9 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary ring-1 ring-secondary/20 transition-transform">
-                            <Globe className="h-5 w-5 stroke-[2]" />
+                <section className="space-y-5 rounded-2xl border border-border/70 bg-muted/[0.14] p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-secondary/10 text-secondary">
+                            <Globe className="h-4 w-4" />
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold ltr:tracking-tight text-foreground">{t("SEO")} {t("Settings")}</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
+                            <h3 className="text-sm font-black text-foreground">{t("SEO")} {t("Settings")}</h3>
+                            <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{t("SearchOptimization")}</p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         {[
                             { label: t("SlugEnLabel"), name: "slug_en", required: true },
                             { label: t("SlugArLabel"), name: "slug_ar", required: true },
@@ -378,17 +373,17 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                             { label: t("Keywords") + " (EN)", name: "seo_keywords_en", placeholder: t("KeywordsEnPlaceholder") },
                             { label: t("Keywords") + " (AR)", name: "seo_keywords_ar", placeholder: t("KeywordsArPlaceholder") }
                         ].map((seo) => (
-                            <div key={seo.name} className={`space-y-2 ${seo.area ? 'md:col-span-2' : ''}`}>
-                                <Label className="text-[11px] font-semibold text-muted-foreground mb-1 block">
+                            <div key={seo.name} className={`space-y-1.5 ${seo.area ? 'md:col-span-2' : ''}`}>
+                                <Label className="block text-[10px] font-bold text-muted-foreground">
                                     {seo.label}
                                 </Label>
                                 {seo.area ? (
-                                    <Textarea {...register(seo.name)} className="h-24 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border p-4 font-medium text-sm" />
+                                    <Textarea {...register(seo.name)} className="min-h-20 resize-y rounded-xl border-border/70 bg-background p-3 text-xs font-medium shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10" />
                                 ) : (
                                     <Input
                                         {...register(seo.name, { required: seo.required })}
                                         placeholder={seo.placeholder}
-                                        className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm transition-all focus:ring-2 focus:ring-primary/10 focus:border-border px-4 font-medium text-sm"
+                                        className="h-10 rounded-xl border-border/70 bg-background px-3 text-xs font-semibold shadow-none focus-visible:border-primary/30 focus-visible:ring-primary/10"
                                     />
                                 )}
                             </div>
@@ -396,7 +391,6 @@ export default function ProductForm({ initialData, onSuccess, onCancel, formId }
                     </div>
                 </section>
             </div>
-
         </form>
     );
 }

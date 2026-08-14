@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 interface DashboardModalProps {
   isOpen: boolean;
@@ -30,28 +31,30 @@ export function DashboardModal({ isOpen, onClose, title, description, children, 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className={cn(
-        "sm:max-w-3xl p-0 z-[2000] gap-0",
+        "z-[2000] gap-0 overflow-hidden rounded-2xl border-border/70 p-0 shadow-2xl sm:max-w-3xl",
         className
       )}>
         <button
+          type="button"
           onClick={onClose}
-          className="absolute cursor-pointer right-6 top-6 rounded-full p-2 hover:bg-muted transition-colors z-50 text-muted-foreground hover:text-foreground outline-none"
+          className="absolute end-4 top-4 z-50 grid h-9 w-9 cursor-pointer place-items-center rounded-xl border border-border/60 bg-background/80 text-muted-foreground shadow-sm outline-none transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Close"
         >
           <X className="h-4 w-4" />
         </button>
         <div className="flex flex-col h-full max-h-[90vh]">
-          <DialogHeader className="p-6 pb-4">
-            <DialogTitle className="text-lg font-semibold ltr:tracking-tight text-foreground">
+          <DialogHeader className="border-b border-border/60 bg-gradient-to-br from-primary/[0.06] via-background to-secondary/[0.05] p-5 pe-16 text-start sm:p-6 sm:pe-16">
+            <DialogTitle className="text-xl font-black leading-tight text-foreground">
               {title}
             </DialogTitle>
             {description && (
-              <DialogDescription className="text-[12px] font-medium text-muted-foreground mt-1">
+              <DialogDescription className="mt-1 max-w-2xl text-xs font-medium leading-relaxed text-muted-foreground">
                 {description}
               </DialogDescription>
             )}
           </DialogHeader>
 
-          <div className="p-6 overflow-y-auto custom-scrollbar flex-1 relative">
+          <div className="custom-scrollbar relative flex-1 overflow-y-auto p-4 sm:p-5">
             {loading ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex items-center gap-3 text-muted-foreground">
@@ -65,7 +68,7 @@ export function DashboardModal({ isOpen, onClose, title, description, children, 
           </div>
 
           {footer && (
-            <DialogFooter className="p-6 pt-0">
+            <DialogFooter className="border-t border-border/60 bg-background/95 p-4 sm:px-5">
               {footer}
             </DialogFooter>
           )}
@@ -76,6 +79,7 @@ export function DashboardModal({ isOpen, onClose, title, description, children, 
 }
 
 export function DashboardImageUpload({ onUpload, value, bucket = "products" }: { onUpload: (url: string) => void, value?: string, bucket?: string }) {
+  const t = useTranslations("dashboard");
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(value || null);
 
@@ -94,7 +98,7 @@ export function DashboardImageUpload({ onUpload, value, bucket = "products" }: {
 
     // Check file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      toast.error("File too large", { description: "Maximum size is 2MB" });
+      toast.error(t("FileTooLarge"), { description: t("MaxFileSize") });
       return;
     }
 
@@ -120,11 +124,11 @@ export function DashboardImageUpload({ onUpload, value, bucket = "products" }: {
       if (!data?.publicUrl) throw new Error("Could not get public URL");
 
       onUpload(data.publicUrl);
-      toast.success("Image uploaded successfully");
+      toast.success(t("ImageUploadedSuccess"));
     } catch (error: any) {
       console.error("Upload error:", error);
       setPreview(value || null); // Revert preview on error
-      toast.error("Upload failed", { description: error.message });
+      toast.error(t("ImageUploadFailed"), { description: error.message });
     } finally {
       setUploading(false);
     }
@@ -176,7 +180,7 @@ export function DashboardImageUpload({ onUpload, value, bucket = "products" }: {
                 <div className="h-10 w-10 rounded-xl bg-foreground/[0.03] flex items-center justify-center">
                   <Upload className="h-5 w-5" />
                 </div>
-                <span className="text-[10px] font-bold uppercase ltr:tracking-wider">{uploading ? "Uploading..." : "Upload Image"}</span>
+                <span className="text-[10px] font-bold uppercase ltr:tracking-wider">{uploading ? t("Uploading") : t("UploadImage")}</span>
               </>
             )}
           </div>

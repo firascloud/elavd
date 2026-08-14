@@ -9,8 +9,7 @@ import Image from 'next/image';
 import PageHeader from '@/components/common/page-header';
 
 export default function BrandsClient() {
-    const t = useTranslations('dashboard');
-    const commonT = useTranslations('common');
+    const t = useTranslations('common');
     const locale = useLocale();
     const isAr = locale === 'ar';
     const [brands, setBrands] = useState<Brand[]>([]);
