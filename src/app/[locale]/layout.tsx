@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Tajawal } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { BASE_URL, SITE_NAME } from "@/metadata/utils";
@@ -12,6 +13,15 @@ export async function generateStaticParams() {
 
 import MainLayoutWrapper from "@/components/MainLayoutWrapper";
 import DeferredAnalytics from "@/components/analytics/DeferredAnalytics";
+
+const arabicStoreFont = Tajawal({
+  subsets: ["arabic"],
+  weight: ["400", "500", "700", "800", "900"],
+  display: "swap",
+  preload: false,
+  variable: "--font-tajawal",
+  fallback: ["Segoe UI", "Tahoma", "Arial"],
+});
 
 export default async function RootLayout({
   children,
@@ -29,7 +39,7 @@ export default async function RootLayout({
       <html
         lang={locale}
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className={locale === "ar" ? "font-el-messiri" : "font-inter"}
+        className={locale === "ar" ? `${arabicStoreFont.variable} font-arabic-store` : "font-inter"}
         suppressHydrationWarning
         data-scroll-behavior="smooth"
       >

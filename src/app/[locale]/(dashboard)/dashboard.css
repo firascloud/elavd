@@ -15,6 +15,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
+  --font-arabic-store: var(--font-arabic-store);
+  --font-cairo: var(--font-arabic-store);
   --font-el-messiri: var(--font-el-messiri);
   --font-inter: var(--font-inter);
   --color-sidebar-ring: var(--sidebar-ring);

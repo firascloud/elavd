@@ -39,6 +39,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
+  --font-arabic-store: var(--font-arabic-store);
+  --font-cairo: var(--font-arabic-store);
   --font-el-messiri: var(--font-el-messiri);
   --font-inter: var(--font-inter);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -80,7 +82,8 @@
   --border: oklch(0.92 0 0);
   --input: oklch(0.92 0 0);
   --ring: #c83a3b;
-  --font-el-messiri: Tahoma, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-arabic-store: var(--font-tajawal, "Segoe UI"), Tahoma, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-el-messiri: var(--font-arabic-store);
   --font-inter: "Segoe UI", Arial, ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -138,11 +141,27 @@
 }
 
 .font-el-messiri {
-  font-family: var(--font-el-messiri);
+  font-family: var(--font-arabic-store);
+}
+
+.font-arabic-store,
+.font-cairo {
+  font-family: var(--font-arabic-store);
 }
 
 .font-inter {
   font-family: var(--font-inter);
+}
+
+html[dir="rtl"],
+html[dir="rtl"] body,
+html[dir="rtl"] .font-sans,
+html[dir="rtl"] .font-inter,
+html[dir="rtl"] button,
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  font-family: var(--font-arabic-store) !important;
 }
 
 .editor-content img {
