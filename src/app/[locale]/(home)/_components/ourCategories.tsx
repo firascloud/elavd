@@ -10,8 +10,11 @@ export default async function ourCategories({ locale, categories, featuredProduc
 
     const loading = false;
 
-    const CategoryCard = ({ cat, idx, isGrid = false }: { cat: Category; idx: number; isGrid?: boolean }) => (
-        <div key={cat.id ?? idx} className={isGrid ? "w-full" : "min-w-[100%] sm:min-w-[48%] md:min-w-[30%] flex-shrink-0"}>
+    const CategoryCard = ({ cat, idx }: { cat: Category; idx: number }) => (
+        <div
+            key={cat.id ?? idx}
+            className="w-full sm:min-w-[48%] sm:flex-shrink-0 sm:snap-start md:min-w-[30%] lg:min-w-0 lg:flex-shrink lg:snap-none"
+        >
             <article className="group h-full border border-gray-100 bg-white rounded-2xl sm:rounded-3xl transition-all duration-500  hover:-translate-y-1 p-4 sm:p-6 flex flex-col items-center">
                 <div className="relative w-full aspect-square grid place-items-center overflow-hidden mb-4 sm:mb-6 transition-transform duration-500">
                     {loading ? (
@@ -78,22 +81,11 @@ export default async function ourCategories({ locale, categories, featuredProduc
                         </div>
 
                         <div className="relative">
-                            {/* Grid for small screens */}
-                            <div className="grid grid-cols-2 gap-4 sm:hidden">
+                            {/* Mobile grid, tablet scroller, and a complete desktop grid. */}
+                            <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-6 sm:overflow-x-auto sm:no-scrollbar sm:scroll-smooth sm:snap-x sm:snap-mandatory lg:grid lg:grid-cols-[repeat(auto-fit,minmax(170px,1fr))] lg:overflow-visible lg:snap-none">
                                 {displayCategories.map((cat, idx) => (
-                                    <CategoryCard key={cat.id ?? idx} cat={cat} idx={idx} isGrid={true} />
+                                    <CategoryCard key={cat.id ?? idx} cat={cat} idx={idx} />
                                 ))}
-                            </div>
-
-                            {/* Native horizontal scroller avoids layout measurements during hydration. */}
-                            <div className="hidden sm:block">
-                                <div className="overflow-x-auto no-scrollbar scroll-smooth">
-                                    <div className="flex gap-6 snap-x snap-mandatory">
-                                        {displayCategories.map((cat, idx) => (
-                                            <CategoryCard key={cat.id ?? idx} cat={cat} idx={idx} />
-                                        ))}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

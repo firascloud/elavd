@@ -12,12 +12,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useRouter, Link } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { Eye, EyeOff, Loader2, Lock, Mail, ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { setCookie } from "cookies-next";
 
 interface SignInFormData {
   email: string;
@@ -29,8 +30,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -42,23 +41,36 @@ export default function LoginForm() {
     setError("");
 
     try {
-      const { error: signInError } = await supabaseBrowser.auth.signInWithPassword({
+      const {
+        data: { session },
+        error: signInError,
+      } = await supabaseBrowser.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
-      if (signInError) {
+      if (signInError || !session) {
         setError(t("LoginError"));
         toast.error(t("LoginError"));
       } else {
-        const { data: { session: newSession } } = await supabaseBrowser.auth.getSession();
+        const cookieOptions = {
+          maxAge: 60 * 60 * 24 * 7,
+          path: "/",
+          sameSite: "lax" as const,
+          secure: window.location.protocol === "https:",
+        };
+
+        // The login pages intentionally do not mount AuthProvider, so persist
+        // the session cookies here before the middleware checks /admin.
+        setCookie("access_token", session.access_token, cookieOptions);
+        setCookie("refresh_token", session.refresh_token, cookieOptions);
 
         toast.success(t("LoginSuccessTitle"), {
           description: t("LoginSuccessDesc"),
         });
 
-        router.push("/admin");
-        router.refresh();
+        // A full navigation guarantees the middleware receives the new cookies.
+        window.location.replace("/admin");
       }
     } catch (err) {
       setError(t("UnexpectedError"));
