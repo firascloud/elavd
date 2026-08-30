@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Layers, Phone, Tag, Maximize2, X, Globe } from "lucide-react";
+import { Layers, Mail, Phone, Tag, Maximize2, X, Globe } from "lucide-react";
 import type { Product } from "@/services/home";
 import QuoteModal from "@/components/common/QuoteModal";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -115,7 +115,7 @@ export default function ProductHero({ product, phoneUrl }: ProductHeroProps) {
               onClick={() => setIsQuoteOpen(true)}
               className="h-12 px-6 rounded-md bg-primary text-primary-foreground font-black text-xs flex items-center justify-center gap-3 shadow-md shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 uppercase ltr:tracking-widest cursor-pointer"
             >
-              <Phone size={18} />
+              <Mail size={18} />
               <span>{t("RequestQuote")}</span>
             </button>
 
