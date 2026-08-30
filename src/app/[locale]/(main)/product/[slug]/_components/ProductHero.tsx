@@ -11,10 +11,10 @@ import { Link } from "@/i18n/routing";
 
 interface ProductHeroProps {
   product: Product;
-  whatsappUrl: string;
+  phoneUrl: string;
 }
 
-export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) {
+export default function ProductHero({ product, phoneUrl }: ProductHeroProps) {
   const locale = useLocale();
   const isAr = locale === "ar";
   const t = useTranslations("common");
@@ -32,13 +32,6 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
     const y = ((e.pageY - top - window.scrollY) / height) * 100;
     setZoomPos({ x, y });
   };
-
-  const price =
-    typeof product.discount_price === "number"
-      ? product.discount_price
-      : typeof product.price === "number"
-        ? product.price
-        : null;
 
   return (
     <div className="bg-background border border-border rounded-md shadow-sm overflow-hidden">
@@ -115,14 +108,6 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
               />
             )}
 
-            {price !== null && (
-              <div className="pt-2">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/5 text-primary border border-primary/10 font-black">
-                  <span className="text-lg">{price}</span>
-                  <span className="text-xs">{t("Currency")}</span>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -141,21 +126,12 @@ export default function ProductHero({ product, whatsappUrl }: ProductHeroProps) 
             />
 
             <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={phoneUrl}
               className="h-12 px-5 rounded-xl border border-border bg-background flex items-center justify-center gap-2 text-muted-foreground font-semibold hover:text-primary transition-colors group cursor-pointer"
             >
-              <div className="relative size-5 group-hover:scale-110 transition-transform">
-                <Image
-                  src={require('@/assets/whatsapp.png')}
-                  alt="WhatsApp"
-                  fill
-                  className="object-contain"
-                />
-              </div>
+              <Phone className="size-5 group-hover:scale-110 transition-transform" />
               <span className="text-xs text-muted-foreground/50 font-black uppercase">
-                {t("WhatsApp")}
+                {t("CallUs")}
               </span>
             </a>
           </div>

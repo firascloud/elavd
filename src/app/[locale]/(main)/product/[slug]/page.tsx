@@ -55,11 +55,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) notFound();
 
   const name = isRtl ? product.name_ar : product.name_en;
-  const whatsappUrl = `https://wa.me/966556482799?text=${encodeURIComponent(
-    isRtl 
-      ? `طلب استفسار عن منتج: ${name}` 
-      : `Product Inquiry: ${name}`
-  )}`;
+  const phoneUrl = "tel:+966556482799";
   const categoryName = product.category
     ? (isRtl ? product.category.name_ar : product.category.name_en)
     : t("Store");
@@ -104,7 +100,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="container mx-auto xl:px-16 lg:px-10 px-4 mt-12 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
           <div className="lg:col-span-9 space-y-8 order-1 lg:order-2">
-            <ProductHero product={product} whatsappUrl={whatsappUrl} />
+            <ProductHero product={product} phoneUrl={phoneUrl} />
             <ProductTabs product={product} />
 
           </div>
