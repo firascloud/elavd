@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: true,
     domains: ["ibb.co"],
     remotePatterns: [
       {
