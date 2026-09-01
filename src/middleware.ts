@@ -7,6 +7,14 @@ const intlMiddleware = createMiddleware(routing);
 export default async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const token = request.cookies.get("access_token")?.value;
+  const hasLocalePreference = request.cookies.has("NEXT_LOCALE");
+
+  // Always start first-time visitors in Arabic instead of inferring English
+  // from the browser's Accept-Language header. The language switcher can
+  // still persist an explicit English preference afterwards.
+  if (!hasLocalePreference) {
+    request.cookies.set("NEXT_LOCALE", routing.defaultLocale);
+  }
  
   if (pathname.includes("/admin")) {
     if (!token) { 
@@ -25,6 +33,13 @@ export default async function middleware(request: NextRequest) {
   // Also set it on the response for client-side visibility if needed
   if (response) {
     response.headers.set("x-pathname", pathname);
+
+    if (!hasLocalePreference) {
+      response.cookies.set("NEXT_LOCALE", routing.defaultLocale, {
+        path: "/",
+        sameSite: "lax",
+      });
+    }
   }
   
   return response;
