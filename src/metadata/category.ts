@@ -246,7 +246,7 @@ export function categoryMetadata(opts: {
 
   return buildMetadata({
     locale: opts.locale,
-    path: `/product-category/${opts.slug}`,
+    path: `/store/${opts.slug}`,
     title,
     description,
     keywords,

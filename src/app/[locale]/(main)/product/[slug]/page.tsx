@@ -76,7 +76,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(getProductJsonLd(locale, {
             id: product.id,
-            slug: (product as any).slug ?? "",
+            slug,
             name_ar: product.name_ar ?? undefined,
             name_en: product.name_en ?? undefined,
             short_desc_ar: product.short_desc_ar ?? undefined,
@@ -86,6 +86,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             price: (product as any).price ?? null,
             discount_price: (product as any).discount_price ?? null,
             rating: (product as any).rating ?? null,
+            review_count: (product as any).review_count ?? null,
+            availability: (product as any).availability ?? null,
             images: Array.isArray((product as any).images) ? (product as any).images : undefined
           }, { categoryName: categoryName ?? undefined }))
         }}

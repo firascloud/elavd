@@ -9,7 +9,7 @@
     "Cancel": "Cancel",
     "Location": "Jabr Bin Rashid, Al Murabba, Riyadh 12628, Kingdom of Saudi Arabia",
     "Home": "Home",
-    "HomeTitle": "Elavd Office Equipment & Communication Technology Establishment | Card & Barcode Printers and Security Systems in Saudi Arabia",
+    "HomeTitle": "Elavd | Money Counters, Safes, Attendance & Card Printers",
     "HomeDescription": "Elavd Office Equipment & Communication Technology Establishment in Saudi Arabia provides card and barcode printers, safes, money counting machines, surveillance systems, biometric devices, POS systems, and office equipment with high quality, competitive prices, and professional service.",
     "Show": "Show",
     "in": "in",
@@ -172,6 +172,7 @@
     }
   },
   "hero": {
+    "SeoHeading": "Elavd Office Equipment and Communication Technology in Saudi Arabia",
     "Slides": {
       "1": {
         "Tag": "Smart Printing",

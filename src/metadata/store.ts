@@ -11,8 +11,8 @@ export async function storeMetadata(locale: string, query?: string): Promise<Met
       ? `${query} | متجر مؤسسة إيلافد`
       : `${query} | Elavd Store`
     : isAr
-      ? `متجر مؤسسة إيلافد | مكائن عد النقود والخزن الحديدية وأجهزة البصمة وطابعات الكروت`
-      : `Elavd Store | Money Counting Machines, Safes, Attendance Devices & Card Printers`;
+      ? `متجر إيلافد | مكائن عد النقود والخزن وطابعات الكروت`
+      : `Elavd Store | Money Counters, Safes & Card Printers`;
 
   const description = query
     ? isAr
@@ -82,5 +82,6 @@ export async function storeMetadata(locale: string, query?: string): Promise<Met
           "Jeddah",
           "Dammam",
         ],
+    noindex: Boolean(query),
   });
 }

@@ -1,3 +1,5 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getBrandJsonLd(
   locale: string,
   brand: {
@@ -9,8 +11,8 @@ export function getBrandJsonLd(
   },
   productsCount?: number
 ) {
-  const base = "https://elavd.com";
-  const pagePath = `/${locale}/store/${brand.slug}`;
+  const base = SITE_URL;
+  const pagePath = `/store/${brand.slug}`;
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -48,7 +50,7 @@ export function getBrandJsonLd(
           : "Elavd Office Equipment & Communication Technology Establishment",
         alternateName: "Elavd",
         url: base,
-        logo: `${base}/logo.png`,
+        logo: SITE_LOGO_URL,
         email: "sales@elavd.com",
         telephone: "+966553202091",
         areaServed: "SA",
@@ -75,7 +77,7 @@ export function getBrandJsonLd(
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": `${base}/${locale}`,
+              "@id": base,
               name: isAr ? "الرئيسية" : "Home",
             },
           },
@@ -83,7 +85,7 @@ export function getBrandJsonLd(
             "@type": "ListItem",
             position: 2,
             item: {
-              "@id": `${base}/${locale}/brands`,
+              "@id": `${base}/brands`,
               name: isAr ? "العلامات التجارية" : "Brands",
             },
           },
@@ -134,8 +136,8 @@ export function getBrandJsonLd(
 }
 
 export function getBrandsIndexJsonLd(locale: string) {
-  const base = "https://elavd.com";
-  const pagePath = `/${locale}/brands`;
+  const base = SITE_URL;
+  const pagePath = "/brands";
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -177,7 +179,7 @@ export function getBrandsIndexJsonLd(locale: string) {
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": `${base}/${locale}`,
+              "@id": base,
               name: isAr ? "الرئيسية" : "Home",
             },
           },

@@ -1,3 +1,5 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getStoreDynamicJsonLd(
   locale: string,
   data: {
@@ -6,9 +8,8 @@ export function getStoreDynamicJsonLd(
     name?: string;
   }
 ) {
-  const base = "https://elavd.com";
-  const path = data.isCategory ? `/product-category/${data.slug}` : `/store/${data.slug}`;
-  const pagePath = `/${locale}${path}`;
+  const base = SITE_URL;
+  const pagePath = `/store/${data.slug}`;
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -46,7 +47,7 @@ export function getStoreDynamicJsonLd(
           : "Elavd Office Equipment & Communication Technology Establishment",
         alternateName: "Elavd",
         url: base,
-        logo: `${base}/logo.png`,
+        logo: SITE_LOGO_URL,
         email: "sales@elavd.com",
         telephone: "+966553202091",
         areaServed: "SA",
@@ -76,7 +77,7 @@ export function getStoreDynamicJsonLd(
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": `${base}/${locale}`,
+              "@id": base,
               name: isAr ? "الرئيسية" : "Home",
             },
           },
@@ -84,7 +85,7 @@ export function getStoreDynamicJsonLd(
             "@type": "ListItem",
             position: 2,
             item: {
-              "@id": `${base}/${locale}/store`,
+              "@id": `${base}/store`,
               name: isAr ? "المتجر" : "Store",
             },
           },

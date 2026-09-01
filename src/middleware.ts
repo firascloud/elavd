@@ -23,10 +23,9 @@ export default async function middleware(request: NextRequest) {
     }
   }
 
-  // Inject current pathname so server components can read it via next/headers
-  // without needing to receive it as a param — used by getPageSeoData()
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-pathname", pathname);
+  // Make the public pathname available to metadata builders on the rewritten
+  // locale route so every page emits a correct self-referencing canonical.
+  request.headers.set("x-pathname", pathname);
 
   const response = await intlMiddleware(request);
   

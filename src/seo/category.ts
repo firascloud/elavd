@@ -1,3 +1,5 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getCategoryJsonLd(
   locale: string,
   category: {
@@ -8,8 +10,8 @@ export function getCategoryJsonLd(
     description_en?: string;
   }
 ) {
-  const base = "https://elavd.com";
-  const pagePath = `/${locale}/product-category/${category.slug}`;
+  const base = SITE_URL;
+  const pagePath = `/store/${category.slug}`;
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -49,7 +51,7 @@ export function getCategoryJsonLd(
           : "Elavd Office Equipment & Communication Technology Establishment",
         alternateName: "Elavd",
         url: base,
-        logo: `${base}/logo.png`,
+        logo: SITE_LOGO_URL,
         email: "sales@elavd.com",
         telephone: "+966553202091",
         areaServed: "SA",
@@ -76,7 +78,7 @@ export function getCategoryJsonLd(
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": `${base}/${locale}`,
+              "@id": base,
               name: isAr ? "الرئيسية" : "Home",
             },
           },
@@ -84,7 +86,7 @@ export function getCategoryJsonLd(
             "@type": "ListItem",
             position: 2,
             item: {
-              "@id": `${base}/${locale}/store`,
+              "@id": `${base}/store`,
               name: isAr ? "المتجر" : "Store",
             },
           },

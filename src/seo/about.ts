@@ -1,6 +1,8 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getAboutJsonLd(locale: string) {
-    const base = "https://elavd.com";
-    const pagePath = `/${locale}/about-us`;
+    const base = SITE_URL;
+    const pagePath = "/about-us";
     const websiteId = `${base}/#website`;
     const organizationId = `${base}/#organization`;
     const webPageId = `${base}${pagePath}/#webpage`;
@@ -28,7 +30,7 @@ export function getAboutJsonLd(locale: string) {
                     : "Elavd Office Equipment & Communication Technology Establishment",
                 alternateName: "Elavd",
                 url: base,
-                logo: `${base}/placeholder-logo.svg`,
+                logo: SITE_LOGO_URL,
                 email: "sales@elavd.com",
                 telephone: "+966553202091",
                 sameAs: [],
@@ -59,7 +61,7 @@ export function getAboutJsonLd(locale: string) {
                         "@type": "ListItem",
                         position: 1,
                         item: {
-                            "@id": `${base}/${locale}`,
+                            "@id": base,
                             name: isAr ? "الرئيسية" : "Home",
                         },
                     },

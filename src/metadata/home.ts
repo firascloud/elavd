@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildMetadataSmart, SITE_NAME } from "./utils";
+import { SITE_OG_IMAGE_PATH } from "@/config/site";
 
 export async function homeMetadata(locale: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "common" });
   const isAr = locale === "ar";
 
-  const title =
-    (t as any)?.optional?.("HomeTitle") ??
-    (isAr
-      ? "مؤسسة إيلافد | مكائن عد النقود والخزن الحديدية وأجهزة البصمة وطابعات الكروت في السعودية"
-      : "Elavd | Money Counting Machines, Safes, Attendance Devices & Card Printers in Saudi Arabia");
+  const title = t("HomeTitle");
 
-  const description =
-    (t as any)?.optional?.("HomeDescription") ??
-    (isAr
-      ? "مؤسسة إيلافد للأجهزة المكتبية وتقنيات الاتصالات توفر حلولاً متكاملة في السعودية تشمل مكائن عد النقود، الخزن الحديدية، الخزنات الإلكترونية، أجهزة البصمة، أجهزة الحضور والانصراف، وطابعات الكروت والبطاقات والباركود، بجودة عالية وخدمة موثوقة للأفراد والشركات."
-      : "Elavd Office Equipment & Communication Technology provides integrated solutions in Saudi Arabia including money counting machines, safes, electronic safes, attendance devices, time attendance systems, and card and barcode printers with reliable service and high-quality products.");
+  const description = t("HomeDescription");
 
   return buildMetadataSmart({
     locale,
@@ -83,7 +76,7 @@ export async function homeMetadata(locale: string): Promise<Metadata> {
         ],
     images: [
       {
-        url: "/placeholder-logo.svg",
+        url: SITE_OG_IMAGE_PATH,
         width: 1200,
         height: 630,
         alt: SITE_NAME,

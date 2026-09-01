@@ -1,6 +1,8 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getHomeJsonLd(locale: string) {
-  const base = "https://elavd.com";
-  const pagePath = `/${locale}`;
+  const base = SITE_URL;
+  const pagePath = "";
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -19,11 +21,6 @@ export function getHomeJsonLd(locale: string) {
           ? "مؤسسة إيلافد للأجهزة المكتبية وتقنيات الاتصالات"
           : "Elavd Office Equipment & Communication Technology Establishment",
         inLanguage: locale,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${base}/search?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
       },
       {
         "@type": "Organization",
@@ -33,7 +30,7 @@ export function getHomeJsonLd(locale: string) {
           : "Elavd Office Equipment & Communication Technology Establishment",
         alternateName: "Elavd",
         url: base,
-        logo: `${base}/logo.png`,
+        logo: SITE_LOGO_URL,
         email: "sales@elavd.com",
         telephone: "+966553202091",
         areaServed: "SA",

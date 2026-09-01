@@ -1,12 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getCategories, getProducts } from "@/services/home";
+import { SITE_URL } from "@/config/site";
 
-const BASE_URL = "https://elavd.com";
 type UrlEntry = {
   url: string;
-  lastModified?: Date | string;
-  changeFrequency?: MetadataRoute.Sitemap[number]["changeFrequency"];
-  priority?: number;
 };
 
 /**
@@ -14,26 +11,17 @@ type UrlEntry = {
  * NEXT_LOCALE cookie and is intentionally not encoded in the path.
  */
 function withAlternates(
-  enPath: string,
-  _arPath?: string,
-  opts?: { priority?: number; changeFrequency?: UrlEntry["changeFrequency"] }
+  path: string,
 ): UrlEntry[] {
   const toAbsolute = (path: string) => {
     const p = path.startsWith("/") ? path : `/${path}`;
-    return `${BASE_URL}${p === "/" ? "" : p}`;
+    return `${SITE_URL}${p === "/" ? "" : p}`;
   };
 
-  const enLocPath = enPath.startsWith("/") ? enPath : `/${enPath}`;
-
-  const isRoot = enLocPath === "/";
-  const priority = opts?.priority ?? (isRoot ? 1 : 0.7);
-  const changeFrequency = opts?.changeFrequency ?? "weekly";
+  const localizedPath = path.startsWith("/") ? path : `/${path}`;
 
   return [{
-    url: toAbsolute(enLocPath),
-    lastModified: new Date(),
-    changeFrequency,
-    priority,
+    url: toAbsolute(localizedPath),
   }];
 }
 
@@ -41,7 +29,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: UrlEntry[] = [];
 
   // Static pages — cart/compare/favorite excluded (noindexed user-state pages)
-  ["/", "/about-us", "/store", "/contact-us"].forEach((p) =>
+  [
+    "/",
+    "/about-us",
+    "/store",
+    "/brands",
+    "/contact-us",
+    "/specials",
+    "/delivery-information",
+    "/partnerships",
+    "/privacy-policy",
+    "/refund-policy",
+  ].forEach((p) =>
     entries.push(...withAlternates(p))
   );
 
@@ -51,11 +50,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const categories = await getCategories(1000);
     for (const c of categories || []) {
       const slugEn = c?.slug_en || "";
-      const slugAr = slugEn;
       if (!slugEn) continue;
-      entries.push(
-        ...withAlternates(`/store/${slugEn}`, `/store/${slugAr}`, { priority: 0.8 })
-      );
+      entries.push(...withAlternates(`/store/${slugEn}`));
     }
   } catch (e) {
     console.error("[sitemap] categories fetch failed:", e);
@@ -67,11 +63,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const brands = await getBrands(1000);
     for (const b of brands || []) {
       const slugEn = b?.slug_en || "";
-      const slugAr = slugEn;
       if (!slugEn) continue;
-      entries.push(
-        ...withAlternates(`/store/${slugEn}`, `/store/${slugAr}`, { priority: 0.7 })
-      );
+      entries.push(...withAlternates(`/store/${slugEn}`));
     }
   } catch (e) {
     console.error("[sitemap] brands fetch failed:", e);
@@ -82,15 +75,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const products = await getProducts({ limit: 1000 });
     for (const p of products || []) {
       const slugEn = (p as any)?.slug_en || (p as any)?.slug || "";
-      const slugAr = slugEn;
       if (!slugEn) continue;
-      entries.push(
-        ...withAlternates(`/product/${slugEn}`, `/product/${slugAr}`, { priority: 0.9 })
-      );
+      entries.push(...withAlternates(`/product/${slugEn}`));
     }
   } catch (e) {
     console.error("[sitemap] products fetch failed:", e);
   }
 
-  return entries as MetadataRoute.Sitemap;
+  return Array.from(
+    new Map(entries.map((entry) => [entry.url, entry])).values()
+  ) as MetadataRoute.Sitemap;
 }

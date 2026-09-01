@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "seo:assets": "node scripts/generate-seo-assets.mjs",
     "seo:check": "node scripts/seo-monitor.mjs --url https://elavd.com",
     "seo:check:local": "node scripts/seo-monitor.mjs --url http://localhost:3000",
     "seo:check:json": "node scripts/seo-monitor.mjs --url https://elavd.com --json"

@@ -7,10 +7,16 @@ import {
   validateHreflangUrls,
   getPageSeoData,
 } from "@/seo/canonical";
+import {
+  SITE_NAME_AR,
+  SITE_NAME_EN as CONFIG_SITE_NAME_EN,
+  SITE_OG_IMAGE_PATH,
+  SITE_URL,
+} from "@/config/site";
 
-export const BASE_URL = "https://www.elavd.com";
-export const SITE_NAME = "مؤسسة إيلافد";
-export const SITE_NAME_EN = "Elavd Office Equipment & Communication Technology Establishment";
+export const BASE_URL = SITE_URL;
+export const SITE_NAME = SITE_NAME_AR;
+export const SITE_NAME_EN = CONFIG_SITE_NAME_EN;
 export const DEFAULT_LOCALES = ["en", "ar"] as const;
 
 export type SeoImage = {
@@ -96,9 +102,9 @@ function buildMetadataBase(
   const ogImages = buildOpenGraphImages(
     opts.images?.length
       ? opts.images
-      : [
+        : [
           {
-            url: "/placeholder-logo.svg",
+            url: SITE_OG_IMAGE_PATH,
             width: 1200,
             height: 630,
             alt: localizedSiteName,
@@ -139,7 +145,8 @@ function buildMetadataBase(
       description: opts.description,
       url: canonical,
       siteName: localizedSiteName,
-      locale: opts.locale,
+      locale: opts.locale === "ar" ? "ar_SA" : "en_US",
+      alternateLocale: opts.locale === "ar" ? ["en_US"] : ["ar_SA"],
       type: opts.type ?? "website",
       images: ogImages,
     },

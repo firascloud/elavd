@@ -1,3 +1,5 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getProductJsonLd(
   locale: string,
   product: {
@@ -20,8 +22,8 @@ export function getProductJsonLd(
   },
   opts?: { categoryName?: string }
 ) {
-  const base = "https://elavd.com";
-  const pagePath = `/${locale}/product/${product.slug}`;
+  const base = SITE_URL;
+  const pagePath = `/product/${product.slug}`;
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -54,7 +56,10 @@ export function getProductJsonLd(
         ? [product.main_image]
         : undefined;
 
-  const price = product.discount_price ?? product.price;
+  const price =
+    typeof product.discount_price === "number" && product.discount_price > 0
+      ? product.discount_price
+      : product.price;
 
   const offers =
     typeof price === "number"
@@ -63,7 +68,9 @@ export function getProductJsonLd(
           url: `${base}${pagePath}`,
           priceCurrency: "SAR",
           price: String(price),
-          availability: `https://schema.org/${product.availability || "InStock"}`,
+          ...(product.availability
+            ? { availability: `https://schema.org/${product.availability}` }
+            : {}),
           itemCondition: "https://schema.org/NewCondition",
           seller: { "@id": organizationId },
         }
@@ -102,7 +109,7 @@ export function getProductJsonLd(
           : "Elavd Office Equipment & Communication Technology Establishment",
         alternateName: "Elavd",
         url: base,
-        logo: `${base}/logo.png`,
+        logo: SITE_LOGO_URL,
         email: "sales@elavd.com",
         telephone: "+966553202091",
         areaServed: "SA",
@@ -129,7 +136,7 @@ export function getProductJsonLd(
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": `${base}/${locale}`,
+              "@id": base,
               name: isAr ? "الرئيسية" : "Home",
             },
           },
@@ -137,7 +144,7 @@ export function getProductJsonLd(
             "@type": "ListItem",
             position: 2,
             item: {
-              "@id": `${base}/${locale}/store`,
+              "@id": `${base}/store`,
               name: isAr ? "المتجر" : "Store",
             },
           },

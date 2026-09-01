@@ -6,7 +6,7 @@
  */
 
 import { headers } from "next/headers";
-import { BASE_URL } from "@/metadata/utils";
+import { SITE_URL } from "@/config/site";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -25,7 +25,6 @@ export interface CanonicalConfig {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const LOCALES = ["en", "ar"] as const;
-const DEFAULT_LOCALE = "ar"; // matches routing.ts
 
 /**
  * Pages that are safe to generate hreflang for.
@@ -227,9 +226,9 @@ export async function getPageSeoData(locale: string) {
   // x-pathname is injected by middleware.ts for every request
   const currentPath = headersList.get("x-pathname") || "/";
 
-  const canonicalUrl = generateCanonicalUrl({ baseUrl: BASE_URL, currentPath, locale });
-  const hreflangUrls = generateHreflangUrls({ baseUrl: BASE_URL, currentPath, locale });
-  const xDefaultUrl = generateXDefaultUrl(BASE_URL, currentPath, locale);
+  const canonicalUrl = generateCanonicalUrl({ baseUrl: SITE_URL, currentPath, locale });
+  const hreflangUrls = generateHreflangUrls({ baseUrl: SITE_URL, currentPath, locale });
+  const xDefaultUrl = generateXDefaultUrl(SITE_URL, currentPath, locale);
 
   if (!validateCanonicalUrl(canonicalUrl)) {
     console.error("[SEO] Canonical validation failed:", canonicalUrl, "path:", currentPath);
@@ -243,7 +242,7 @@ export async function getPageSeoData(locale: string) {
     canonicalUrl,
     /** Array of { locale, url } pairs for all supported locales */
     hreflangUrls,
-    /** x-default URL (always points to English version) */
+    /** x-default URL (points to the locale-free Arabic-default URL) */
     xDefaultUrl,
   };
 }

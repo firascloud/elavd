@@ -83,7 +83,6 @@ export function productMetadata(opts: {
     description,
     keywords,
     images: image ? [{ url: image, alt: title }] : undefined,
-    type: "article",
+    type: "website",
   });
 }
- 

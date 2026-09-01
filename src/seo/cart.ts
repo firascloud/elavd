@@ -1,6 +1,8 @@
+import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+
 export function getCartJsonLd(locale: string) {
-  const base = "https://elavd.com";
-  const pagePath = `/${locale}/cart`;
+  const base = SITE_URL;
+  const pagePath = "/cart";
   const websiteId = `${base}/#website`;
   const organizationId = `${base}/#organization`;
   const webPageId = `${base}${pagePath}/#webpage`;
@@ -29,7 +31,7 @@ export function getCartJsonLd(locale: string) {
           : "Elavd Office Equipment & Communication Technology Establishment",
         alternateName: "Elavd",
         url: base,
-        logo: `${base}/logo.png`,
+        logo: SITE_LOGO_URL,
         email: "sales@elavd.com",
         telephone: "+966553202091",
         areaServed: "SA",
@@ -46,7 +48,7 @@ export function getCartJsonLd(locale: string) {
             "@type": "ListItem",
             position: 1,
             item: {
-              "@id": `${base}/${locale}`,
+              "@id": base,
               name: isAr ? "الرئيسية" : "Home",
             },
           },

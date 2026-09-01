@@ -10,7 +10,6 @@ import { Search } from 'lucide-react'
 import FilterProduct from '../_components/fillterProduct'
 import Pagination from '../_components/pagination'
 import { motion } from 'framer-motion'
-import Script from 'next/script'
 import { getCategoryJsonLd } from '@/seo/category'
 import { categoryMetadata } from '@/metadata/category'
 
@@ -95,15 +94,19 @@ export default async function CategoryPage({ params, searchParams }: {
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-20">
-      <Script id="jsonld-category" type="application/ld+json" strategy="afterInteractive">
-        {JSON.stringify(getCategoryJsonLd(locale, {
-          slug: (effectiveCategory as any).slug ?? "",
-          name_ar: effectiveCategory!.name_ar ?? undefined,
-          name_en: effectiveCategory!.name_en ?? undefined,
-          description_ar: effectiveCategory!.description_ar ?? undefined,
-          description_en: effectiveCategory!.description_en ?? undefined
-        }))}
-      </Script>
+      <script
+        id="jsonld-category"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getCategoryJsonLd(locale, {
+            slug,
+            name_ar: effectiveCategory!.name_ar ?? undefined,
+            name_en: effectiveCategory!.name_en ?? undefined,
+            description_ar: effectiveCategory!.description_ar ?? undefined,
+            description_en: effectiveCategory!.description_en ?? undefined
+          }))
+        }}
+      />
       <PageHeader
         title={categoryName || ''}
       />

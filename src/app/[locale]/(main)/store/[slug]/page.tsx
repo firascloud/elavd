@@ -64,7 +64,14 @@ export async function generateMetadata({ params }: StoreDynamicPageProps): Promi
   }
 
   const displaySlug = decodeURIComponent(slug).replace(/-/g, ' ')
-  return storeSlugMetadata({ locale, slug, title: displaySlug })
+  return {
+    ...storeSlugMetadata({ locale, slug, title: displaySlug }),
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: { index: false, follow: true },
+    },
+  }
 }
 
 export default async function StoreDynamicPage({ params, searchParams }: StoreDynamicPageProps) {

@@ -26,6 +26,7 @@ export default async function Hero({ locale }: { locale: string }) {
 
   return (
     <section className="bg-muted/30 p-0 md:py-6 md:px-4 font-sans overflow-hidden">
+      <h1 className="sr-only">{t('SeoHeading')}</h1>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
@@ -104,9 +105,9 @@ export default async function Hero({ locale }: { locale: string }) {
                       </span>
                     </div>
 
-                    <h1 className="text-[30px] md:text-[38px] lg:text-[46px] leading-[1.05] font-black text-primary-foreground mb-4 ltr:tracking-tight font-cairo max-w-2xl">
+                    <h2 className="text-[30px] md:text-[38px] lg:text-[46px] leading-[1.05] font-black text-primary-foreground mb-4 ltr:tracking-tight font-cairo max-w-2xl">
                       {t(`Slides.${slide.id}.Title`)}
-                    </h1>
+                    </h2>
 
                     <p className="text-white text-sm md:text-base mb-6 max-w-md font-medium leading-relaxed line-clamp-2 lg:line-clamp-none">
                       {t(`Slides.${slide.id}.Desc`)}
