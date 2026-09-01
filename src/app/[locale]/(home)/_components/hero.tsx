@@ -10,6 +10,7 @@ import banner1 from '@/assets/banner-1.webp'
 import banner2 from '@/assets/banner-2.webp'
 import banner3 from '@/assets/banner-3.webp'
 import banner4 from '@/assets/banner-4.webp'
+import moneyCountingMachines from '@/assets/money-counting-machines.webp'
 
 export default async function Hero({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'hero' })
@@ -145,12 +146,12 @@ export default async function Hero({ locale }: { locale: string }) {
           </div>
 
           <Link
-            href="/store/ribbons-and-film"
+            href="/store/money-counting-machines"
             className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block"
           >
             <Image
-              src={banner3}
-              alt="ID Accessories"
+              src={moneyCountingMachines}
+              alt={t('MoneyCountingMachines')}
               fill
               loading="lazy"
               sizes="(max-width: 1024px) 0px, 25vw"
@@ -159,11 +160,11 @@ export default async function Hero({ locale }: { locale: string }) {
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-4">
               <div className="space-y-1">
-                <h2 className="text-primary-foreground text-lg font-black ltr:tracking-tight font-cairo">{t('CardPrinters')}</h2>
-                <p className="text-primary-foreground/70 text-[10px] leading-relaxed font-bold uppercase ltr:tracking-wide">{t('CardPrintersSubtitle')}</p>
+                <h2 className="text-primary-foreground text-lg font-black ltr:tracking-tight font-cairo">{t('MoneyCountingMachines')}</h2>
+                <p className="text-primary-foreground/70 text-[10px] leading-relaxed font-bold uppercase ltr:tracking-wide">{t('MoneyCountingMachinesSubtitle')}</p>
               </div>
               <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase ltr:tracking-widest px-6 py-3 rounded-xl inline-flex items-center justify-center gap-3 hover:bg-slate-900 transition-all duration-300 shadow-xl">
-                {t('Explore')}
+                {t('BrowseMoneyCounters')}
                 <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
               </span>
             </div>

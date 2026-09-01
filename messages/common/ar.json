@@ -213,9 +213,9 @@
     "HotelSafes": "خزن فنادق",
     "DepositSafes": "خزن ايداع اوروبية",
     "MoreDetails": "عرض التفاصيل",
-    "CardPrinters": "ملحقات البطاقات",
-    "CardPrintersSubtitle": "أشرطة الطباعة، الكروت الفارغة، وأدوات التنظيف",
-    "Explore": "استكشف",
+    "MoneyCountingMachines": "مكائن عدّ النقود",
+    "MoneyCountingMachinesSubtitle": "حلول دقيقة وسريعة لعدّ وفرز العملات",
+    "BrowseMoneyCounters": "تصفح المكائن",
     "CardPrintersLabel": "طابعات الكروت",
     "BiometricLabel": "أنظمة البصمة"
   },
