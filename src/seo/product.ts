@@ -62,7 +62,7 @@ export function getProductJsonLd(
       : product.price;
 
   const offers =
-    typeof price === "number"
+    typeof price === "number" && Number.isFinite(price) && price > 0
       ? {
           "@type": "Offer",
           url: `${base}${pagePath}`,
@@ -88,6 +88,28 @@ export function getProductJsonLd(
         reviewCount: String(product.review_count),
       }
     : undefined;
+
+  // Google requires a real offer, review, or aggregate rating for Product
+  // rich results. Quote-only products have none of these, so marking them as
+  // Product would create an invalid structured-data item in Search Console.
+  const hasProductRichResultData = Boolean(offers || aggregateRating);
+
+  const productNode = {
+    "@type": "Product",
+    "@id": productId,
+    name,
+    description,
+    sku: product.sku || String(product.id),
+    image: images,
+    url: `${base}${pagePath}`,
+    category: opts?.categoryName,
+    brand: {
+      "@type": "Brand",
+      name: brandName,
+    },
+    offers,
+    aggregateRating,
+  };
 
   return {
     "@context": "https://schema.org",
@@ -158,22 +180,7 @@ export function getProductJsonLd(
           },
         ],
       },
-      {
-        "@type": "Product",
-        "@id": productId,
-        name,
-        description,
-        sku: product.sku || String(product.id),
-        image: images,
-        url: `${base}${pagePath}`,
-        category: opts?.categoryName,
-        brand: {
-          "@type": "Brand",
-          name: brandName,
-        },
-        offers,
-        aggregateRating,
-      },
+      ...(hasProductRichResultData ? [productNode] : []),
       {
         "@type": "WebPage",
         "@id": webPageId,
@@ -182,7 +189,7 @@ export function getProductJsonLd(
         description,
         inLanguage: locale,
         isPartOf: { "@id": websiteId },
-        mainEntity: { "@id": productId },
+        ...(hasProductRichResultData ? { mainEntity: { "@id": productId } } : {}),
         breadcrumb: { "@id": breadcrumbId },
       },
     ],

@@ -70,10 +70,12 @@ export default async function SubCategoryPage({ params, searchParams }: SubCateg
 
   let allProducts = []
   let pageTitle = ''
+  let pageDescription = ''
 
   if (subCategory) {
     allProducts = await getProducts({ subCategoryId: subCategory.id, limit: 1000 })
     pageTitle = isRtl ? subCategory.name_ar || '' : subCategory.name_en || ''
+    pageDescription = isRtl ? subCategory.seo_description_ar || '' : subCategory.seo_description_en || ''
   } else {
     const searchQuery = decodeURIComponent(subSlug).replace(/-/g, ' ')
     allProducts = await searchProducts({ query: searchQuery, limit: 1000 })
@@ -106,10 +108,10 @@ export default async function SubCategoryPage({ params, searchParams }: SubCateg
         }))}
       </Script>
       <PageHeader
-        title={t('Store')}
+        title={pageTitle}
         parent={{ label: t('Store'), href: '/store' }}
         breadcrumbLabel={pageTitle}
-        subtitle={pageTitle}
+        subtitle={pageDescription}
       />
 
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">

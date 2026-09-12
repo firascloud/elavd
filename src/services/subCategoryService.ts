@@ -10,6 +10,8 @@ export type SubCategory = {
     image_url: string | null;
     description_en: string | null;
     description_ar: string | null;
+    seo_description_en?: string | null;
+    seo_description_ar?: string | null;
     created_at?: string;
     updated_at?: string;
 };

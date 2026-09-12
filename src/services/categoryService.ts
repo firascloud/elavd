@@ -9,6 +9,8 @@ export type Category = {
     image_url: string | null;
     description_en: string | null;
     description_ar: string | null;
+    seo_description_en?: string | null;
+    seo_description_ar?: string | null;
     created_at?: string;
     sub_categories?: any[];
 };
