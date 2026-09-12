@@ -109,7 +109,6 @@ export default async function SubCategoryPage({ params, searchParams }: SubCateg
       </Script>
       <PageHeader
         title={pageTitle}
-        parent={{ label: t('Store'), href: '/store' }}
         breadcrumbLabel={pageTitle}
         subtitle={pageDescription}
       />

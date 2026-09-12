@@ -156,7 +156,6 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
       )}
       <PageHeader
         title={pageTitle}
-        parent={{ label: t('Store'), href: '/store' }}
         breadcrumbLabel={pageTitle}
         subtitle={pageDescription}
       />
