@@ -5,6 +5,25 @@ import { NextRequest, NextResponse } from "next/server";
 const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(request: NextRequest) {
+  const forwardedHost = request.headers
+    .get("x-forwarded-host")
+    ?.split(",")[0]
+    .trim()
+    .toLowerCase();
+  const requestHost = (forwardedHost || request.headers.get("host") || "")
+    .split(":")[0]
+    .toLowerCase();
+
+  // Keep one permanent public host. This also protects canonical consistency
+  // when a platform-level domain redirect is changed or bypassed.
+  if (requestHost === "www.elavd.com") {
+    const canonicalUrl = request.nextUrl.clone();
+    canonicalUrl.protocol = "https:";
+    canonicalUrl.hostname = "elavd.com";
+    canonicalUrl.port = "";
+    return NextResponse.redirect(canonicalUrl, 308);
+  }
+
   const pathname = request.nextUrl.pathname;
   const token = request.cookies.get("access_token")?.value;
   const hasLocalePreference = request.cookies.has("NEXT_LOCALE");

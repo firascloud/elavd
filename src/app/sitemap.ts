@@ -4,6 +4,7 @@ import { SITE_URL } from "@/config/site";
 
 type UrlEntry = {
   url: string;
+  lastModified?: Date;
 };
 
 /**
@@ -12,6 +13,7 @@ type UrlEntry = {
  */
 function withAlternates(
   path: string,
+  lastModified?: string,
 ): UrlEntry[] {
   const toAbsolute = (path: string) => {
     const p = path.startsWith("/") ? path : `/${path}`;
@@ -22,6 +24,9 @@ function withAlternates(
 
   return [{
     url: toAbsolute(localizedPath),
+    ...(lastModified && !Number.isNaN(Date.parse(lastModified))
+      ? { lastModified: new Date(lastModified) }
+      : {}),
   }];
 }
 
@@ -40,6 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/partnerships",
     "/privacy-policy",
     "/refund-policy",
+    "/store/money-counting-machines",
   ].forEach((p) =>
     entries.push(...withAlternates(p))
   );
@@ -51,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const c of categories || []) {
       const slugEn = c?.slug_en || "";
       if (!slugEn) continue;
-      entries.push(...withAlternates(`/store/${slugEn}`));
+      entries.push(...withAlternates(`/store/${slugEn}`, c.updated_at || c.created_at));
     }
   } catch (e) {
     console.error("[sitemap] categories fetch failed:", e);
@@ -76,7 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const p of products || []) {
       const slugEn = (p as any)?.slug_en || (p as any)?.slug || "";
       if (!slugEn) continue;
-      entries.push(...withAlternates(`/product/${slugEn}`));
+      entries.push(...withAlternates(`/product/${slugEn}`, p.updated_at || p.created_at));
     }
   } catch (e) {
     console.error("[sitemap] products fetch failed:", e);

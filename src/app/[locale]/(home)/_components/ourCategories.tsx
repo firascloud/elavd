@@ -35,7 +35,7 @@ export default async function ourCategories({ locale, categories, featuredProduc
                 </div>
 
                 <div className="flex flex-col flex-1 w-full text-center">
-                    <Link href={`/product-category/${cat.slug_en}`}>
+                    <Link href={`/store/${cat.slug_en}`}>
                         <h3 className="font-black line-clamp-1 text-[#111] text-sm sm:text-base md:text-lg mb-3 sm:mb-4 leading-snug group-hover:text-primary transition-colors">
                             {loading ? (
                                 <span className="block h-4 w-20 bg-gray-100 rounded-full animate-pulse mx-auto" />
@@ -46,14 +46,12 @@ export default async function ourCategories({ locale, categories, featuredProduc
                     </Link>
                     
                     <div className="mt-auto">
-                        <Link href={`/product-category/${cat.slug_en}`} className="inline-block w-full">
-                            <button
-                                type="button"
-                                className="w-full py-2 sm:py-3 px-3 sm:px-5 cursor-pointer rounded-xl sm:rounded-2xl bg-[#111] text-white font-black text-[10px] sm:text-xs uppercase tracking-widest hover:bg-primary transition-all duration-300 shadow-md shadow-black/5 active:scale-95"
-                            >
+                        <Link
+                            href={`/store/${cat.slug_en}`}
+                            className="inline-flex w-full items-center justify-center py-2 sm:py-3 px-3 sm:px-5 cursor-pointer rounded-xl sm:rounded-2xl bg-[#111] text-white font-black text-[10px] sm:text-xs uppercase tracking-widest hover:bg-primary transition-all duration-300 shadow-md shadow-black/5 active:scale-95"
+                        >
                                 {t('ViewMore')}
                                 <span className="sr-only"> {(locale === 'ar' ? cat.name_ar : cat.name_en)}</span>
-                            </button>
                         </Link>
                     </div>
                 </div>

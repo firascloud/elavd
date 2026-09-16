@@ -6,24 +6,25 @@ Elavd serves individuals and businesses across Saudi Arabia. The website support
 
 ## Shopping
 
-- [Home](https://www.elavd.com/): Overview of Elavd, featured categories, products, and offers.
-- [Store](https://www.elavd.com/store): Browse all available product categories and products.
-- [Brands](https://www.elavd.com/brands): Browse the brands supplied by Elavd.
-- [Special offers](https://www.elavd.com/specials): View current product promotions and special offers.
+- [Home](https://elavd.com/): Overview of Elavd, featured categories, products, and offers.
+- [Store](https://elavd.com/store): Browse all available product categories and products.
+- [Money counting machines](https://elavd.com/store/money-counting-machines): Compare banknote counters and counterfeit detection machines.
+- [Brands](https://elavd.com/brands): Browse the brands supplied by Elavd.
+- [Special offers](https://elavd.com/specials): View current product promotions and special offers.
 
 ## Company and support
 
-- [About Elavd](https://www.elavd.com/about-us): Company background, services, and areas of expertise.
-- [Contact Elavd](https://www.elavd.com/contact-us): Official phone numbers, email address, location, and contact form.
-- [Delivery information](https://www.elavd.com/delivery-information): Delivery coverage, shipping fees, and expected processing times.
-- [Partnerships](https://www.elavd.com/partnerships): Information for brands and suppliers interested in working with Elavd.
+- [About Elavd](https://elavd.com/about-us): Company background, services, and areas of expertise.
+- [Contact Elavd](https://elavd.com/contact-us): Official phone numbers, email address, location, and contact form.
+- [Delivery information](https://elavd.com/delivery-information): Delivery coverage, shipping fees, and expected processing times.
+- [Partnerships](https://elavd.com/partnerships): Information for brands and suppliers interested in working with Elavd.
 
 ## Policies
 
-- [Privacy policy](https://www.elavd.com/privacy-policy): How customer and visitor information is handled.
-- [Refund policy](https://www.elavd.com/refund-policy): Return, exchange, and refund terms.
+- [Privacy policy](https://elavd.com/privacy-policy): How customer and visitor information is handled.
+- [Refund policy](https://elavd.com/refund-policy): Return, exchange, and refund terms.
 
 ## Optional
 
-- [XML sitemap](https://www.elavd.com/sitemap.xml): Machine-readable index of public website pages and products.
-- [Robots directives](https://www.elavd.com/robots.txt): Search crawler access rules.
+- [XML sitemap](https://elavd.com/sitemap.xml): Machine-readable index of public website pages and products.
+- [Robots directives](https://elavd.com/robots.txt): Search crawler access rules.

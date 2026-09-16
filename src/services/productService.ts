@@ -19,19 +19,33 @@ export type Product = {
     is_event?: boolean;
     is_active?: boolean;
     created_at?: string;
+    updated_at?: string;
+    sku?: string | null;
+    rating?: number | null;
+    review_count?: number | null;
+    availability?: "InStock" | "OutOfStock" | "PreOrder" | "BackOrder" | null;
+    images?: string[] | null;
+    seo_title_en?: string | null;
+    seo_title_ar?: string | null;
+    seo_description_en?: string | null;
+    seo_description_ar?: string | null;
+    seo_keywords_en?: unknown;
+    seo_keywords_ar?: unknown;
     category_id?: string | null;
     category?: {
         id: string;
         name_en: string | null;
         name_ar: string | null;
-        slug: string | null;
+        slug_en: string | null;
+        slug_ar: string | null;
     },
     sub_category_id?: string | null;
     sub_category?: {
         id: string;
         name_en: string | null;
         name_ar: string | null;
-        slug: string | null;
+        slug_en: string | null;
+        slug_ar: string | null;
     },
     brand_id?: string | null;
     brand?: {
@@ -76,7 +90,7 @@ export async function getProducts({
     brandId?: string,
     limit?: number 
 }) {
-    let query = supabaseBrowser.from('products').select('*, categories(*), sub_categories(*), brands(*)');
+    let query = supabaseBrowser.from('products').select('*, category:categories(*), sub_category:sub_categories(*), brand:brands(*)');
     
     if (is_featured) query = query.eq('is_featured', true);
     if (is_popular) query = query.eq('is_popular', true);
@@ -115,7 +129,7 @@ export async function searchProducts({
     brandId?: string;
     limit?: number;
 }) {
-    let supabaseQuery = supabaseBrowser.from('products').select('*, categories(*), sub_categories(*), brands(*)');
+    let supabaseQuery = supabaseBrowser.from('products').select('*, category:categories(*), sub_category:sub_categories(*), brand:brands(*)');
 
     if (categoryId) {
         supabaseQuery = supabaseQuery.eq('category_id', categoryId);

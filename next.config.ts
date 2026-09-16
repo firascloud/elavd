@@ -10,13 +10,43 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "www.elavd.com" }],
+        has: [{ type: "host", value: "www\\.elavd\\.com" }],
         destination: "https://elavd.com/:path*",
         permanent: true,
       },
       {
         source: "/product-category/:slug",
         destination: "/store/:slug",
+        permanent: true,
+      },
+      {
+        source: "/en/product-category/:slug",
+        destination: "/store/:slug",
+        permanent: true,
+      },
+      {
+        source: "/ar/product-category/:slug",
+        destination: "/store/:slug",
+        permanent: true,
+      },
+      {
+        source: "/en/store/:slug",
+        destination: "/store/:slug",
+        permanent: true,
+      },
+      {
+        source: "/ar/store/:slug",
+        destination: "/store/:slug",
+        permanent: true,
+      },
+      {
+        source: "/en/product/:slug",
+        destination: "/product/:slug",
+        permanent: true,
+      },
+      {
+        source: "/ar/product/:slug",
+        destination: "/product/:slug",
         permanent: true,
       },
     ];

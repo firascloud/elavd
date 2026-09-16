@@ -8,6 +8,7 @@ import { Eye, Heart, Repeat, Layers } from "lucide-react";
 import useAppStore from "@/store/store";
 import type { Product } from "@/services/home";
 import { Link } from "@/i18n/routing";
+import { htmlToPlainText } from "@/lib/text";
 
 const QuickViewModal = dynamic(
     () => import("./QuickViewModal").then((module) => module.QuickViewModal),
@@ -66,7 +67,8 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
         short_desc_en,
         short_desc_ar,
         main_image,
-        is_hot = true,
+        is_featured,
+        is_hot = Boolean(is_featured),
         slug_en,
         slug_ar,
         id,
@@ -80,6 +82,9 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
 
     const name = locale === 'ar' ? name_ar : name_en;
     const description = locale === 'ar' ? short_desc_ar : short_desc_en;
+    const categoryName = props.category
+        ? (locale === 'ar' ? props.category.name_ar : props.category.name_en)
+        : t('Products');
     const localizedSlug = slug_en;
 
     if (view === "list") {
@@ -109,7 +114,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                     <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
                         <div className="space-y-4">
                             <h4 className="text-muted-foreground font-bold text-xs uppercase ltr:tracking-widest font-cairo">
-                                {t('CategoryMetalSafes')}
+                                {categoryName || t('Products')}
                             </h4>
                             <Link href={`/product/${localizedSlug || id}`} className="text-xl md:text-2xl font-black text-foreground font-cairo leading-tight">
                                 {name || '—'}
@@ -212,10 +217,9 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             {name || '—'}
                         </h3>
                     </Link>
-                    <div 
-                        className="text-muted-foreground text-xs font-medium mb-8 line-clamp-1 h-4"
-                        dangerouslySetInnerHTML={{ __html: description || '—' }}
-                    />
+                    <p className="text-muted-foreground text-xs font-medium mb-8 line-clamp-1 h-4">
+                        {htmlToPlainText(description) || '—'}
+                    </p>
 
                     {/* <button
                         onClick={handleAddToCart}

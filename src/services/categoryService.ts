@@ -11,6 +11,11 @@ export type Category = {
     description_ar: string | null;
     seo_description_en?: string | null;
     seo_description_ar?: string | null;
+    seo_title_en?: string | null;
+    seo_title_ar?: string | null;
+    seo_keywords_en?: unknown;
+    seo_keywords_ar?: unknown;
+    updated_at?: string;
     created_at?: string;
     sub_categories?: any[];
 };

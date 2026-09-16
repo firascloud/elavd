@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { buildMetadata, normalizeKeywords } from "./utils";
+import {
+  isMoneyCountingCategory,
+  moneyCountingSeo,
+} from "@/seo/moneyCounting";
 
 type CategorySeo = {
-  slug_en?: string;
-  slug_ar?: string;
-  slug?: string;
+  slug_en?: string | null;
+  slug_ar?: string | null;
+  slug?: string | null;
   name_en?: string | null;
   name_ar?: string | null;
   description_en?: string | null;
@@ -216,6 +220,8 @@ export function categoryMetadata(opts: {
   locale: string;
   slug: string;
   category?: CategorySeo | null;
+  page?: number;
+  noindex?: boolean;
 }): Metadata {
   const isAr = opts.locale === "ar";
   const c = opts.category;
@@ -225,32 +231,45 @@ export function categoryMetadata(opts: {
     (isAr ? c?.name_en : c?.name_ar) ||
     "Category";
 
-  const title =
-    (isAr ? c?.seo_title_ar : c?.seo_title_en) ||
-    (isAr
+  const isMoneyCounting = isMoneyCountingCategory({
+    ...c,
+    slug: opts.slug,
+  });
+  const moneySeo = moneyCountingSeo[isAr ? "ar" : "en"];
+
+  const title = isMoneyCounting
+    ? moneySeo.title
+    : (isAr ? c?.seo_title_ar : c?.seo_title_en) ||
+      (isAr
       ? `${categoryName} | مؤسسة إيلافد في السعودية`
       : `${categoryName} | Elavd in Saudi Arabia`);
 
-  const description =
-    (isAr ? c?.seo_description_ar : c?.seo_description_en) ||
-    (isAr ? c?.description_ar : c?.description_en) ||
-    (isAr
+  const description = isMoneyCounting
+    ? moneySeo.description
+    : (isAr ? c?.seo_description_ar : c?.seo_description_en) ||
+      (isAr ? c?.description_ar : c?.description_en) ||
+      (isAr
       ? `استكشف قسم ${categoryName} لدى مؤسسة إيلافد في السعودية، ضمن حلول متخصصة في الأجهزة المكتبية والأنظمة الأمنية بجودة عالية وخدمة موثوقة.`
       : `Explore the ${categoryName} category at Elavd in Saudi Arabia, featuring specialized office equipment and security solutions with reliable service and quality.`);
 
   const keywords =
     normalizeKeywords(isAr ? c?.seo_keywords_ar : c?.seo_keywords_en) ||
-    getCategoryFallbackKeywords(opts.locale, categoryName, opts.slug);
+    (isMoneyCounting
+      ? [...moneySeo.keywords]
+      : getCategoryFallbackKeywords(opts.locale, categoryName, opts.slug));
 
   const image = c?.image_url || undefined;
 
   return buildMetadata({
     locale: opts.locale,
-    path: `/store/${opts.slug}`,
+    path: opts.page && opts.page > 1
+      ? `/store/${opts.slug}?page=${opts.page}`
+      : `/store/${opts.slug}`,
     title,
     description,
     keywords,
     images: image ? [{ url: image, alt: title }] : undefined,
+    noindex: opts.noindex,
     type: "website",
   });
 }

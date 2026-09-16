@@ -80,7 +80,7 @@ export default function ProductHero({ product, phoneUrl }: ProductHeroProps) {
                 <>
                   <span className="text-muted-foreground/30 font-black">•</span>
                   <Link
-                    href={`/product/${isAr ? product.brand.slug_ar : product.brand.slug_en}`}
+                    href={`/store/${product.brand.slug_en || product.brand.slug_ar}`}
                     className="text-secondary text-[10px] font-black ltr:tracking-[0.2em] flex items-center gap-2 uppercase hover:text-primary transition-colors"
                   >
                     <Globe className="size-3.5" />

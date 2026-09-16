@@ -59,7 +59,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const categoryName = product.category
     ? (isRtl ? product.category.name_ar : product.category.name_en)
     : t("Store");
-  const categorySlug = product.category?.slug || "";
+  const categorySlug = product.category?.slug_en || product.category?.slug_ar || "";
   const categoryHref = product.category ? `/store/${categorySlug}` : "/store";
 
   const [categories, featuredProducts, relatedProducts] = await Promise.all([
@@ -88,8 +88,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             rating: (product as any).rating ?? null,
             review_count: (product as any).review_count ?? null,
             availability: (product as any).availability ?? null,
-            images: Array.isArray((product as any).images) ? (product as any).images : undefined
-          }, { categoryName: categoryName ?? undefined }))
+            images: Array.isArray((product as any).images) ? (product as any).images : undefined,
+            brand_name_ar: product.brand?.name_ar,
+            brand_name_en: product.brand?.name_en,
+          }, {
+            categoryName: categoryName ?? undefined,
+            categorySlug: categorySlug || undefined,
+          }))
         }}
       />
       <PageHeader

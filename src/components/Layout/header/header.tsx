@@ -21,42 +21,7 @@ export function Header({ categories }: { categories: Category[] }) {
 
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const lastScrollY = useRef(0)
-  const visibilityRef = useRef(true)
   const searchInputRef = useRef<HTMLInputElement>(null)
-
-  // Smart sticky behavior logic
-  useEffect(() => {
-    let frameId: number | null = null
-
-    const handleScroll = () => {
-      if (frameId !== null) return
-
-      frameId = window.requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY
-        const nextVisibility = currentScrollY < 10
-          ? true
-          : currentScrollY > lastScrollY.current && currentScrollY > 50
-            ? false
-            : true
-
-        if (nextVisibility !== visibilityRef.current) {
-          visibilityRef.current = nextVisibility
-          setIsVisible(nextVisibility)
-        }
-
-        lastScrollY.current = currentScrollY
-        frameId = null
-      })
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (frameId !== null) window.cancelAnimationFrame(frameId)
-    }
-  }, [])
 
   // Auto-focus search input
   useEffect(() => {
@@ -83,10 +48,7 @@ export function Header({ categories }: { categories: Category[] }) {
       <header className="w-full font-sans">
         
         {/* ── Desktop/Tablet Section ───────────────────────────────────── */}
-        <div 
-          className="hidden md:block fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out bg-white shadow-sm"
-          style={{ transform: isVisible ? 'translateY(0)' : 'translateY(-144px)' }}
-        >
+        <div className="hidden md:block fixed top-0 left-0 w-full z-50 bg-white shadow-sm">
           <TopInfoBar />
           <LogoSection categories={categories} setMenuOpen={setMenuOpen} setSearchOpen={setSearchOpen} />
           <DesktopNavbar navLinks={navLinks} categories={categories} activePathname={pathname} />
@@ -95,7 +57,7 @@ export function Header({ categories }: { categories: Category[] }) {
 
         {/* ── Mobile Section ───────────────────────────────────────────── */}
         <MobileHeader 
-          isVisible={isVisible} 
+          isVisible
           setMenuOpen={setMenuOpen} 
           setSearchOpen={setSearchOpen} 
         />

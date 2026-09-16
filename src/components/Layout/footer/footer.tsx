@@ -96,6 +96,16 @@ export function Footer() {
             </h3>
             <ul className="flex flex-col gap-6 text-[15px] font-medium">
               <li>
+                <Link href="/store/money-counting-machines" className="flex items-center gap-2 hover:text-primary transition group">
+                  {isRtl ? (
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  )}
+                  <span>{isRtl ? 'مكائن عد النقود' : 'Money Counting Machines'}</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/brands" className="flex items-center gap-2 hover:text-primary transition group">
                   {isRtl ? (
                     <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />

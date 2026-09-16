@@ -52,7 +52,7 @@ export default function DesktopNavbar({ navLinks, categories, activePathname }: 
               )}
 
               {categories.map(cat => {
-                const categoryPath = `/product-category/${cat.slug_en}`
+                const categoryPath = `/store/${cat.slug_en}`
                 const isActive = activePathname === categoryPath || activePathname.includes(cat.slug_en || '')
                 return (
                   <Link

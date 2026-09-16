@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { buildMetadata, normalizeKeywords } from "./utils";
+import { htmlToPlainText, truncateText } from "@/lib/text";
+import {
+  getMoneyCountingProductDescription,
+  isMoneyCountingProduct,
+  moneyCountingSeo,
+} from "@/seo/moneyCounting";
 
 type ProductSeo = {
   id?: string | number;
@@ -17,6 +23,13 @@ type ProductSeo = {
   seo_description_ar?: string | null;
   seo_keywords_en?: unknown;
   seo_keywords_ar?: unknown;
+  category?: {
+    slug?: string | null;
+    slug_en?: string | null;
+    slug_ar?: string | null;
+    name_en?: string | null;
+    name_ar?: string | null;
+  } | null;
 };
 
 export function productMetadata(opts: {
@@ -32,22 +45,36 @@ export function productMetadata(opts: {
     (isAr ? p?.name_en : p?.name_ar) ||
     "Product";
 
+  const isMoneyCounting = isMoneyCountingProduct(p);
+  const moneySeo = moneyCountingSeo[isAr ? "ar" : "en"];
+  const customTitle = isAr ? p?.seo_title_ar : p?.seo_title_en;
+  const sourceDescription =
+    (isAr ? p?.seo_description_ar : p?.seo_description_en) ||
+    (isAr ? p?.short_desc_ar : p?.short_desc_en);
+
   const title =
-    (isAr ? p?.seo_title_ar : p?.seo_title_en) ||
-    (isAr
+    customTitle ||
+    (isMoneyCounting
+      ? isAr
+        ? `${productName} | ماكينة عدّ نقود في السعودية`
+        : `${productName} | Money Counter Saudi Arabia`
+      : isAr
       ? `${productName} | مؤسسة إيلافد للأجهزة المكتبية في السعودية`
       : `${productName} | Elavd Office Equipment in Saudi Arabia`);
 
-  const description =
-    (isAr ? p?.seo_description_ar : p?.seo_description_en) ||
-    (isAr ? p?.short_desc_ar : p?.short_desc_en) ||
-    (isAr
+  const description = isMoneyCounting
+    ? getMoneyCountingProductDescription(opts.locale, productName, sourceDescription)
+    : sourceDescription
+      ? truncateText(htmlToPlainText(sourceDescription), 165)
+      : isAr
       ? `اكتشف ${productName} لدى مؤسسة إيلافد في السعودية، ضمن حلول متخصصة في الأجهزة المكتبية والأنظمة الأمنية تشمل أجهزة البصمة، الخزن الحديدية، مكائن عد النقود، وطابعات الكروت والباركود.`
-      : `Discover ${productName} at Elavd in Saudi Arabia ضمن specialized office equipment and security solutions including attendance devices, safes, money counting machines, and card and barcode printers.`);
+      : `Discover ${productName} at Elavd in Saudi Arabia within specialized office equipment and security solutions.`;
 
   const keywords =
     normalizeKeywords(isAr ? p?.seo_keywords_ar : p?.seo_keywords_en) ||
-    (isAr
+    (isMoneyCounting
+      ? [productName, ...moneySeo.keywords]
+      : isAr
       ? [
           productName,
           "مؤسسة إيلافد",

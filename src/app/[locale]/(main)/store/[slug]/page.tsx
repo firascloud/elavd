@@ -13,6 +13,9 @@ import { getStoreDynamicJsonLd } from '@/seo/storeDynamic'
 import { getBrandJsonLd } from '@/seo/brand'
 import { storeSlugMetadata } from '@/metadata/storeSlug'
 import { brandMetadata } from '@/metadata/brand'
+import { categoryMetadata } from '@/metadata/category'
+import MoneyCountingSeoContent from '@/components/seo/MoneyCountingSeoContent'
+import { isMoneyCountingCategory, moneyCountingSeo } from '@/seo/moneyCounting'
 
 interface StoreDynamicPageProps {
   params: Promise<{
@@ -27,8 +30,16 @@ interface StoreDynamicPageProps {
   }>
 }
 
-export async function generateMetadata({ params }: StoreDynamicPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: StoreDynamicPageProps): Promise<Metadata> {
   const { slug, locale } = await params
+  const query = await searchParams
+  const parsedPage = Number.parseInt(query.page || '1', 10)
+  const metadataPage = Number.isFinite(parsedPage) && parsedPage > 1 ? parsedPage : 1
+  const hasAlternativeView = Boolean(
+    (query.sort && query.sort !== 'default') ||
+    (query.limit && query.limit !== '12') ||
+    (query.view && query.view !== 'grid')
+  )
   const [category, subCategory, brand] = await Promise.all([
     getCategoryBySlug(slug),
     getSubCategoryBySlug(slug),
@@ -36,12 +47,12 @@ export async function generateMetadata({ params }: StoreDynamicPageProps): Promi
   ])
 
   if (category) {
-    const name = locale === 'ar' ? category.name_ar : category.name_en
-    return storeSlugMetadata({
+    return categoryMetadata({
       locale,
       slug,
-      title: name || undefined,
-      description: (locale === 'ar' ? category.description_ar : category.description_en) || undefined,
+      category,
+      page: metadataPage,
+      noindex: hasAlternativeView,
     })
   }
 
@@ -86,8 +97,10 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   const t = await getTranslations('common')
   const isRtl = locale === 'ar'
 
-  const currentPage = parseInt(page)
-  const currentLimit = parseInt(limit)
+  const parsedPage = Number.parseInt(page, 10)
+  const parsedLimit = Number.parseInt(limit, 10)
+  const currentPage = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1
+  const currentLimit = [9, 12, 18, 24].includes(parsedLimit) ? parsedLimit : 12
 
   const [category, subCategory, brand, allCategories, featuredProducts] = await Promise.all([
     getCategoryBySlug(slug),
@@ -101,15 +114,25 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   let pageTitle = ''
   let pageDescription = ''
   let ValsearchQuery = ''
+  const isMoneyCounting = isMoneyCountingCategory(category) || slug === 'money-counting-machines'
+  const moneySeo = moneyCountingSeo[isRtl ? 'ar' : 'en']
 
   if (category) {
     allProducts = await getProducts({ categoryId: category.id, limit: 1000 })
-    pageTitle = isRtl ? category.name_ar || '' : category.name_en || ''
-    pageDescription = isRtl ? category.seo_description_ar || '' : category.seo_description_en || ''
+    pageTitle = isMoneyCounting
+      ? moneySeo.h1
+      : isRtl ? category.name_ar || '' : category.name_en || ''
+    pageDescription = isMoneyCounting
+      ? moneySeo.intro
+      : isRtl
+        ? category.seo_description_ar || category.description_ar || ''
+        : category.seo_description_en || category.description_en || ''
+    ValsearchQuery = pageTitle
   } else if (subCategory) {
     allProducts = await getProducts({ subCategoryId: subCategory.id, limit: 1000 })
     pageTitle = isRtl ? subCategory.name_ar || '' : subCategory.name_en || ''
     pageDescription = isRtl ? subCategory.seo_description_ar || '' : subCategory.seo_description_en || ''
+    ValsearchQuery = pageTitle
   } else if (brand) {
     allProducts = await getProducts({ brandId: brand.id, limit: 1000 })
     pageTitle = isRtl ? brand.name_ar || '' : brand.name_en || ''
@@ -145,7 +168,15 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
         dangerouslySetInnerHTML={{ __html: JSON.stringify(getStoreDynamicJsonLd(locale, {
           isCategory: Boolean(category),
           slug,
-          name: pageTitle
+          page: currentPage,
+          name: pageTitle,
+          description: pageDescription,
+          products: paginatedProducts.map((product, index) => ({
+            position: startIndex + index + 1,
+            slug: product.slug_en || product.id,
+            name: (isRtl ? product.name_ar : product.name_en) || product.name_en || product.name_ar || '',
+            image: product.main_image || undefined,
+          })),
         })) }}
       />
       {brand && (
@@ -242,6 +273,10 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
               totalPages={totalPages}
               totalItems={totalItems}
             />
+
+            {isMoneyCounting && currentPage === 1 && (
+              <MoneyCountingSeoContent locale={locale} productCount={totalItems} />
+            )}
           </div>
         </div>
       </div>

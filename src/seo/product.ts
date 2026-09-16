@@ -1,4 +1,5 @@
 import { SITE_LOGO_URL, SITE_URL } from "@/config/site";
+import { htmlToPlainText } from "@/lib/text";
 
 export function getProductJsonLd(
   locale: string,
@@ -20,7 +21,7 @@ export function getProductJsonLd(
     brand_name_en?: string | null;
     availability?: "InStock" | "OutOfStock" | "PreOrder" | "BackOrder" | null;
   },
-  opts?: { categoryName?: string }
+  opts?: { categoryName?: string; categorySlug?: string }
 ) {
   const base = SITE_URL;
   const pagePath = `/product/${product.slug}`;
@@ -37,24 +38,30 @@ export function getProductJsonLd(
     (isAr ? product.name_en : product.name_ar) ||
     "Product";
 
-  const description =
+  const description = htmlToPlainText(
     (isAr ? product.short_desc_ar : product.short_desc_en) ||
     (isAr ? product.short_desc_en : product.short_desc_ar) ||
     (isAr
       ? `اكتشف ${name} لدى مؤسسة إيلافد في السعودية ضمن حلول متخصصة في الأجهزة المكتبية والأنظمة الأمنية.`
-      : `Discover ${name} at Elavd in Saudi Arabia within specialized office equipment and security solutions.`);
+      : `Discover ${name} at Elavd in Saudi Arabia within specialized office equipment and security solutions.`)
+  );
 
   const brandName =
     (isAr ? product.brand_name_ar : product.brand_name_en) ||
     (isAr ? product.brand_name_en : product.brand_name_ar) ||
     "Elavd";
 
-  const images =
+  const rawImages =
     Array.isArray(product.images) && product.images.length > 0
       ? product.images
       : product.main_image
         ? [product.main_image]
         : undefined;
+  const images = rawImages?.map((image) =>
+    image.startsWith("http://") || image.startsWith("https://")
+      ? image
+      : `${base}${image.startsWith("/") ? "" : "/"}${image}`
+  );
 
   const price =
     typeof product.discount_price === "number" && product.discount_price > 0
@@ -170,9 +177,19 @@ export function getProductJsonLd(
               name: isAr ? "المتجر" : "Store",
             },
           },
+          ...(opts?.categorySlug
+            ? [{
+                "@type": "ListItem",
+                position: 3,
+                item: {
+                  "@id": `${base}/store/${opts.categorySlug}`,
+                  name: opts.categoryName || (isAr ? "القسم" : "Category"),
+                },
+              }]
+            : []),
           {
             "@type": "ListItem",
-            position: 3,
+            position: opts?.categorySlug ? 4 : 3,
             item: {
               "@id": `${base}${pagePath}`,
               name,

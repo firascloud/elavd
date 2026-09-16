@@ -148,14 +148,14 @@ export default async function Hero({ locale }: { locale: string }) {
 
           <Link
             href="/store/money-counting-machines"
-            className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all hidden md:block"
+            className="lg:col-span-3 rounded-lg overflow-hidden relative shadow-sm border border-border min-h-[290px] order-3 group cursor-pointer hover:border-primary/30 transition-all block"
           >
             <Image
               src={moneyCountingMachines}
               alt={t('MoneyCountingMachines')}
               fill
               loading="lazy"
-              sizes="(max-width: 1024px) 0px, 25vw"
+              sizes="(max-width: 767px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover group-hover:scale-110 transition-transform duration-1000"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
