@@ -8,6 +8,12 @@ type CategoryLike = {
   slug_ar?: string | null;
   name_en?: string | null;
   name_ar?: string | null;
+  description_en?: string | null;
+  description_ar?: string | null;
+  seo_title_en?: string | null;
+  seo_title_ar?: string | null;
+  seo_description_en?: string | null;
+  seo_description_ar?: string | null;
 };
 
 type ProductLike = {
@@ -108,6 +114,34 @@ export const moneyCountingSeo = {
       "Explore money counting machines designed for businesses that handle cash every day. Compare counting, sorting, and counterfeit-detection options to find the right solution for your workload, currencies, and required speed.",
   },
 } as const;
+
+function populatedValue(value: string | null | undefined, fallback: string): string {
+  return value?.trim() ? value : fallback;
+}
+
+export function resolveMoneyCountingCategorySeo(
+  locale: string,
+  category?: CategoryLike | null,
+) {
+  const isAr = locale === "ar";
+  const fallback = moneyCountingSeo[isAr ? "ar" : "en"];
+
+  return {
+    title: populatedValue(
+      isAr ? category?.seo_title_ar : category?.seo_title_en,
+      fallback.title,
+    ),
+    description: populatedValue(
+      isAr ? category?.seo_description_ar : category?.seo_description_en,
+      fallback.description,
+    ),
+    intro: populatedValue(
+      isAr ? category?.description_ar : category?.description_en,
+      fallback.intro,
+    ),
+    h1: fallback.h1,
+  };
+}
 
 export function getMoneyCountingProductDescription(
   locale: string,

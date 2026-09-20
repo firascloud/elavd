@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Check, ChevronDown, Layers3, Menu, Search } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/routing'
-import Logo from '@/assets/logo.webp'
+import Logo from '@/assets/logo-header.webp'
 import LanguageSwitcher from './LanguageSwitcher'
 import HeaderActions from './HeaderActions'
 import type { Category } from '@/services/categoryService'
@@ -52,8 +52,9 @@ export default function LogoSection({ setSearchOpen, setMenuOpen, categories }: 
           <Image
             src={Logo}
             alt="Logo"
-            width={200}
-            height={80}
+            width={384}
+            height={105}
+            sizes="(max-width: 1023px) 112px, 192px"
             priority
             className="w-28 lg:w-48 h-auto max-h-[70px] lg:max-h-[80px] object-contain"
           />

@@ -18,6 +18,7 @@ const QuickViewModal = dynamic(
 export interface ProductCardProps extends Product {
     is_hot?: boolean;
     view?: "grid" | "list";
+    imagePriority?: boolean;
 }
 
 const Tooltip = ({ text, isVisible }: { text: string; isVisible: boolean }) => (
@@ -72,7 +73,8 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
         slug_en,
         slug_ar,
         id,
-        view = "grid"
+        view = "grid",
+        imagePriority = false
     } = props;
 
     const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
@@ -86,6 +88,9 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
         ? (locale === 'ar' ? props.category.name_ar : props.category.name_en)
         : t('Products');
     const localizedSlug = slug_en;
+    const imageLoadingProps = imagePriority
+        ? { priority: true, fetchPriority: "high" as const }
+        : { loading: "lazy" as const };
 
     if (view === "list") {
         return (
@@ -98,6 +103,8 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                                     src={main_image}
                                     alt={name || ''}
                                     fill
+                                    sizes="(max-width: 767px) 192px, 224px"
+                                    {...imageLoadingProps}
                                     className="object-contain transition-transform duration-700 group-hover:scale-110"
                                 />
                             </div>
@@ -200,6 +207,8 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                                     src={main_image}
                                     alt={name || 'Product'}
                                     fill
+                                    sizes="176px"
+                                    {...imageLoadingProps}
                                     className="object-contain transition-transform duration-700 group-hover:scale-110"
                                 />
                             </Link>

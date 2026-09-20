@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
 import { Search, Menu } from 'lucide-react'
-import Logo from '@/assets/logo.webp'
+import Logo from '@/assets/logo-header.webp'
 import LanguageSwitcher from './LanguageSwitcher'
 
 interface MobileHeaderProps {
@@ -17,7 +17,14 @@ export default function MobileHeader({ isVisible, setSearchOpen, setMenuOpen }: 
   return (
     <div className={`bg-white p-4 flex md:hidden items-center justify-between gap-3 fixed top-0 left-0 w-full z-50 shadow-sm border-b transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <Link href="/">
-        <Image src={Logo} alt="Elavd Security Systems Logo" width={140} height={140} className="w-28 h-auto" />
+        <Image
+          src={Logo}
+          alt="Elavd Security Systems Logo"
+          width={384}
+          height={105}
+          sizes="112px"
+          className="w-28 h-auto"
+        />
       </Link>
       <div className="flex items-center gap-1">
         <button

@@ -15,7 +15,8 @@ import { storeSlugMetadata } from '@/metadata/storeSlug'
 import { brandMetadata } from '@/metadata/brand'
 import { categoryMetadata } from '@/metadata/category'
 import MoneyCountingSeoContent from '@/components/seo/MoneyCountingSeoContent'
-import { isMoneyCountingCategory, moneyCountingSeo } from '@/seo/moneyCounting'
+import { isMoneyCountingCategory, resolveMoneyCountingCategorySeo } from '@/seo/moneyCounting'
+import { htmlToPlainText } from '@/lib/text'
 
 interface StoreDynamicPageProps {
   params: Promise<{
@@ -115,7 +116,7 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   let pageDescription = ''
   let ValsearchQuery = ''
   const isMoneyCounting = isMoneyCountingCategory(category) || slug === 'money-counting-machines'
-  const moneySeo = moneyCountingSeo[isRtl ? 'ar' : 'en']
+  const moneySeo = resolveMoneyCountingCategorySeo(locale, category)
 
   if (category) {
     allProducts = await getProducts({ categoryId: category.id, limit: 1000 })
@@ -123,7 +124,7 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
       ? moneySeo.h1
       : isRtl ? category.name_ar || '' : category.name_en || ''
     pageDescription = isMoneyCounting
-      ? moneySeo.intro
+      ? htmlToPlainText(moneySeo.intro)
       : isRtl
         ? category.seo_description_ar || category.description_ar || ''
         : category.seo_description_en || category.description_en || ''
@@ -159,6 +160,7 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
   const startIndex = (currentPage - 1) * currentLimit
   const endIndex = startIndex + currentLimit
   const paginatedProducts = allProducts.slice(startIndex, endIndex)
+  const lcpProductIndex = paginatedProducts.findIndex((product) => Boolean(product.main_image))
 
   return (
     <div className="min-h-screen bg-muted/30 pb-20">
@@ -244,11 +246,12 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
                     ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
                     : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
                 }`}>
-                {paginatedProducts.map((product) => (
+                {paginatedProducts.map((product, index) => (
                   <ProductCard
                     key={product.id}
                     {...product}
                     view={view === 'list' ? 'list' : 'grid'}
+                    imagePriority={isMoneyCounting && index === lcpProductIndex}
                   />
                 ))}
               </div>

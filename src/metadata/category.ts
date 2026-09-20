@@ -3,6 +3,7 @@ import { buildMetadata, normalizeKeywords } from "./utils";
 import {
   isMoneyCountingCategory,
   moneyCountingSeo,
+  resolveMoneyCountingCategorySeo,
 } from "@/seo/moneyCounting";
 
 type CategorySeo = {
@@ -236,16 +237,17 @@ export function categoryMetadata(opts: {
     slug: opts.slug,
   });
   const moneySeo = moneyCountingSeo[isAr ? "ar" : "en"];
+  const resolvedMoneySeo = resolveMoneyCountingCategorySeo(opts.locale, c);
 
   const title = isMoneyCounting
-    ? moneySeo.title
+    ? resolvedMoneySeo.title
     : (isAr ? c?.seo_title_ar : c?.seo_title_en) ||
       (isAr
       ? `${categoryName} | مؤسسة إيلافد في السعودية`
       : `${categoryName} | Elavd in Saudi Arabia`);
 
   const description = isMoneyCounting
-    ? moneySeo.description
+    ? resolvedMoneySeo.description
     : (isAr ? c?.seo_description_ar : c?.seo_description_en) ||
       (isAr ? c?.description_ar : c?.description_en) ||
       (isAr
