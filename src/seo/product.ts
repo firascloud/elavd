@@ -6,17 +6,19 @@ export function getProductJsonLd(
   product: {
     id: string | number;
     slug: string;
-    name_ar?: string;
-    name_en?: string;
-    short_desc_ar?: string;
-    short_desc_en?: string;
-    main_image?: string;
-    sku?: string;
+    name_ar?: string | null;
+    name_en?: string | null;
+    short_desc_ar?: string | null;
+    short_desc_en?: string | null;
+    full_desc_ar?: string | null;
+    full_desc_en?: string | null;
+    main_image?: string | null;
+    sku?: string | null;
+    mpn?: string | null;
     price?: number | null;
-    discount_price?: number | null;
     rating?: number | null;
     review_count?: number | null;
-    images?: string[];
+    images?: string[] | null;
     brand_name_ar?: string | null;
     brand_name_en?: string | null;
     availability?: "InStock" | "OutOfStock" | "PreOrder" | "BackOrder" | null;
@@ -36,86 +38,107 @@ export function getProductJsonLd(
   const name =
     (isAr ? product.name_ar : product.name_en) ||
     (isAr ? product.name_en : product.name_ar) ||
-    "Product";
+    product.slug;
 
   const description = htmlToPlainText(
     (isAr ? product.short_desc_ar : product.short_desc_en) ||
+    (isAr ? product.full_desc_ar : product.full_desc_en) ||
     (isAr ? product.short_desc_en : product.short_desc_ar) ||
-    (isAr
-      ? `اكتشف ${name} لدى مؤسسة إيلافد في السعودية ضمن حلول متخصصة في الأجهزة المكتبية والأنظمة الأمنية.`
-      : `Discover ${name} at Elavd in Saudi Arabia within specialized office equipment and security solutions.`)
+    (isAr ? product.full_desc_en : product.full_desc_ar)
   );
 
   const brandName =
-    (isAr ? product.brand_name_ar : product.brand_name_en) ||
-    (isAr ? product.brand_name_en : product.brand_name_ar) ||
-    "Elavd";
+    ((isAr ? product.brand_name_ar : product.brand_name_en) ||
+      (isAr ? product.brand_name_en : product.brand_name_ar))?.trim();
 
-  const rawImages =
-    Array.isArray(product.images) && product.images.length > 0
-      ? product.images
-      : product.main_image
-        ? [product.main_image]
-        : undefined;
-  const images = rawImages?.map((image) =>
+  const uuidPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const realIdentifier = (value?: string | null) => {
+    const identifier = value?.trim();
+    return identifier &&
+      identifier !== String(product.id).trim() &&
+      !uuidPattern.test(identifier)
+      ? identifier
+      : undefined;
+  };
+  const sku = realIdentifier(product.sku);
+  const mpn = realIdentifier(product.mpn);
+
+  const rawImages = [
+    ...(product.main_image ? [product.main_image] : []),
+    ...(Array.isArray(product.images) ? product.images : []),
+  ]
+    .filter((image): image is string => typeof image === "string" && image.trim().length > 0)
+    .map((image) => image.trim());
+  const images = [...new Set(rawImages)].map((image) =>
     image.startsWith("http://") || image.startsWith("https://")
       ? image
       : `${base}${image.startsWith("/") ? "" : "/"}${image}`
   );
 
-  const price =
-    typeof product.discount_price === "number" && product.discount_price > 0
-      ? product.discount_price
-      : product.price;
+  const isPositivePrice = (value?: number | null): value is number =>
+    typeof value === "number" && Number.isFinite(value) && value > 0;
+  const price = isPositivePrice(product.price) ? product.price : undefined;
+  const verifiedAvailability = ["InStock", "OutOfStock", "PreOrder", "BackOrder"].includes(
+    product.availability || ""
+  )
+    ? product.availability
+    : undefined;
 
   const offers =
-    typeof price === "number" && Number.isFinite(price) && price > 0
+    price
       ? {
           "@type": "Offer",
           url: `${base}${pagePath}`,
           priceCurrency: "SAR",
           price: String(price),
-          ...(product.availability
-            ? { availability: `https://schema.org/${product.availability}` }
+          ...(verifiedAvailability
+            ? { availability: `https://schema.org/${verifiedAvailability}` }
             : {}),
-          itemCondition: "https://schema.org/NewCondition",
           seller: { "@id": organizationId },
         }
       : undefined;
 
   const hasRealRating =
     typeof product.rating === "number" &&
+    Number.isFinite(product.rating) &&
+    product.rating > 0 &&
+    product.rating <= 5 &&
     typeof product.review_count === "number" &&
+    Number.isInteger(product.review_count) &&
     product.review_count > 0;
 
   const aggregateRating = hasRealRating
     ? {
         "@type": "AggregateRating",
-        ratingValue: String(Math.max(0, Math.min(5, product.rating!)).toFixed(1)),
+        ratingValue: String(product.rating),
         reviewCount: String(product.review_count),
       }
     : undefined;
 
-  // Google requires a real offer, review, or aggregate rating for Product
-  // rich results. Quote-only products have none of these, so marking them as
-  // Product would create an invalid structured-data item in Search Console.
-  const hasProductRichResultData = Boolean(offers || aggregateRating);
+  // Product is valid Schema.org markup without an Offer or rating, although it
+  // will not qualify for Google's Product rich results without eligible data.
 
   const productNode = {
     "@type": "Product",
     "@id": productId,
     name,
-    description,
-    sku: product.sku || String(product.id),
-    image: images,
+    ...(description ? { description } : {}),
+    ...(sku ? { sku } : {}),
+    ...(mpn ? { mpn } : {}),
+    ...(images?.length ? { image: images } : {}),
     url: `${base}${pagePath}`,
-    category: opts?.categoryName,
-    brand: {
-      "@type": "Brand",
-      name: brandName,
-    },
-    offers,
-    aggregateRating,
+    ...(opts?.categoryName ? { category: opts.categoryName } : {}),
+    ...(brandName
+      ? {
+          brand: {
+            "@type": "Brand",
+            name: brandName,
+          },
+        }
+      : {}),
+    ...(offers ? { offers } : {}),
+    ...(aggregateRating ? { aggregateRating } : {}),
   };
 
   return {
@@ -197,16 +220,16 @@ export function getProductJsonLd(
           },
         ],
       },
-      ...(hasProductRichResultData ? [productNode] : []),
+      productNode,
       {
         "@type": "WebPage",
         "@id": webPageId,
         url: `${base}${pagePath}`,
         name,
-        description,
+        ...(description ? { description } : {}),
         inLanguage: locale,
         isPartOf: { "@id": websiteId },
-        ...(hasProductRichResultData ? { mainEntity: { "@id": productId } } : {}),
+        mainEntity: { "@id": productId },
         breadcrumb: { "@id": breadcrumbId },
       },
     ],
