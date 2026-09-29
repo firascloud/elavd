@@ -191,6 +191,7 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
         title={pageTitle}
         breadcrumbLabel={pageTitle}
         subtitle={pageDescription}
+        parent={category && slug === 'money-counting-machines' ? { label: t('Store'), href: '/store' } : undefined}
       />
 
       <div className="max-w-7xl mx-auto px-4 mt-12 lg:mt-16">
@@ -278,7 +279,7 @@ export default async function StoreDynamicPage({ params, searchParams }: StoreDy
             />
 
             {isMoneyCounting && currentPage === 1 && (
-              <MoneyCountingSeoContent locale={locale} productCount={totalItems} />
+              <MoneyCountingSeoContent locale={locale} products={allProducts} />
             )}
           </div>
         </div>
