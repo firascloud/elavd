@@ -58,6 +58,11 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(canonicalUrl, 308);
   }
 
+  // Keep these metadata routes out of locale routing on the canonical host.
+  if (pathname === "/robots.txt" || pathname === "/sitemap.xml") {
+    return NextResponse.next();
+  }
+
   // Resolve known legacy paths before locale routing; unknown documents stay 404.
   if (legacyDestination && !skipLegacyRedirect) {
     return NextResponse.redirect(new URL(legacyDestination, request.url), 308);
@@ -113,6 +118,9 @@ export const config = {
     // Legacy documents, including malformed paths nested below .html/.php.
     // Do not run locale middleware for static assets or protected routes.
     "/((?!api/|_next/|_vercel/|admin/).*\\.(?:html|php)(?:/[^.]*)?)",
+    // Include only public SEO files in the www-to-non-www redirect.
+    "/robots.txt",
+    "/sitemap.xml",
     // However, match all pathnames within `/users`, optionally with a locale prefix
     "/([\\w-]+)?/users/(.+)",
   ],
