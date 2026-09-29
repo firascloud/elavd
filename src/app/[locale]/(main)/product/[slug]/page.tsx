@@ -16,7 +16,7 @@ import {
   getRelatedProducts,
 } from "@/services/home";
 import { getBrandBySlug } from "@/services/brandService";
-import { redirect } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 
 interface ProductPageProps {
   params: Promise<{
@@ -126,7 +126,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="lg:col-span-9 space-y-8 order-1 lg:order-2">
             <ProductHero product={product} phoneUrl={phoneUrl} />
             <ProductTabs product={product} />
-
+            {product.category?.slug_en === "money-counting-machines" && (
+              <Link
+                href="/store/money-counting-machines"
+                className="inline-flex rounded-md border border-primary/20 bg-background px-5 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary/5"
+              >
+                {isRtl
+                  ? "قارن هذا الموديل مع باقي مكائن عد النقود"
+                  : "Compare this model with other money counting machines"}
+              </Link>
+            )}
           </div>
 
           <aside className="lg:col-span-3 order-2 lg:order-1">
