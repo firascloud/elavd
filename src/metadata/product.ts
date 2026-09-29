@@ -9,7 +9,7 @@ import {
 
 type ProductSeo = {
   id?: string | number;
-  slug_en?: string;
+  slug_en?: string | null;
   slug_ar?: string;
   slug?: string;
   name_en?: string | null;
@@ -31,6 +31,10 @@ type ProductSeo = {
     name_ar?: string | null;
   } | null;
 };
+
+export function getPreferredProductSlug(slugEn: string | null | undefined): string | null {
+  return slugEn && /^[a-z0-9][a-z0-9_-]*$/i.test(slugEn) ? slugEn : null;
+}
 
 export function productMetadata(opts: {
   locale: string;
@@ -105,7 +109,7 @@ export function productMetadata(opts: {
 
   return buildMetadata({
     locale: opts.locale,
-    path: `/product/${opts.slug}`,
+    path: `/product/${getPreferredProductSlug(p?.slug_en) || opts.slug}`,
     title,
     description,
     keywords,

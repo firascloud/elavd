@@ -94,7 +94,7 @@ export const moneyCountingSeo = {
       "جهاز كشف العملات المزورة",
     ],
     intro:
-      "اكتشف مجموعة مكائن عدّ النقود المخصصة للأعمال التي تتعامل مع النقد يومياً. قارن بين أجهزة العدّ والفرز وكشف التزوير، واختر الحل المناسب لحجم عملك ونوع العملات والسرعة المطلوبة.",
+      "قارن مكائن عد النقود المتوفرة لدى إيلافد في السعودية، واطّلع على الفروق بين الموديلات قبل اختيار ماكينة عد نقود تناسب حجم عملك. راجع طريقة العد وإمكانات الفرز وكشف التزوير في وصف كل جهاز، وتحقق من العملات والفئات المدعومة في مواصفاته.",
   },
   en: {
     h1: "Money Counting Machines in Saudi Arabia",
@@ -111,7 +111,7 @@ export const moneyCountingSeo = {
       "cash counter Saudi Arabia",
     ],
     intro:
-      "Explore money counting machines designed for businesses that handle cash every day. Compare counting, sorting, and counterfeit-detection options to find the right solution for your workload, currencies, and required speed.",
+      "Compare the money counting machines available from Elavd in Saudi Arabia and choose a model that suits your workload. Check each product's counting method, sorting and counterfeit-detection features, and supported currencies and denominations before deciding.",
   },
 } as const;
 
@@ -135,10 +135,9 @@ export function resolveMoneyCountingCategorySeo(
       isAr ? category?.seo_description_ar : category?.seo_description_en,
       fallback.description,
     ),
-    intro: populatedValue(
-      isAr ? category?.description_ar : category?.description_en,
-      fallback.intro,
-    ),
+    // Keep the category landing-page introduction consistent even when an older
+    // category description remains in the database.
+    intro: fallback.intro,
     h1: fallback.h1,
   };
 }

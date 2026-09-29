@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import PageHeader from "@/components/common/page-header";
 import CategorySidebar from "@/components/common/category-sidebar";
@@ -8,7 +8,7 @@ import ProductHero from "./_components/ProductHero";
 import ProductTabs from "./_components/ProductTabs";
 import RelatedProducts from "./_components/RelatedProducts";
 import { getProductJsonLd } from "@/seo/product";
-import { productMetadata } from "@/metadata/product";
+import { getPreferredProductSlug, productMetadata } from "@/metadata/product";
 import {
   getCategories,
   getFeaturedProducts,
@@ -16,7 +16,7 @@ import {
   getRelatedProducts,
 } from "@/services/home";
 import { getBrandBySlug } from "@/services/brandService";
-import { redirect } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 
 interface ProductPageProps {
   params: Promise<{
@@ -25,14 +25,23 @@ interface ProductPageProps {
   }>;
 }
 
+function decodeProductSlug(slug: string): string {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug, locale } = await params;
+  const requestedSlug = decodeProductSlug(slug);
   const [product, brand] = await Promise.all([
-    getProductBySlug(slug),
+    getProductBySlug(requestedSlug),
     getBrandBySlug(slug)
   ]);
 
-  if (product) return productMetadata({ locale, slug, product: product as any });
+  if (product) return productMetadata({ locale, slug: requestedSlug, product: product as any });
   if (brand) return { title: locale === 'ar' ? brand.name_ar : brand.name_en };
 
   return { title: "Product Not Found" };
@@ -40,11 +49,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug, locale } = await params;
+  const requestedSlug = decodeProductSlug(slug);
   const isRtl = locale === "ar";
   const t = await getTranslations("common");
 
   const [product, brand] = await Promise.all([
-    getProductBySlug(slug),
+    getProductBySlug(requestedSlug),
     getBrandBySlug(slug)
   ]);
 
@@ -53,6 +63,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   if (!product) notFound();
+
+  const preferredSlug = getPreferredProductSlug(product.slug_en);
+  if (preferredSlug && preferredSlug !== requestedSlug) {
+    permanentRedirect(`/product/${preferredSlug}`);
+  }
 
   const name = isRtl ? product.name_ar : product.name_en;
   const phoneUrl = "tel:+966556482799";
@@ -111,7 +126,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="lg:col-span-9 space-y-8 order-1 lg:order-2">
             <ProductHero product={product} phoneUrl={phoneUrl} />
             <ProductTabs product={product} />
-
+            {product.category?.slug_en === "money-counting-machines" && (
+              <Link
+                href="/store/money-counting-machines"
+                className="inline-flex rounded-md border border-primary/20 bg-background px-5 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary/5"
+              >
+                {isRtl
+                  ? "قارن هذا الموديل مع باقي مكائن عد النقود"
+                  : "Compare this model with other money counting machines"}
+              </Link>
+            )}
           </div>
 
           <aside className="lg:col-span-3 order-2 lg:order-1">

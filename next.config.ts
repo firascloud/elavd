@@ -9,12 +9,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/:path*",
-        has: [{ type: "host", value: "www\\.elavd\\.com" }],
-        destination: "https://elavd.com/:path*",
-        permanent: true,
-      },
-      {
         source: "/product-category/:slug",
         destination: "/store/:slug",
         permanent: true,

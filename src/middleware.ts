@@ -4,7 +4,37 @@ import { NextRequest, NextResponse } from "next/server";
 
 const intlMiddleware = createMiddleware(routing);
 
+const legacyRedirects: Record<string, string> = {
+  "/مكائن-عد-نقود/mka-en-ed-alnqwd-kisan-k2.html": "/product/kisan-k2-money-counting-machine",
+  "/mka-en-ed-alnqwd-kisan-k2.html": "/product/kisan-k2-money-counting-machine",
+  "/counting-machine-kisan-k2.html": "/product/kisan-k2-money-counting-machine",
+  "/cassida-xpecto-جهاز-عد-النقود": "/product/cassida-xpecto-money-counting-machine",
+  "/ماكينة-عد-النقود-هيتاشي": "/product/hitachi-hi110-money-counting-machine",
+  "/NV-الة-عد-النقود": "/product/nv-money-counting-machine",
+  "/mixed-notes-money-counting-machines": "/store/money-counting-machines",
+  "/money-counting-machines": "/store/money-counting-machines",
+  "/مكائن-عد-نقود": "/store/money-counting-machines",
+  "/مكائن-عد-النقود-لفئات-نقدية-مختلطة": "/store/money-counting-machines",
+  "/مكائن-عد-النقود-لفئة-نقدية-واحدة": "/store/money-counting-machines",
+};
+
 export default async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  let decodedPathname = pathname;
+  try {
+    decodedPathname = decodeURIComponent(pathname);
+  } catch {
+    // Malformed legacy document URLs still receive a 404 below.
+  }
+  const legacyPath = decodedPathname.replace(/\/+$/, "");
+  const isLegacyDocument = /\.(?:html|php)(?:\/|$)/i.test(pathname);
+  const legacyDestination = (Object.hasOwn(legacyRedirects, legacyPath) ? legacyRedirects[legacyPath] : null) ||
+    (isLegacyDocument && legacyPath === "/about-us.html" ? "/about-us" : null) ||
+    (isLegacyDocument && legacyPath === "/index.php" && !request.nextUrl.search ? "/" : null);
+
+  // A legacy product_id may refer to a different product; let normal routing decide.
+  const skipLegacyRedirect = Boolean(legacyDestination && request.nextUrl.searchParams.has("product_id"));
+
   const forwardedHost = request.headers
     .get("x-forwarded-host")
     ?.split(",")[0]
@@ -21,33 +51,24 @@ export default async function middleware(request: NextRequest) {
     canonicalUrl.protocol = "https:";
     canonicalUrl.hostname = "elavd.com";
     canonicalUrl.port = "";
+    if (legacyDestination && !skipLegacyRedirect) {
+      canonicalUrl.pathname = legacyDestination;
+      canonicalUrl.search = "";
+    }
     return NextResponse.redirect(canonicalUrl, 308);
   }
 
-  const pathname = request.nextUrl.pathname;
-  // Legacy document URLs must be handled before the locale layout sees an
-  // invalid locale such as "index.php" or "about-us.html".
-  if (/\.(?:html|php)(?:\/|$)/i.test(pathname)) {
-    let legacyPathname = pathname;
-    try {
-      legacyPathname = decodeURIComponent(pathname);
-    } catch {
-      // Malformed escapes are still unknown legacy URLs and receive a 404.
-    }
-    const legacyPath = legacyPathname.replace(/\/+$/, "");
-    const destination =
-      legacyPath === "/مكائن-عد-نقود/mka-en-ed-alnqwd-kisan-k2.html" ||
-      legacyPath === "/mka-en-ed-alnqwd-kisan-k2.html"
-        ? "/product/kisan-k2-money-counting-machine"
-        : legacyPath === "/about-us.html"
-          ? "/about-us"
-          : legacyPath === "/index.php" && !request.nextUrl.search
-            ? "/"
-            : null;
+  // Keep these metadata routes out of locale routing on the canonical host.
+  if (pathname === "/robots.txt" || pathname === "/sitemap.xml") {
+    return NextResponse.next();
+  }
 
-    return destination
-      ? NextResponse.redirect(new URL(destination, request.url), 308)
-      : new NextResponse("Not Found", { status: 404 });
+  // Resolve known legacy paths before locale routing; unknown documents stay 404.
+  if (legacyDestination && !skipLegacyRedirect) {
+    return NextResponse.redirect(new URL(legacyDestination, request.url), 308);
+  }
+  if (isLegacyDocument && !skipLegacyRedirect) {
+    return new NextResponse("Not Found", { status: 404 });
   }
 
   const token = request.cookies.get("access_token")?.value;
@@ -97,6 +118,9 @@ export const config = {
     // Legacy documents, including malformed paths nested below .html/.php.
     // Do not run locale middleware for static assets or protected routes.
     "/((?!api/|_next/|_vercel/|admin/).*\\.(?:html|php)(?:/[^.]*)?)",
+    // Include only public SEO files in the www-to-non-www redirect.
+    "/robots.txt",
+    "/sitemap.xml",
     // However, match all pathnames within `/users`, optionally with a locale prefix
     "/([\\w-]+)?/users/(.+)",
   ],
